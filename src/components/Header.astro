@@ -1,0 +1,44 @@
+---
+const enlaces = [
+  { href: '#inicio', texto: 'Inicio' },
+  { href: '#historia', texto: 'Historia' },
+  { href: '#identidad', texto: 'Identidad' },
+  { href: '#peru', texto: 'Perú' },
+  { href: '#contacto', texto: 'Contacto' },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 border-b-4 border-tinta bg-papel">
+  <div class="mx-auto flex max-w-7xl items-stretch justify-between">
+    <a
+      href="#inicio"
+      transition:name="logo-jmv"
+      class="flex items-center gap-3 border-r-4 border-tinta bg-azul px-4 py-3 text-papel sm:px-6"
+      aria-label="JUMAVI — ir al inicio"
+    >
+      <span class="-rotate-3 bg-dorado px-2 py-0.5 font-display text-xl text-tinta shadow-dura-sm sm:text-2xl">
+        JMV
+      </span>
+      <span class="hidden font-body text-xs font-bold uppercase tracking-[0.25em] sm:block">
+        Jumavi
+      </span>
+    </a>
+
+    <nav aria-label="Navegación principal" class="flex items-stretch">
+      <ul class="flex items-stretch overflow-x-auto">
+        {
+          enlaces.map((enlace) => (
+            <li class="flex">
+              <a
+                href={enlace.href}
+                class="flex items-center border-l-4 border-tinta px-3 font-body text-xs font-bold uppercase tracking-widest transition-colors hover:bg-dorado sm:px-5 sm:text-sm"
+              >
+                {enlace.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

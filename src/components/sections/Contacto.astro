@@ -1,0 +1,80 @@
+---
+const canales = [
+  {
+    nombre: 'WhatsApp',
+    detalle: '+51 999 999 999',
+    accion: 'Escríbenos ahora',
+    href: 'https://wa.me/51999999999',
+    fondo: 'bg-azul',
+    texto: 'text-papel',
+  },
+  {
+    nombre: 'Correo',
+    detalle: 'contacto@jumavi.org',
+    accion: 'Respuesta en 24–48 h',
+    href: 'mailto:contacto@jumavi.org',
+    fondo: 'bg-dorado',
+    texto: 'text-tinta',
+  },
+  {
+    nombre: 'Instagram',
+    detalle: '@jmv_peru',
+    accion: 'Síguenos',
+    href: 'https://instagram.com/jmv_peru',
+    fondo: 'bg-papel',
+    texto: 'text-tinta',
+  },
+  {
+    nombre: 'Facebook',
+    detalle: 'Juventud Mariana Vicentina',
+    accion: 'Únete a la comunidad',
+    href: 'https://facebook.com/jmv',
+    fondo: 'bg-papel',
+    texto: 'text-tinta',
+  },
+];
+---
+
+<section id="contacto" class="scroll-mt-24 bg-papel-sombra/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+      <div data-reveal>
+        <h2 class="font-display text-[clamp(2.6rem,8vw,6rem)] leading-[0.95] uppercase">
+          ¿Te<br /><span class="text-azul">sumas</span><span class="texto-contorno">?</span>
+        </h2>
+        <p class="mt-6 max-w-md text-lg leading-relaxed font-medium">
+          No importa tu punto de partida: lo que importa es el deseo de caminar.
+          Elige un canal y comienza tu camino en JUMAVI.
+        </p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2" style="--reveal-delay: 0.1s" data-reveal>
+        {
+          canales.map((canal) => (
+            <a
+              href={canal.href}
+              target={canal.href.startsWith('http') ? '_blank' : undefined}
+              rel={canal.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              class:list={[
+                'card-brutal group flex flex-col justify-between gap-8 border-4 border-tinta p-5 shadow-dura',
+                canal.fondo,
+                canal.texto,
+              ]}
+            >
+              <span class="font-display text-xl uppercase sm:text-2xl">{canal.nombre}</span>
+              <span>
+                <span class="block font-body font-bold">{canal.detalle}</span>
+                <span class:list={[
+                  'mt-1 inline-block border-b-2 font-body text-xs font-bold uppercase tracking-widest transition-colors',
+                  canal.texto === 'text-papel' ? 'border-dorado group-hover:text-dorado' : 'border-azul group-hover:text-azul',
+                ]}>
+                  {canal.accion} →
+                </span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

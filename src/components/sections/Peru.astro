@@ -1,0 +1,53 @@
+---
+const datos = [
+  { etiqueta: 'Familia espiritual', valor: 'Familia Vicentina' },
+  { etiqueta: 'En el Perú desde', valor: '2 de febrero de 1858' },
+  { etiqueta: 'Espacios', valor: 'Parroquias y colegios vicentinos' },
+  { etiqueta: 'Formación', valor: 'Niños, adolescentes y jóvenes' },
+  { etiqueta: 'Símbolo', valor: 'La Medalla Milagrosa' },
+];
+---
+
+<section id="peru" class="scroll-mt-24 border-b-4 border-tinta bg-tinta py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+      <div data-reveal>
+        <p class="inline-block -rotate-1 border-4 border-papel bg-azul px-4 py-1 font-display text-sm uppercase tracking-widest text-papel">
+          🇵🇪 JMV en el Perú
+        </p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] uppercase text-papel">
+          Fe que<br /><span class="text-dorado">sirve</span> aquí
+        </h2>
+        <p class="mt-6 max-w-lg text-lg leading-relaxed text-papel/90">
+          JUMAVI forma parte de la Familia Vicentina del Perú, presente desde la llegada
+          de las Hijas de la Caridad y los Padres Vicentinos en 1858. En parroquias y
+          colegios vicentinos formamos a niños, adolescentes y jóvenes en el carisma
+          vicentino: el amor a Dios y el servicio a los más pobres.
+        </p>
+
+        <div class="rayas mt-10 h-6 w-full border-4 border-papel" aria-hidden="true"></div>
+
+        <blockquote class="mt-10 border-l-8 border-dorado pl-5 font-body text-xl leading-relaxed font-medium text-papel">
+          «Profundizar el carisma vicentino, el amor a Dios y el servicio a los más pobres.»
+        </blockquote>
+      </div>
+
+      <dl class="border-4 border-papel bg-azul-profundo shadow-[10px_10px_0_0_var(--color-azul-cielo)]" data-reveal style="--reveal-delay: 0.12s">
+        {
+          datos.map((dato, i) => (
+            <div class:list={['px-5 py-5 sm:px-7', i < datos.length - 1 && 'border-b-2 border-papel/30']}>
+              <dt class="font-body text-[0.65rem] font-bold uppercase tracking-[0.22em] text-azul-cielo">
+                {dato.etiqueta}
+              </dt>
+              <dd class="mt-1 font-display text-lg text-papel sm:text-xl">{dato.valor}</dd>
+            </div>
+          ))
+        }
+        <div class="flex items-center justify-between border-t-4 border-papel bg-dorado px-5 py-5 sm:px-7">
+          <span class="font-display text-sm uppercase tracking-widest text-tinta">Jóvenes en el mundo</span>
+          <span class="font-display text-2xl text-tinta">+30 000</span>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>

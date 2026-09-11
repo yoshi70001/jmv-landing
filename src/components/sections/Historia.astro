@@ -1,0 +1,105 @@
+---
+const hitos = [
+  {
+    anio: '1830',
+    titulo: 'Las apariciones',
+    fondo: 'bg-azul',
+    textoAño: 'text-papel',
+    tagClaro: false,
+    texto: 'En la Casa Madre de las Hijas de la Caridad, París, la Virgen María se aparece a Santa Catalina Labouré. El 18–19 de julio pide que se funde una asociación de jóvenes bajo su protección; el 27 de noviembre entrega la imagen de la Medalla Milagrosa.',
+    tag: 'Origen histórico',
+  },
+  {
+    anio: '1847',
+    titulo: 'Aprobación de la Iglesia',
+    fondo: 'bg-dorado',
+    textoAño: 'text-tinta',
+    tagClaro: true,
+    texto: 'La Santa Sede aprueba la asociación de Hijos e Hijas de María mediante rescriptos del 20 de junio de 1847 y del 19 de julio de 1850. María como modelo de vida y San Vicente de Paúl como referente de servicio: dos pilares que se consolidan.',
+    tag: 'Rescriptos 1847 / 1850',
+  },
+  {
+    anio: '1858',
+    titulo: 'La Familia Vicentina llega al Perú',
+    fondo: 'bg-azul-cielo',
+    textoAño: 'text-tinta',
+    tagClaro: true,
+    texto: 'El 2 de febrero desembarcan en el Perú las Hijas de la Caridad y los Padres Vicentinos. Con ellos comienza la presencia vicentina en el país, cuna de la futura JMV peruana.',
+    tag: '2 de febrero',
+  },
+  {
+    anio: '1999',
+    titulo: 'Nace la JMV internacional',
+    fondo: 'bg-tinta',
+    textoAño: 'text-papel',
+    tagClaro: false,
+    texto: 'El 2 de febrero la Santa Sede aprueba los Estatutos Internacionales y reconoce oficialmente el nombre de Juventud Mariana Vicentina. La asociación de 1830 se formaliza como movimiento internacional de jóvenes.',
+    tag: 'Formalización internacional',
+  },
+];
+---
+
+<section id="historia" class="scroll-mt-24 border-b-4 border-tinta bg-papel-sombra/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
+        Nuestra<br /><span class="text-azul">historia</span>
+      </h2>
+      <p class="max-w-sm border-4 border-tinta bg-papel px-5 py-4 text-sm leading-relaxed font-medium shadow-dura">
+        <strong class="font-display uppercase">1830 → 1999.</strong>
+        El origen histórico nace con las apariciones; la estructura internacional
+        actual se formaliza con los estatutos aprobados por la Santa Sede.
+      </p>
+    </div>
+
+    <ol class="relative mt-16 space-y-10 border-l-4 border-tinta pl-6 sm:pl-10 lg:space-y-14">
+      {
+        hitos.map((hito, i) => (
+          <li class="relative" data-reveal style={`--reveal-delay: ${i * 0.06}s`}>
+            <span class:list={[
+              'absolute top-6 -left-[calc(1.5rem+11px)] h-5 w-5 border-4 border-tinta sm:-left-[calc(2.5rem+11px)]',
+              hito.fondo,
+            ]} aria-hidden="true" />
+
+            <article class="card-brutal border-4 border-tinta bg-papel shadow-dura">
+              <div class:list={[
+                'flex flex-wrap items-center justify-between gap-3 border-b-4 border-tinta px-5 py-3 sm:px-7',
+                hito.fondo,
+              ]}>
+                <span class:list={['font-display text-4xl sm:text-5xl', hito.textoAño]}>
+                  {hito.anio}
+                </span>
+                <span class:list={[
+                  '-rotate-1 border-2 px-3 py-1 font-body text-[0.65rem] font-bold uppercase tracking-[0.18em]',
+                  hito.tagClaro
+                    ? 'border-tinta bg-papel text-tinta'
+                    : 'border-papel bg-transparent text-papel',
+                ]}>
+                  {hito.tag}
+                </span>
+              </div>
+              <div class="px-5 py-6 sm:px-7">
+                <h3 class="font-display text-xl uppercase sm:text-2xl">{hito.titulo}</h3>
+                <p class="mt-3 max-w-3xl leading-relaxed text-tinta/90">{hito.texto}</p>
+              </div>
+            </article>
+          </li>
+        ))
+      }
+
+      <li class="relative" data-reveal>
+        <span class="absolute top-6 -left-[calc(1.5rem+11px)] h-5 w-5 border-4 border-tinta bg-dorado-oscuro sm:-left-[calc(2.5rem+11px)]" aria-hidden="true"></span>
+        <article class="rayas-azules border-4 border-tinta p-1 shadow-dura">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-4 border-tinta bg-dorado px-5 py-6 sm:px-7">
+            <span class="font-display text-4xl uppercase text-tinta sm:text-5xl">Hoy</span>
+            <p class="max-w-md font-body font-bold text-tinta">
+              Presentes en <span class="font-display text-2xl">78 países</span> con más de
+              <span class="font-display text-2xl">+30 000 jóvenes</span> que viven el carisma
+              mariano y vicenciano.
+            </p>
+          </div>
+        </article>
+      </li>
+    </ol>
+  </div>
+</section>

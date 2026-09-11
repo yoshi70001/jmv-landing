@@ -1,0 +1,83 @@
+---
+const notas = [
+  {
+    num: '01',
+    nombre: 'Eclesial',
+    descripcion: 'Vive en comunión con la Iglesia: oración, sacramentos y vida de comunidad eclesial.',
+    fondo: 'bg-azul',
+    texto: 'text-papel',
+  },
+  {
+    num: '02',
+    nombre: 'Laical',
+    descripcion: 'Formada por laicos que buscan vivir su fe desde su realidad cotidiana: estudio, trabajo, familia.',
+    fondo: 'bg-papel',
+    texto: 'text-tinta',
+  },
+  {
+    num: '03',
+    nombre: 'Mariana',
+    descripcion: 'María es el modelo de vida y discipulado. De ella aprendemos a decir «sí» y a servir con alegría.',
+    fondo: 'bg-dorado',
+    texto: 'text-tinta',
+  },
+  {
+    num: '04',
+    nombre: 'Vicenciana',
+    descripcion: 'Sigue el carisma de San Vicente de Paúl: el servicio a los pobres como lugar de encuentro con Cristo.',
+    fondo: 'bg-azul-profundo',
+    texto: 'text-papel',
+  },
+];
+---
+
+<section id="identidad" class="scroll-mt-24 border-b-4 border-tinta bg-papel py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <p class="inline-block rotate-1 border-4 border-tinta bg-tinta px-4 py-1 font-display text-sm uppercase tracking-widest text-papel shadow-dura-sm">
+          Cuatro notas distintivas
+        </p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
+          Nuestra <span class="texto-contorno">identidad</span>
+        </h2>
+      </div>
+      <p class="max-w-sm text-lg leading-relaxed font-medium">
+        La identidad internacional de JUMAVI se resume en cuatro rasgos que nos definen.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2" data-reveal style="--reveal-delay: 0.1s">
+      {
+        notas.map((nota, i) => (
+          <article
+            class:list={[
+              'card-brutal border-4 border-tinta p-6 shadow-dura sm:p-8',
+              nota.fondo,
+              nota.texto,
+              i % 2 === 1 && 'sm:translate-y-6',
+            ]}
+            style={`--reveal-delay: ${0.1 + i * 0.06}s`}
+            data-reveal
+          >
+            <span class:list={[
+              'font-display text-6xl leading-none sm:text-7xl',
+              nota.texto === 'text-papel' ? 'text-dorado' : 'text-azul',
+            ]}>
+              {nota.num}
+            </span>
+            <h3 class="mt-4 font-display text-2xl uppercase tracking-wide sm:text-3xl">
+              {nota.nombre}
+            </h3>
+            <p class:list={[
+              'mt-3 max-w-md leading-relaxed',
+              nota.texto === 'text-papel' ? 'text-papel/90' : 'text-tinta/90',
+            ]}>
+              {nota.descripcion}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

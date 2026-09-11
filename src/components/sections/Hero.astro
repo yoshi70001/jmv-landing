@@ -1,0 +1,91 @@
+---
+const stats = [
+  { valor: '1830', etiqueta: 'Origen' },
+  { valor: '78', etiqueta: 'Países' },
+  { valor: '+30K', etiqueta: 'Jóvenes' },
+];
+
+const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
+---
+
+<section id="inicio" class="relative overflow-hidden border-b-4 border-tinta pt-28 sm:pt-32">
+  <!-- Rayas decorativas -->
+  <div class="rayas absolute top-24 -right-10 h-10 w-64 rotate-6 border-4 border-tinta max-sm:hidden" aria-hidden="true"></div>
+  <div class="absolute -top-6 -left-8 select-none font-display text-[clamp(6rem,22vw,20rem)] leading-none text-papel-sombra [writing-mode:vertical-rl]" aria-hidden="true">
+    JMV
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24">
+    <!-- Sello -->
+    <p class="inline-block -rotate-2 border-4 border-tinta bg-dorado px-4 py-1.5 font-display text-sm uppercase tracking-widest shadow-dura-sm sm:text-base" data-reveal>
+      Desde 1830 ✦ París
+    </p>
+
+    <h1
+      class="mt-8 font-display text-[clamp(3.8rem,15vw,12rem)] leading-[0.9] tracking-tight uppercase"
+      transition:name="titulo-jmv"
+      data-reveal
+      style="--reveal-delay: 0.08s"
+    >
+      <span class="block text-azul drop-shadow-[6px_6px_0_var(--color-tinta)]">Jumavi</span>
+      <span class="mt-2 block text-[clamp(1.1rem,3.4vw,2.6rem)] tracking-[0.18em] text-tinta">
+        Juventud Mariana Vicentina
+      </span>
+    </h1>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+      <p class="max-w-xl border-l-8 border-dorado pl-5 text-lg leading-relaxed font-medium sm:text-2xl" data-reveal style="--reveal-delay: 0.16s">
+        Vivir la fe, formarse, evangelizar y servir a los más necesitados,
+        siguiendo a <strong class="font-bold text-azul">María</strong> y el carisma de
+        <strong class="font-bold text-azul">San Vicente de Paúl</strong>.
+      </p>
+
+      <div class="flex flex-wrap gap-4" data-reveal style="--reveal-delay: 0.24s">
+        <a
+          href="#historia"
+          class="boton-brutal border-4 border-tinta bg-azul px-7 py-4 font-display text-sm uppercase text-papel shadow-dura sm:text-base"
+        >
+          Conócenos →
+        </a>
+        <a
+          href="#contacto"
+          class="boton-brutal border-4 border-tinta bg-dorado px-7 py-4 font-display text-sm uppercase text-tinta shadow-dura sm:text-base"
+        >
+          Únete ✦
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <dl class="mt-14 grid grid-cols-3 border-4 border-tinta bg-papel shadow-dura-lg" data-reveal style="--reveal-delay: 0.3s">
+      {
+        stats.map((stat, i) => (
+          <div class:list={['px-3 py-6 text-center sm:px-6 sm:py-8', i < stats.length - 1 && 'border-r-4 border-tinta']}>
+            <dt class="order-2 mt-2 block font-body text-[0.65rem] font-bold uppercase tracking-[0.2em] text-azul sm:text-xs">
+              {stat.etiqueta}
+            </dt>
+            <dd class="font-display text-3xl text-tinta sm:text-5xl lg:text-6xl">{stat.valor}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <!-- Cinta marquee -->
+  <div class="overflow-hidden border-t-4 border-tinta bg-tinta py-3" aria-hidden="true">
+    <div class="animate-marquee flex w-max">
+      {
+        [0, 1].map(() => (
+          <div class="flex shrink-0 items-center">
+            {lema.map((palabra) => (
+              <span class="flex items-center font-display text-lg uppercase tracking-widest text-papel sm:text-2xl">
+                <span class="px-6">{palabra}</span>
+                <span class="text-dorado">✦</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

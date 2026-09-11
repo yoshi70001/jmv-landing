@@ -1,0 +1,74 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'JUMAVI — Juventud Mariana Vicentina',
+  description = 'Asociación católica internacional de jóvenes: vivir la fe, formarse, evangelizar y servir a los más necesitados siguiendo a María y el carisma de San Vicente de Paúl. Desde 1830, presentes en 78 países.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="JUMAVI" />
+    <meta name="theme-color" content="#1e2f6b" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Juventud Mariana Vicentina',
+      alternateName: ['JMV', 'JUMAVI'],
+      foundingDate: '1830',
+      description:
+        'Asociación católica internacional juvenil y laical vinculada a la Familia Vicentina, fundada a partir de las apariciones de la Virgen María a Santa Catalina Labouré en 1830.',
+      symbol: 'Medalla Milagrosa',
+    })} />
+    <ClientRouter />
+  </head>
+  <body class="bg-papel font-body text-tinta antialiased">
+    <slot />
+
+    <script>
+      function iniciarReveals() {
+        const elementos = document.querySelectorAll('[data-reveal]:not(.revelado)');
+        if (elementos.length === 0) return;
+
+        const observer = new IntersectionObserver(
+          (entradas) => {
+            for (const entrada of entradas) {
+              if (entrada.isIntersecting) {
+                entrada.target.classList.add('revelado');
+                observer.unobserve(entrada.target);
+              }
+            }
+          },
+          { threshold: 0.12 }
+        );
+
+        elementos.forEach((el) => observer.observe(el));
+      }
+
+      document.addEventListener('astro:page-load', iniciarReveals);
+    </script>
+  </body>
+</html>
