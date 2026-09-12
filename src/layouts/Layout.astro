@@ -3,6 +3,9 @@ import { ClientRouter } from 'astro:transitions';
 import '@fontsource/archivo-black';
 import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaMovil from '../components/CtaMovil.astro';
 
 interface Props {
   title?: string;
@@ -93,7 +96,12 @@ const sitioWeb = {
     <ClientRouter />
   </head>
   <body class="bg-papel font-body text-tinta antialiased">
-    <slot />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <CtaMovil />
 
     <script>
       function iniciarReveals() {
