@@ -9,8 +9,12 @@ interface Props {
 
 const {
   title = 'JUMAVI — Juventud Mariana Vicentina',
-  description = 'Asociación católica internacional de jóvenes: vivir la fe, formarse, evangelizar y servir a los más necesitados siguiendo a María y el carisma de San Vicente de Paúl. Desde 1830, presentes en 78 países.',
+  description =
+    '¿Entre 15 y 35 años? Vive tu fe sin dejar de ser tú: comunidad, formación y servicio con la Juventud Mariana Vicentina. Desde 1830, en 78 países y con más de 30 000 jóvenes.',
 } = Astro.props;
+
+const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+const imagen = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
 ---
 
 <!doctype html>
@@ -26,6 +30,17 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="JUMAVI" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={imagen} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JUMAVI — Juventud Mariana Vicentina, para jóvenes de 15 a 35. Desde 1830, en 78 países." />
+    <meta property="og:locale" content="es_PE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagen} />
+    <link rel="canonical" href={url} />
     <meta name="theme-color" content="#1e2f6b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

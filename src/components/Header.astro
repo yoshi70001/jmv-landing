@@ -4,6 +4,7 @@ const enlaces = [
   { href: '#historia', texto: 'Historia' },
   { href: '#identidad', texto: 'Identidad' },
   { href: '#peru', texto: 'Perú' },
+  { href: '#voces', texto: 'Voces' },
   { href: '#contacto', texto: 'Contacto' },
 ];
 ---
@@ -24,14 +25,15 @@ const enlaces = [
       </span>
     </a>
 
-    <nav aria-label="Navegación principal" class="flex items-stretch">
-      <ul class="flex items-stretch overflow-x-auto">
+    <!-- Nav escritorio -->
+    <nav aria-label="Navegación principal" class="hidden items-stretch lg:flex">
+      <ul class="flex items-stretch">
         {
           enlaces.map((enlace) => (
             <li class="flex">
               <a
                 href={enlace.href}
-                class="flex items-center border-l-4 border-tinta px-3 font-body text-xs font-bold uppercase tracking-widest transition-colors hover:bg-dorado sm:px-5 sm:text-sm"
+                class="flex items-center border-l-4 border-tinta px-5 font-body text-sm font-bold uppercase tracking-widest transition-colors hover:bg-dorado"
               >
                 {enlace.texto}
               </a>
@@ -40,5 +42,127 @@ const enlaces = [
         }
       </ul>
     </nav>
+
+    <!-- Botón hamburguesa (móvil) -->
+    <button
+      id="boton-menu"
+      type="button"
+      class="flex min-h-[44px] min-w-[44px] items-center justify-center border-l-4 border-tinta bg-dorado px-4 text-tinta lg:hidden"
+      aria-expanded="false"
+      aria-controls="panel-menu"
+      aria-label="Abrir menú"
+    >
+      <span class="barra-menu relative block h-5 w-7" aria-hidden="true">
+        <span class="barra absolute left-0 block h-[3px] w-full bg-tinta"></span>
+        <span class="barra absolute left-0 block h-[3px] w-full bg-tinta"></span>
+        <span class="barra absolute left-0 block h-[3px] w-full bg-tinta"></span>
+      </span>
+    </button>
   </div>
 </header>
+
+<!-- Panel de menú (móvil) -->
+<div
+  id="panel-menu"
+  hidden
+  class="fixed inset-0 z-40 overflow-y-auto bg-azul-profundo pt-[73px]"
+>
+  <nav aria-label="Navegación móvil">
+    <ul class="flex min-h-full flex-col">
+      {
+        enlaces.map((enlace) => (
+          <li>
+            <a
+              href={enlace.href}
+              class="flex items-center justify-between border-b-4 border-papel/20 px-6 py-5 font-display text-3xl uppercase text-papel transition-colors hover:bg-azul hover:text-dorado active:bg-azul"
+            >
+              {enlace.texto}
+              <span class="text-xl text-dorado" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+      <li class="mt-auto">
+        <a
+          href="https://wa.me/51999999999"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block border-t-4 border-tinta bg-dorado px-6 py-6 font-display text-xl uppercase text-tinta"
+        >
+          Hablemos por WhatsApp ✦
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<script>
+  let tecladoConectado = false;
+
+  function alternarMenu(boton: Element, panel: Element, abierto: boolean) {
+    boton.setAttribute('aria-expanded', String(abierto));
+    boton.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+    panel.toggleAttribute('hidden', !abierto);
+    document.body.classList.toggle('overflow-hidden', abierto);
+    boton.querySelector('.barra-menu')?.classList.toggle('menu-abierto', abierto);
+  }
+
+  function conectarMenu() {
+    const boton = document.getElementById('boton-menu');
+    const panel = document.getElementById('panel-menu');
+    if (!boton || !panel) return;
+
+    boton.onclick = () => {
+      alternarMenu(boton, panel, boton.getAttribute('aria-expanded') !== 'true');
+    };
+
+    panel.querySelectorAll('a').forEach((enlace) => {
+      enlace.addEventListener('click', () => alternarMenu(boton, panel, false));
+    });
+
+    if (!tecladoConectado) {
+      tecladoConectado = true;
+      document.addEventListener('keydown', (evento) => {
+        const b = document.getElementById('boton-menu');
+        const p = document.getElementById('panel-menu');
+        if (evento.key === 'Escape' && b && p && b.getAttribute('aria-expanded') === 'true') {
+          alternarMenu(b, p, false);
+        }
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', conectarMenu);
+</script>
+
+<style>
+  .barra:nth-child(1) {
+    top: 0;
+  }
+
+  .barra:nth-child(2) {
+    top: 8px;
+  }
+
+  .barra:nth-child(3) {
+    top: 16px;
+  }
+
+  .barra {
+    transition:
+      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.15s ease;
+  }
+
+  .menu-abierto .barra:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .menu-abierto .barra:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-abierto .barra:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+</style>

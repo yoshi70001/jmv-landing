@@ -1,0 +1,76 @@
+---
+const voces = [
+  {
+    quote: 'Llegué por una amiga y me quedé por la gente. Aquí encontré amigos que me empujan a ser mejor.',
+    nombre: '[Nombre]',
+    detalle: '17 años · [Parroquia]',
+    fondo: 'bg-azul',
+    texto: 'text-papel',
+    autor: 'text-dorado',
+  },
+  {
+    quote: 'Pensaba que la fe era aburrida. Después serví en una obra vicenciana y cambió todo.',
+    nombre: '[Nombre]',
+    detalle: '21 años · [Colegio vicentino]',
+    fondo: 'bg-dorado',
+    texto: 'text-tinta',
+    autor: 'text-azul',
+  },
+  {
+    quote: 'Ser JUMAVI es tener una segunda familia que celebra contigo y te acompaña cuando cuesta.',
+    nombre: '[Nombre]',
+    detalle: '24 años · [Ciudad]',
+    fondo: 'bg-papel',
+    texto: 'text-tinta',
+    autor: 'text-azul',
+  },
+];
+---
+
+<section id="voces" class="scroll-mt-24 border-b-4 border-tinta bg-papel py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <p class="inline-block -rotate-1 border-4 border-tinta bg-azul px-4 py-1 font-display text-sm uppercase tracking-widest text-papel shadow-dura-sm">
+          En sus propias palabras
+        </p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
+          Voces <span class="text-azul">JUMAVI</span>
+        </h2>
+      </div>
+      <p class="max-w-sm text-lg leading-relaxed font-medium">
+        Jóvenes reales, historias reales. La nuestra empieza igual: alguien te invita.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-3" data-reveal style="--reveal-delay: 0.1s">
+      {
+        voces.map((voz, i) => (
+          <figure
+            class:list={[
+              'card-brutal flex flex-col justify-between gap-8 border-4 border-tinta p-6 shadow-dura sm:p-7',
+              voz.fondo,
+              voz.texto,
+              i === 1 && 'md:-translate-y-4',
+            ]}
+            style={`--reveal-delay: ${0.1 + i * 0.08}s`}
+            data-reveal
+          >
+            <blockquote>
+              <span class:list={['block font-display text-5xl leading-none', voz.autor]} aria-hidden="true">
+                «
+              </span>
+              <p class="mt-2 text-lg leading-relaxed font-medium">{voz.quote}</p>
+            </blockquote>
+            <figcaption class:list={['border-t-2 pt-4 font-body text-sm font-bold uppercase tracking-widest', voz.texto === 'text-papel' ? 'border-papel/30' : 'border-tinta/20']}>
+              {voz.nombre}
+              <span class:list={['mt-0.5 block text-xs font-medium normal-case tracking-normal', voz.texto === 'text-papel' ? 'text-papel/80' : 'text-tinta/70']}>
+                {voz.detalle}
+              </span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
