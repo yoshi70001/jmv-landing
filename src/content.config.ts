@@ -14,4 +14,16 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const formacion = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/formacion' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    tema: z.enum(['mariana', 'vicenciana', 'eclesial', 'laical', 'general']),
+    autor: z.string().default('Equipo de Formación JMV'),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, formacion };

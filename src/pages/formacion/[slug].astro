@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { fechaLarga } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const temas = await getCollection('formacion', ({ data }) => !data.draft);
+  return temas.map((tema) => ({
+    params: { slug: tema.id },
+    props: { tema },
+  }));
+}
+
+const { tema } = Astro.props;
+const { Content } = await render(tema);
+
+const urlTema = `https://jumavi.org/formacion/${tema.id}/`;
+
+const coloresTema: Record<string, string> = {
+  mariana: 'bg-azul',
+  vicenciana: 'bg-azul-profundo',
+  eclesial: 'bg-azul-cielo',
+  laical: 'bg-dorado',
+  general: 'bg-papel',
+};
+
+const articulo = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': `${urlTema}#articulo`,
+  headline: tema.data.title,
+  description: tema.data.description,
+  image: 'https://jumavi.org/og.png',
+  url: urlTema,
+  mainEntityOfPage: urlTema,
+  inLanguage: 'es-PE',
+  datePublished: tema.data.pubDate.toISOString(),
+  author: { '@type': 'Person', name: tema.data.autor },
+  publisher: { '@id': 'https://jumavi.org/#organizacion' },
+  isPartOf: { '@id': 'https://jumavi.org/formacion/#formacion' },
+  articleSection: tema.data.tema,
+  keywords: `formación JMV, ${tema.data.tema}, JUMAVI`,
+};
+
+const migas = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://jumavi.org/' },
+    { '@type': 'ListItem', position: 2, name: 'Formación', item: 'https://jumavi.org/formacion/' },
+    { '@type': 'ListItem', position: 3, name: tema.data.title },
+  ],
+};
+---
+
+<Layout title={`${tema.data.title} | Formación JMV`} description={tema.data.description}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articulo)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
+
+  <article class="bg-papel pt-24 sm:pt-28">
+    <header class="border-b-4 border-tinta bg-azul-profundo py-12 sm:py-16">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <a
+          href="/formacion"
+          class="inline-block border-b-2 border-dorado font-body text-xs font-bold uppercase tracking-widest text-dorado transition-colors hover:text-papel"
+        >
+          ← Formación
+        </a>
+
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          <span class:list={[
+            'border-2 border-papel px-3 py-0.5 font-display text-xs uppercase tracking-[0.2em]',
+            coloresTema[tema.data.tema] === 'bg-dorado' || coloresTema[tema.data.tema] === 'bg-azul-cielo'
+              ? 'bg-dorado text-tinta'
+              : 'bg-azul text-papel',
+          ]}>
+            {tema.data.tema}
+          </span>
+        </div>
+
+        <h1
+          class="mt-5 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.05] uppercase text-papel"
+          transition:name={`formacion-${tema.id}`}
+        >
+          {tema.data.title}
+        </h1>
+
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-azul-cielo">
+          <time datetime={tema.data.pubDate.toISOString()}>{fechaLarga(tema.data.pubDate)}</time>
+          <span class="mx-2 text-dorado">✦</span>
+          {tema.data.autor}
+        </p>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+      <div class="prose-brutal">
+        <Content />
+      </div>
+
+      <div class="mt-14 border-4 border-tinta bg-dorado p-6 shadow-dura sm:p-8">
+        <p class="font-display text-xl uppercase text-tinta sm:text-2xl">¿Quieres aprender con nosotros?</p>
+        <p class="mt-2 font-body font-medium text-tinta/90">
+          Estos temas se viven en los encuentros semanales de la JMV — la formación
+          se disfruta mejor en comunidad.
+        </p>
+        <a
+          href="/#contacto"
+          class="boton-brutal mt-5 inline-block border-4 border-tinta bg-azul px-6 py-3 font-display text-sm uppercase text-papel shadow-dura"
+        >
+          Únete a JUMAVI →
+        </a>
+      </div>
+
+      <a
+        href="/formacion"
+        class="mt-10 inline-block border-b-2 border-azul font-body text-sm font-bold uppercase tracking-widest text-azul transition-colors hover:text-tinta"
+      >
+        ← Todos los temas
+      </a>
+    </div>
+  </article>
+</Layout>

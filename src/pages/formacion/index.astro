@@ -1,0 +1,160 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { fechaLarga } from '../../lib/utils';
+
+const temas = (await getCollection('formacion', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const todosLosTemas = [...new Set(temas.map((t) => t.data.tema))];
+
+const estilosTema: Record<string, { fondo: string; texto: string }> = {
+  mariana: { fondo: 'bg-azul', texto: 'text-papel' },
+  vicenciana: { fondo: 'bg-azul-profundo', texto: 'text-papel' },
+  eclesial: { fondo: 'bg-azul-cielo', texto: 'text-tinta' },
+  laical: { fondo: 'bg-dorado', texto: 'text-tinta' },
+  general: { fondo: 'bg-papel', texto: 'text-tinta' },
+};
+---
+
+<Layout
+  title="Formación JMV | Temas de formación JUMAVI — Juventud Mariana Vicentina"
+  description="Temas de formación de la JMV (JUMAVI) semana a semana: espiritualidad mariana, carisma vicenciano, vida eclesial y laical. Lo que aprendemos, registrado para ti."
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://jumavi.org/formacion/#formacion',
+    name: 'Formación JMV',
+    url: 'https://jumavi.org/formacion/',
+    inLanguage: 'es-PE',
+    description: 'Temas de formación de la Juventud Mariana Vicentina (JMV): mariana, vicenciana, eclesial y laical.',
+    isPartOf: { '@id': 'https://jumavi.org/#sitio' },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: temas.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `https://jumavi.org/formacion/${t.id}/`,
+        name: t.data.title,
+      })),
+    },
+  })} />
+
+  <section class="border-b-4 border-tinta bg-azul-profundo pt-28 pb-14 sm:pt-32 sm:pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <p class="inline-block rotate-1 border-4 border-papel bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta">
+        Lo que aprendemos semana a semana
+      </p>
+      <h1 class="mt-6 font-display text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] uppercase text-papel">
+        Forma<span class="text-dorado">ción</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-lg leading-relaxed font-medium text-papel/90">
+        Los temas que desarrollamos en los encuentros de la JMV, organizados por
+        nuestros cuatro pilares: mariana, vicenciana, eclesial y laical.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-papel py-14 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <!-- Filtro por tema -->
+      <div class="mb-10 flex flex-wrap gap-3" role="group" aria-label="Filtrar por tema">
+        <button
+          type="button"
+          data-filtro-tema="todos"
+          aria-pressed="true"
+          class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+        >
+          Todos
+        </button>
+        {
+          todosLosTemas.map((tema) => (
+            <button
+              type="button"
+              data-filtro-tema={tema}
+              aria-pressed="false"
+              class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+            >
+              {tema}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          temas.map((tema, i) => {
+            const estilo = estilosTema[tema.data.tema] ?? estilosTema.general;
+            return (
+              <article
+                data-post-tema={tema.data.tema}
+                class="card-brutal flex flex-col border-4 border-tinta bg-papel shadow-dura"
+                style={`--reveal-delay: ${(i % 3) * 0.06}s`}
+                data-reveal
+              >
+                <a href={`/formacion/${tema.id}`} class="flex grow flex-col">
+                  <div class:list={[
+                    'flex items-center justify-between gap-3 border-b-4 border-tinta px-5 py-3',
+                    estilo.fondo,
+                    estilo.texto,
+                  ]}>
+                    <span class="font-display text-xs uppercase tracking-[0.2em]">
+                      {tema.data.tema}
+                    </span>
+                    <time datetime={tema.data.pubDate.toISOString()} class="font-body text-xs font-bold">
+                      {fechaLarga(tema.data.pubDate)}
+                    </time>
+                  </div>
+                  <div class="flex grow flex-col p-5 sm:p-6">
+                    <h2 class="font-display text-xl leading-tight uppercase sm:text-2xl">
+                      {tema.data.title}
+                    </h2>
+                    <p class="mt-3 grow text-sm leading-relaxed text-tinta/90">
+                      {tema.data.description}
+                    </p>
+                    <span class="mt-5 border-b-2 border-azul self-start font-body text-xs font-bold uppercase tracking-widest text-azul">
+                      Leer tema →
+                    </span>
+                  </div>
+                </a>
+              </article>
+            );
+          })
+        }
+      </div>
+
+      <p id="formacion-vacio" hidden class="border-4 border-dashed border-tinta/40 p-10 text-center font-body font-bold uppercase tracking-widest text-tinta/60">
+        No hay temas con esa etiqueta (todavía).
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function conectarFiltroTema() {
+    const botones = document.querySelectorAll('[data-filtro-tema]');
+    const tarjetas = document.querySelectorAll('[data-post-tema]');
+    const vacio = document.getElementById('formacion-vacio');
+    if (botones.length === 0) return;
+
+    botones.forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const tema = boton.getAttribute('data-filtro-tema');
+        botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+
+        let visibles = 0;
+        tarjetas.forEach((tarjeta) => {
+          const mostrar = !tema || tema === 'todos' || tarjeta.getAttribute('data-post-tema') === tema;
+          tarjeta.toggleAttribute('hidden', !mostrar);
+          if (mostrar) visibles++;
+        });
+
+        vacio?.toggleAttribute('hidden', visibles > 0);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', conectarFiltroTema);
+</script>
