@@ -1,18 +1,19 @@
 ---
 const enlaces = [
-  { href: '#inicio', texto: 'Inicio' },
-  { href: '#historia', texto: 'Historia' },
-  { href: '#identidad', texto: 'Identidad' },
-  { href: '#peru', texto: 'Perú' },
-  { href: '#voces', texto: 'Voces' },
-  { href: '#contacto', texto: 'Contacto' },
+  { href: '/#inicio', texto: 'Inicio' },
+  { href: '/#historia', texto: 'Historia' },
+  { href: '/#identidad', texto: 'Identidad' },
+  { href: '/#peru', texto: 'Perú' },
+  { href: '/#voces', texto: 'Voces' },
+  { href: '/blog', texto: 'Blog' },
+  { href: '/#contacto', texto: 'Contacto' },
 ];
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 border-b-4 border-tinta bg-papel">
   <div class="mx-auto flex max-w-7xl items-stretch justify-between">
     <a
-      href="#inicio"
+      href="/"
       transition:name="logo-jmv"
       class="flex items-center gap-3 border-r-4 border-tinta bg-azul px-4 py-3 text-papel sm:px-6"
       aria-label="JUMAVI — ir al inicio"

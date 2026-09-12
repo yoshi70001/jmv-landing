@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import { fechaLarga } from '../../lib/utils';
+
+const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<section id="bitacora" class="scroll-mt-24 border-b-4 border-tinta bg-papel-sombra/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <p class="inline-block rotate-1 border-4 border-tinta bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta shadow-dura-sm">
+          Crónicas de actividad
+        </p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
+          Bitá<span class="texto-contorno">cora</span>
+        </h2>
+      </div>
+      <a
+        href="/blog"
+        class="boton-brutal border-4 border-tinta bg-azul px-6 py-3.5 font-display text-sm uppercase text-papel shadow-dura sm:text-base"
+      >
+        Ver todas →
+      </a>
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-3">
+      {
+        ultimas.map((entrada, i) => (
+          <article
+            class="card-brutal flex flex-col border-4 border-tinta bg-papel shadow-dura"
+            style={`--reveal-delay: ${i * 0.08}s`}
+            data-reveal
+          >
+            <a href={`/blog/${entrada.id}`} class="flex grow flex-col">
+              <div class="flex items-center justify-between gap-3 border-b-4 border-tinta bg-azul px-5 py-3">
+                <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-papel">
+                  {fechaLarga(entrada.data.pubDate)}
+                </time>
+                <span class="font-display text-xl text-dorado" aria-hidden="true">✦</span>
+              </div>
+              <div class="flex grow flex-col p-5 sm:p-6">
+                <h3 class="font-display text-xl leading-tight uppercase">{entrada.data.title}</h3>
+                <p class="mt-3 grow text-sm leading-relaxed text-tinta/90">{entrada.data.description}</p>
+                <span class="mt-5 border-b-2 border-azul self-start font-body text-xs font-bold uppercase tracking-widest text-azul">
+                  Leer crónica →
+                </span>
+              </div>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,131 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { fechaLarga } from '../../lib/utils';
+
+const entradas = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
+---
+
+<Layout
+  title="Bitácora — Blog JUMAVI"
+  description="Crónicas de actividades JUMAVI: encuentros semanales, jornadas de servicio, retiros y formación. Una crónica por cada semana de actividad."
+>
+  <section class="border-b-4 border-tinta bg-azul-profundo pt-28 pb-14 sm:pt-32 sm:pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <p class="inline-block -rotate-1 border-4 border-papel bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta">
+        Crónicas de actividad
+      </p>
+      <h1 class="mt-6 font-display text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] uppercase text-papel">
+        Bitá<span class="text-dorado">cora</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-lg leading-relaxed font-medium text-papel/90">
+        Lo que hicimos, lo que aprendimos y lo que se viene. Una crónica por cada
+        semana o mes de actividad.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-papel py-14 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <!-- Filtro de tags -->
+      <div class="mb-10 flex flex-wrap gap-3" role="group" aria-label="Filtrar por etiqueta">
+        <button
+          type="button"
+          data-filtro-tag="todas"
+          aria-pressed="true"
+          class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+        >
+          Todas
+        </button>
+        {
+          todasLasTags.map((tag) => (
+            <button
+              type="button"
+              data-filtro-tag={tag}
+              aria-pressed="false"
+              class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+            >
+              {tag}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          entradas.map((entrada, i) => (
+            <article
+              data-post-tags={entrada.data.tags.join(',')}
+              class="card-brutal flex flex-col border-4 border-tinta bg-papel shadow-dura"
+              style={`--reveal-delay: ${(i % 3) * 0.06}s`}
+              data-reveal
+            >
+              <a href={`/blog/${entrada.id}`} class="flex grow flex-col">
+                <div class="flex items-center justify-between gap-3 border-b-4 border-tinta bg-azul px-5 py-3">
+                  <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-papel">
+                    {fechaLarga(entrada.data.pubDate)}
+                  </time>
+                  <span class="font-display text-xl text-dorado" aria-hidden="true">✦</span>
+                </div>
+                <div class="flex grow flex-col p-5 sm:p-6">
+                  <h2 class="font-display text-xl leading-tight uppercase sm:text-2xl">
+                    {entrada.data.title}
+                  </h2>
+                  <p class="mt-3 grow text-sm leading-relaxed text-tinta/90">
+                    {entrada.data.description}
+                  </p>
+                  <div class="mt-5 flex flex-wrap items-center gap-2">
+                    {entrada.data.tags.map((tag) => (
+                      <span class="border-2 border-tinta bg-dorado px-2 py-0.5 font-body text-[0.65rem] font-bold uppercase tracking-widest text-tinta">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span class="mt-4 border-b-2 border-azul font-body text-xs font-bold uppercase tracking-widest text-azul">
+                    Leer crónica →
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <p id="blog-vacio" hidden class="border-4 border-dashed border-tinta/40 p-10 text-center font-body font-bold uppercase tracking-widest text-tinta/60">
+        No hay crónicas con esa etiqueta (todavía).
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function conectarFiltro() {
+    const botones = document.querySelectorAll('[data-filtro-tag]');
+    const tarjetas = document.querySelectorAll('[data-post-tags]');
+    const vacio = document.getElementById('blog-vacio');
+    if (botones.length === 0) return;
+
+    botones.forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const tag = boton.getAttribute('data-filtro-tag');
+        botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+
+        let visibles = 0;
+        tarjetas.forEach((tarjeta) => {
+          const tags = (tarjeta.getAttribute('data-post-tags') || '').split(',');
+          const mostrar = !tag || tag === 'todas' || tags.includes(tag);
+          tarjeta.toggleAttribute('hidden', !mostrar);
+          if (mostrar) visibles++;
+        });
+
+        vacio?.toggleAttribute('hidden', visibles > 0);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', conectarFiltro);
+</script>

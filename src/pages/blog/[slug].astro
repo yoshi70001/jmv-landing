@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { fechaLarga } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const entradas = await getCollection('blog', ({ data }) => !data.draft);
+  return entradas.map((entrada) => ({
+    params: { slug: entrada.id },
+    props: { entrada },
+  }));
+}
+
+const { entrada } = Astro.props;
+const { Content } = await render(entrada);
+---
+
+<Layout title={`${entrada.data.title} — Bitácora JUMAVI`} description={entrada.data.description}>
+  <article class="bg-papel pt-24 sm:pt-28">
+    <header class="border-b-4 border-tinta bg-azul-profundo py-12 sm:py-16">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <a
+          href="/blog"
+          class="inline-block border-b-2 border-dorado font-body text-xs font-bold uppercase tracking-widest text-dorado transition-colors hover:text-papel"
+        >
+          ← Bitácora
+        </a>
+
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          {
+            entrada.data.tags.map((tag) => (
+              <span class="border-2 border-papel bg-transparent px-2 py-0.5 font-body text-[0.65rem] font-bold uppercase tracking-widest text-papel">
+                {tag}
+              </span>
+            ))
+          }
+        </div>
+
+        <h1
+          class="mt-5 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.05] uppercase text-papel"
+          transition:name={`post-${entrada.id}`}
+        >
+          {entrada.data.title}
+        </h1>
+
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-azul-cielo">
+          <time datetime={entrada.data.pubDate.toISOString()}>{fechaLarga(entrada.data.pubDate)}</time>
+          <span class="mx-2 text-dorado">✦</span>
+          {entrada.data.author}
+        </p>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+      <div class="prose-brutal">
+        <Content />
+      </div>
+
+      <div class="mt-14 border-4 border-tinta bg-dorado p-6 shadow-dura sm:p-8">
+        <p class="font-display text-xl uppercase text-tinta sm:text-2xl">¿Quieres vivir esto?</p>
+        <p class="mt-2 font-body font-medium text-tinta/90">
+          No necesitas ser perfecto ni saberlo todo — solo ganas de caminar.
+        </p>
+        <a
+          href="/#contacto"
+          class="boton-brutal mt-5 inline-block border-4 border-tinta bg-azul px-6 py-3 font-display text-sm uppercase text-papel shadow-dura"
+        >
+          Únete a JUMAVI →
+        </a>
+      </div>
+
+      <a
+        href="/blog"
+        class="mt-10 inline-block border-b-2 border-azul font-body text-sm font-bold uppercase tracking-widest text-azul transition-colors hover:text-tinta"
+      >
+        ← Todas las crónicas
+      </a>
+    </div>
+  </article>
+</Layout>
