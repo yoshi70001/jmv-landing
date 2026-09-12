@@ -67,6 +67,11 @@ html {
   color: transparent;
 }
 
+/* Tratamiento B/N para obras de dominio público */
+.filtro-bn {
+  filter: grayscale(100%) contrast(1.08);
+}
+
 .texto-contorno-papel {
   -webkit-text-stroke: 2px var(--color-papel);
   color: transparent;

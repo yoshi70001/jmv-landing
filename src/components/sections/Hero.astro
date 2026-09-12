@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import medallaMilagrosa from '../../assets/medalla-milagrosa.jpg';
+
 const stats = [
   { valor: '1830', etiqueta: 'Origen' },
   { valor: '78', etiqueta: 'Países' },
@@ -39,21 +42,38 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
         formarte, evangelizar y servir a los más necesitados, siguiendo a <strong class="font-bold text-azul">María</strong> y el carisma de <strong class="font-bold text-azul">San Vicente de Paúl</strong>. Aquí nadie camina solo.
       </p>
 
-      <div class="flex flex-wrap gap-4" data-reveal style="--reveal-delay: 0.24s">
-        <a
-          href="#historia"
-          class="boton-brutal border-4 border-tinta bg-azul px-7 py-4 font-display text-sm uppercase text-papel shadow-dura sm:text-base"
-        >
-          Quiero conocerlos →
-        </a>
-        <a
-          href="https://wa.me/51999999999"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="boton-brutal border-4 border-tinta bg-dorado px-7 py-4 font-display text-sm uppercase text-tinta shadow-dura sm:text-base"
-        >
-          Hablemos ✦
-        </a>
+      <div class="flex flex-col gap-8" data-reveal style="--reveal-delay: 0.24s">
+        <!-- Medalla Milagrosa — Wikimedia Commons, File:Miraculous medal (3).jpg, CC0 -->
+        <figure class="-rotate-2 border-4 border-tinta bg-papel shadow-dura" style="width: min(100%, 340px)">
+          <Image
+            src={medallaMilagrosa}
+            alt="Medalla Milagrosa antigua: anverso con la Virgen María con los brazos abiertos y reverso con la M, la cruz y los corazones"
+            widths={[400, 800]}
+            sizes="(min-width: 1024px) 340px, 90vw"
+            class="filtro-bn"
+            loading="eager"
+          />
+          <figcaption class="border-t-4 border-tinta bg-dorado px-3 py-1.5 font-display text-xs uppercase tracking-widest text-tinta">
+            Medalla Milagrosa ✦ 1832
+          </figcaption>
+        </figure>
+
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="#historia"
+            class="boton-brutal border-4 border-tinta bg-azul px-7 py-4 font-display text-sm uppercase text-papel shadow-dura sm:text-base"
+          >
+            Quiero conocerlos →
+          </a>
+          <a
+            href="https://wa.me/51999999999"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="boton-brutal border-4 border-tinta bg-dorado px-7 py-4 font-display text-sm uppercase text-tinta shadow-dura sm:text-base"
+          >
+            Hablemos ✦
+          </a>
+        </div>
       </div>
     </div>
 
