@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="404 — Página no encontrada | JUMAVI"
+  description="La página que buscas no existe en el sitio de JUMAVI (Juventud Mariana Vicentina). Vuelve al inicio o visita la Bitácora."
+>
+  <section class="flex min-h-screen flex-col items-center justify-center border-b-4 border-tinta bg-azul-profundo px-4 py-24 text-center">
+    <p class="inline-block -rotate-2 border-4 border-papel bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta">
+      Error 404
+    </p>
+    <h1 class="mt-6 font-display text-[clamp(4rem,18vw,12rem)] leading-none text-papel drop-shadow-[6px_6px_0_var(--color-tinta)]">
+      404
+    </h1>
+    <p class="mt-4 max-w-md text-lg leading-relaxed font-medium text-papel/90">
+      Esta página no existe — pero en la JMV ninguna puerta se cierra del todo.
+    </p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a
+        href="/"
+        class="boton-brutal border-4 border-tinta bg-dorado px-7 py-4 font-display text-sm uppercase text-tinta shadow-dura sm:text-base"
+      >
+        ← Volver al inicio
+      </a>
+      <a
+        href="/blog"
+        class="boton-brutal border-4 border-papel bg-azul px-7 py-4 font-display text-sm uppercase text-papel sm:text-base"
+      >
+        Ir a la Bitácora ✦
+      </a>
+    </div>
+  </section>
+</Layout>

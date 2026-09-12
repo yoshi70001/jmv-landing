@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import '@fontsource/archivo-black';
+import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 
 interface Props {
@@ -8,24 +10,65 @@ interface Props {
 }
 
 const {
-  title = 'JUMAVI — Juventud Mariana Vicentina',
+  title = 'JUMAVI — Juventud Mariana Vicentina (JMV) | Jóvenes católicos en Perú',
   description =
-    '¿Entre 15 y 35 años? Vive tu fe sin dejar de ser tú: comunidad, formación y servicio con la Juventud Mariana Vicentina. Desde 1830, en 78 países y con más de 30 000 jóvenes.',
+    '¿Entre 15 y 35 años? Vive tu fe sin dejar de ser tú con la JMV (JUMAVI), Juventud Mariana Vicentina: comunidad, formación y servicio. Desde 1830, en 78 países.',
 } = Astro.props;
 
 const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 const imagen = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
+
+const organizacion = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://jumavi.org/#organizacion',
+  name: 'Juventud Mariana Vicentina',
+  alternateName: ['JMV', 'JUMAVI'],
+  url: 'https://jumavi.org/',
+  logo: 'https://jumavi.org/apple-touch-icon.png',
+  image: imagen,
+  description:
+    'Asociación católica internacional juvenil y laical vinculada a la Familia Vicentina. La JMV vive la fe, se forma, evangeliza y sirve a los más necesitados siguiendo a María y el carisma de San Vicente de Paúl.',
+  slogan: 'Vivir la fe sin dejar de ser tú.',
+  foundingDate: '1830',
+  foundingLocation: {
+    '@type': 'Place',
+    name: 'París, Francia',
+  },
+  areaServed: '78 países, incluido el Perú',
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'Familia Vicentina',
+  },
+  symbol: 'Medalla Milagrosa',
+  sameAs: ['https://instagram.com/jmv_peru', 'https://facebook.com/jmv'],
+};
+
+const sitioWeb = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://jumavi.org/#sitio',
+  url: 'https://jumavi.org/',
+  name: 'JUMAVI — Juventud Mariana Vicentina',
+  alternateName: 'JMV',
+  inLanguage: 'es-PE',
+  publisher: { '@id': 'https://jumavi.org/#organizacion' },
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es-PE">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="alternate" type="application/rss+xml" title="Bitácora JUMAVI" href="/rss.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -34,7 +77,10 @@ const imagen = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
     <meta property="og:image" content={imagen} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="JUMAVI — Juventud Mariana Vicentina, para jóvenes de 15 a 35. Desde 1830, en 78 países." />
+    <meta
+      property="og:image:alt"
+      content="JUMAVI — Juventud Mariana Vicentina, para jóvenes de 15 a 35. Desde 1830, en 78 países."
+    />
     <meta property="og:locale" content="es_PE" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -42,22 +88,8 @@ const imagen = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
     <meta name="twitter:image" content={imagen} />
     <link rel="canonical" href={url} />
     <meta name="theme-color" content="#1e2f6b" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'Juventud Mariana Vicentina',
-      alternateName: ['JMV', 'JUMAVI'],
-      foundingDate: '1830',
-      description:
-        'Asociación católica internacional juvenil y laical vinculada a la Familia Vicentina, fundada a partir de las apariciones de la Virgen María a Santa Catalina Labouré en 1830.',
-      symbol: 'Medalla Milagrosa',
-    })} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizacion)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(sitioWeb)} />
     <ClientRouter />
   </head>
   <body class="bg-papel font-body text-tinta antialiased">

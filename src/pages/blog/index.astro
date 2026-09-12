@@ -11,9 +11,25 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
 ---
 
 <Layout
-  title="Bitácora — Blog JUMAVI"
-  description="Crónicas de actividades JUMAVI: encuentros semanales, jornadas de servicio, retiros y formación. Una crónica por cada semana de actividad."
+  title="Bitácora JUMAVI | Blog de la JMV — Juventud Mariana Vicentina"
+  description="Crónicas de actividades de la JMV (JUMAVI): encuentros semanales, jornadas de servicio, retiros y formación. Una crónica por cada semana de actividad."
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': 'https://jumavi.org/blog/#blog',
+    name: 'Bitácora JUMAVI',
+    url: 'https://jumavi.org/blog/',
+    inLanguage: 'es-PE',
+    description: 'Crónicas de actividades de la Juventud Mariana Vicentina (JMV).',
+    publisher: { '@id': 'https://jumavi.org/#organizacion' },
+    blogPost: entradas.map((entrada) => ({
+      '@type': 'BlogPosting',
+      headline: entrada.data.title,
+      url: `https://jumavi.org/blog/${entrada.id}/`,
+      datePublished: entrada.data.pubDate.toISOString(),
+    })),
+  })} />
   <section class="border-b-4 border-tinta bg-azul-profundo pt-28 pb-14 sm:pt-32 sm:pb-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <p class="inline-block -rotate-1 border-4 border-papel bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta">

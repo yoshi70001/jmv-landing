@@ -1,0 +1,24 @@
+{
+  "name": "JUMAVI — Juventud Mariana Vicentina (JMV)",
+  "short_name": "JUMAVI",
+  "description": "Asociación católica internacional de jóvenes: vivir la fe, formarse, evangelizar y servir a los más necesitados. Desde 1830, en 78 países.",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "es-PE",
+  "background_color": "#24306e",
+  "theme_color": "#1e2f6b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -56,9 +56,23 @@ const svg = `
   </g>
 </svg>`;
 
+// Ícono de manzana / manifest (180×180)
+const iconoSvg = `
+<svg width="180" height="180" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" fill="${colores.azulProfundo}"/>
+  <rect x="4" y="4" width="56" height="56" fill="none" stroke="${colores.dorado}" stroke-width="6"/>
+  <path d="M14 46V18h8l10 14 10-14h8v28h-8V32l-10 14-10-14v14z" fill="${colores.papel}"/>
+</svg>`;
+
 await mkdir(path.join(raiz, 'public'), { recursive: true });
 await sharp(Buffer.from(svg))
   .png({ compressionLevel: 9 })
   .toFile(path.join(raiz, 'public', 'og.png'));
 
+await sharp(Buffer.from(iconoSvg))
+  .resize(180, 180)
+  .png({ compressionLevel: 9 })
+  .toFile(path.join(raiz, 'public', 'apple-touch-icon.png'));
+
 console.log('✓ public/og.png generado (1200×630)');
+console.log('✓ public/apple-touch-icon.png generado (180×180)');

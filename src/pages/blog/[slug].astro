@@ -13,9 +13,40 @@ export async function getStaticPaths() {
 
 const { entrada } = Astro.props;
 const { Content } = await render(entrada);
+
+const urlPost = `https://jumavi.org/blog/${entrada.id}/`;
+
+const blogPosting = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${urlPost}#post`,
+  headline: entrada.data.title,
+  description: entrada.data.description,
+  image: 'https://jumavi.org/og.png',
+  url: urlPost,
+  mainEntityOfPage: urlPost,
+  inLanguage: 'es-PE',
+  datePublished: entrada.data.pubDate.toISOString(),
+  author: { '@type': 'Person', name: entrada.data.author },
+  publisher: { '@id': 'https://jumavi.org/#organizacion' },
+  isPartOf: { '@id': 'https://jumavi.org/blog/#blog' },
+  keywords: entrada.data.tags.join(', '),
+};
+
+const migas = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://jumavi.org/' },
+    { '@type': 'ListItem', position: 2, name: 'Bitácora', item: 'https://jumavi.org/blog/' },
+    { '@type': 'ListItem', position: 3, name: entrada.data.title },
+  ],
+};
 ---
 
-<Layout title={`${entrada.data.title} — Bitácora JUMAVI`} description={entrada.data.description}>
+<Layout title={`${entrada.data.title} | Bitácora JMV`} description={entrada.data.description}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(blogPosting)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
   <article class="bg-papel pt-24 sm:pt-28">
     <header class="border-b-4 border-tinta bg-azul-profundo py-12 sm:py-16">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
