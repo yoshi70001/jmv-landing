@@ -1,14 +1,8 @@
 ---
 import { contacto } from '../lib/datos/contacto';
+import { navegacionPrincipal } from '../lib/datos/navegacion';
 
-const enlaces = [
-  { href: '/', texto: 'Inicio' },
-  { href: '/#somos', texto: 'Nosotros' },
-  { href: '/#actividades', texto: 'Actividades' },
-  { href: '/formacion', texto: 'Formación' },
-  { href: '/blog', texto: 'Blog' },
-  { href: '/#contacto', texto: 'Contacto' },
-];
+const enlaces = navegacionPrincipal;
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 border-b border-tinta/10 bg-marfil/85 backdrop-blur-md" transition:persist>
@@ -21,7 +15,7 @@ const enlaces = [
       <span class="rounded-xl bg-marino px-2.5 py-1 font-display text-lg font-semibold tracking-wide text-dorado shadow-nube-sm sm:text-xl">
         JMV
       </span>
-      <span class="font-body text-sm font-bold uppercase tracking-[0.28em] text-tinta">
+      <span class="font-body text-sm font-bold uppercase tracking-amplio text-tinta">
         Jumavi
       </span>
     </a>
@@ -34,7 +28,7 @@ const enlaces = [
             <li>
               <a
                 href={enlace.href}
-                class="enlace-nav rounded-full px-3 py-2 font-body text-xs font-bold uppercase tracking-[0.14em] text-tinta/80 transition-colors hover:bg-celeste-niebla hover:text-marino xl:px-4 xl:text-[0.8rem]"
+                class="enlace-nav rounded-full px-3 py-2 font-body text-xs font-bold uppercase tracking-etiqueta text-tinta/80 transition-colors hover:bg-celeste-niebla hover:text-marino xl:px-4 xl:text-[0.8rem]"
               >
                 {enlace.texto}
               </a>
@@ -46,7 +40,7 @@ const enlaces = [
             href={contacto.whatsapp.enlace}
             target="_blank"
             rel="noopener noreferrer"
-            class="boton bg-dorado px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.14em] text-tinta xl:text-[0.8rem]"
+            class="boton boton-dorado px-4 py-2 text-xs tracking-etiqueta xl:text-[0.8rem]"
           >
             Únete ✦
           </a>
@@ -76,12 +70,12 @@ const enlaces = [
 <div
   id="panel-menu"
   hidden
-  class="fixed inset-0 z-40 overflow-y-auto bg-marino pt-20"
+  class="fixed inset-0 z-40 overflow-y-auto bg-marino pt-[calc(var(--alto-header)+1.25rem)]"
 >
   <nav aria-label="Navegación móvil">
     <ul class="flex min-h-full flex-col px-6 pb-10">
       {
-        enlaces.map((enlace, i) => (
+        enlaces.map((enlace) => (
           <li>
             <a
               href={enlace.href}
@@ -98,7 +92,7 @@ const enlaces = [
           href={contacto.whatsapp.enlace}
           target="_blank"
           rel="noopener noreferrer"
-          class="boton block bg-dorado px-6 py-4 text-center font-body text-base font-bold uppercase tracking-widest text-tinta"
+          class="boton boton-dorado block px-6 py-4 text-center text-base tracking-widest"
         >
           Únete por WhatsApp ✦
         </a>

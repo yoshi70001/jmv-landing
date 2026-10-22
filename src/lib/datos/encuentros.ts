@@ -20,13 +20,18 @@
 
 // import imagenEjemplo from '../../assets/fotos/galeria-01.jpg';
 
+export interface ImagenEncuentro {
+  src: ImageMetadata;
+  alt?: string;
+}
+
 export interface Encuentro {
   nombre: string;
   fecha: string; // 'YYYY-MM-DD'
   hora?: string; // 'HH:mm'
   lugar?: string;
   descripcion: string;
-  imagen?: ImageMetadata;
+  imagen?: ImagenEncuentro;
   enlace?: string;
 }
 

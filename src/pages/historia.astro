@@ -8,8 +8,8 @@ import { hitosCompletos, presente } from '../lib/datos/hitos';
   title="Nuestra historia | JUMAVI — Juventud Mariana Vicentina"
   description="De las apariciones de 1830 a la JMV internacional de 1999 y la llegada de la Familia Vicentina al Perú en 1858: la cronología completa de la Juventud Mariana Vicentina."
 >
-  <article class="bg-marfil pt-24 sm:pt-28">
-    <header class="bg-marino py-14 sm:py-20">
+  <article class="bg-marfil">
+    <header class="bg-marino pt-28 pb-12 sm:pt-32 sm:pb-16">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
         <p class="chip chip-invertida">Desde 1830</p>
         <h1 class="mt-6 font-display text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.05] font-semibold tracking-tight text-marfil">
@@ -55,6 +55,7 @@ import { hitosCompletos, presente } from '../lib/datos/hitos';
                         sizes="176px"
                         class="filtro-bn"
                         loading="lazy"
+                        decoding="async"
                       />
                       <figcaption class="bg-white px-2 py-1.5 text-center font-display text-[0.7rem] font-semibold italic text-tinta/70">
                         {hito.imagen.caption}
@@ -90,7 +91,7 @@ import { hitosCompletos, presente } from '../lib/datos/hitos';
         </p>
         <a
           href="/#contacto"
-          class="boton mt-5 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+          class="boton boton-primario mt-5 inline-block"
         >
           Únete a JUMAVI →
         </a>

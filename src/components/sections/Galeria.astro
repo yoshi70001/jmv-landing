@@ -23,7 +23,7 @@ const composicion = [
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
         <p class="chip">Diez años de historia en fotos</p>
-        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
           Vive <span class="text-marino">JUMAVI</span>
         </h2>
       </div>
@@ -46,9 +46,10 @@ const composicion = [
               alt={foto.alt}
               widths={[400, 700, 1100]}
               sizes="(min-width: 768px) 40vw, 50vw"
-              quality={75}
+              quality={70}
               class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
               loading="lazy"
+              decoding="async"
             />
           </figure>
         ))

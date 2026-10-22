@@ -17,11 +17,22 @@
   /* Dorado oscurecido para TEXTO sobre fondos claros (contraste WCAG) */
   --color-dorado-tinta: #a97e1f;
   --color-tinta: #243246;
+  --color-blanco: #ffffff;
+
+  /* Escala única de tracking para etiquetas en mayúsculas */
+  --tracking-etiqueta: 0.14em; /* navegación y micro-etiquetas */
+  --tracking-chip: 0.2em; /* chips, eyebrows y datos */
+  --tracking-amplio: 0.25em; /* display: logo, lema, cinta */
 
   /* Sombras suaves (moderno cálido) */
-  --shadow-nube-sm: 0 1px 2px rgb(36 50 70 / 0.05), 0 2px 10px rgb(36 50 70 / 0.07);
-  --shadow-nube: 0 2px 6px rgb(36 50 70 / 0.06), 0 10px 28px rgb(36 50 70 / 0.1);
-  --shadow-nube-lg: 0 4px 10px rgb(36 50 70 / 0.07), 0 20px 48px rgb(36 50 70 / 0.14);
+  --shadow-nube-sm: 0 1px 2px color-mix(in srgb, var(--color-tinta) 5%, transparent),
+    0 2px 10px color-mix(in srgb, var(--color-tinta) 7%, transparent);
+  --shadow-nube: 0 2px 6px color-mix(in srgb, var(--color-tinta) 6%, transparent),
+    0 10px 28px color-mix(in srgb, var(--color-tinta) 10%, transparent);
+  --shadow-nube-lg: 0 4px 10px color-mix(in srgb, var(--color-tinta) 7%, transparent),
+    0 20px 48px color-mix(in srgb, var(--color-tinta) 14%, transparent);
+  /* Elevación de la barra fija inferior móvil */
+  --shadow-cta: 0 -8px 24px color-mix(in srgb, var(--color-tinta) 18%, transparent);
   /* Guiño brutalista: sombra dura tinta — contrasta con cualquier color de botón */
   --shadow-toque: 3px 3px 0 0 var(--color-tinta);
 
@@ -55,6 +66,13 @@
   }
 }
 
+/* Alturas de las barras fijas: el header superior y el CTA móvil
+   inferior. El panel del menú y el pie las consumen para no taparse. */
+:root {
+  --alto-header: 3.75rem;
+  --alto-cta: 3.375rem;
+}
+
 /* El desplazamiento suave solo aplica a anclas de la misma página (vía JS);
    'auto' evita saltos visibles con las view transitions entre páginas */
 html {
@@ -64,6 +82,13 @@ html {
 ::selection {
   background: var(--color-dorado);
   color: var(--color-tinta);
+}
+
+/* Foco visible unificado para todo lo interactivo (tarjetas-enlace,
+   enlaces de texto…). Botones y nav tienen su propia variante. */
+:focus-visible {
+  outline: 3px solid var(--color-dorado);
+  outline-offset: 3px;
 }
 
 /* ── Utilidades editoriales ─────────────────────────────────── */
@@ -80,20 +105,20 @@ html {
 .chip {
   display: inline-block;
   border-radius: 9999px;
-  border: 1.5px solid rgb(36 50 70 / 0.14);
-  background: #fff;
+  border: 1.5px solid color-mix(in srgb, var(--color-tinta) 14%, transparent);
+  background: var(--color-blanco);
   padding: 0.4rem 1rem;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--tracking-chip);
   text-transform: uppercase;
   color: var(--color-marino);
   box-shadow: var(--shadow-nube-sm);
 }
 
 .chip-invertida {
-  border-color: rgb(248 245 239 / 0.25);
-  background: rgb(255 255 255 / 0.08);
+  border-color: color-mix(in srgb, var(--color-marfil) 25%, transparent);
+  background: color-mix(in srgb, var(--color-blanco) 8%, transparent);
   color: var(--color-marfil);
   box-shadow: none;
 }
@@ -122,7 +147,7 @@ html {
 }
 
 .texto-contorno-marfil {
-  -webkit-text-stroke: 1.5px rgb(248 245 239 / 0.55);
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-marfil) 55%, transparent);
   color: transparent;
 }
 
@@ -172,6 +197,9 @@ html.sin-reveal [data-reveal] {
 
 /* ── Botones y tarjetas ─────────────────────────────────────── */
 
+/* Física brutalista del botón: forma, sombra dura y hundimiento.
+   El color y el tamaño van en variantes (@layer components), así
+   las utilidades de Tailwind siguen pudiendo ajustar casos puntuales. */
 .boton {
   display: inline-block;
   border-radius: 9999px;
@@ -198,6 +226,69 @@ html.sin-reveal [data-reveal] {
   outline-offset: 3px;
 }
 
+@layer components {
+  /* Tipografía compartida de los botones de la marca */
+  .boton-primario,
+  .boton-dorado,
+  .boton-noche {
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .boton-primario {
+    background-color: var(--color-marino);
+    color: var(--color-marfil);
+  }
+
+  .boton-dorado {
+    background-color: var(--color-dorado);
+    color: var(--color-tinta);
+  }
+
+  .boton-noche {
+    background-color: var(--color-marino-noche);
+    color: var(--color-marfil);
+  }
+
+  /* Talla grande para CTAs protagonistas (hero, 404) */
+  .boton-grande {
+    padding: 0.875rem 1.75rem;
+  }
+
+  @media (min-width: 40rem) {
+    .boton-grande {
+      font-size: 1rem;
+    }
+  }
+
+  /* Enlace fantasma: mismo peso visual sin sombra dura */
+  .boton-contorno {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, var(--color-marino) 25%, transparent);
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-marino);
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .boton-contorno:hover {
+    border-color: var(--color-marino);
+    background-color: var(--color-celeste-niebla);
+  }
+}
+
 /* Foco visible para enlaces de navegación */
 .enlace-nav:focus-visible {
   outline: 2.5px solid var(--color-dorado);
@@ -207,7 +298,7 @@ html.sin-reveal [data-reveal] {
 
 .tarjeta {
   border-radius: 1.5rem;
-  background: #fff;
+  background: var(--color-blanco);
   box-shadow: var(--shadow-nube);
   transition:
     transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -331,7 +422,7 @@ html.sin-reveal [data-reveal] {
 }
 
 .prose-edit em {
-  color: rgb(36 50 70 / 0.75);
+  color: color-mix(in srgb, var(--color-tinta) 75%, transparent);
   font-style: italic;
 }
 

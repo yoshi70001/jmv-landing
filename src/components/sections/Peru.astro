@@ -11,7 +11,7 @@ const datos = [
 ];
 ---
 
-<section id="peru" class="scroll-mt-24 bg-marino py-20 sm:py-28">
+<section id="peru" class="scroll-mt-24 bg-marino py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:items-center">
       <div data-reveal>
@@ -32,7 +32,7 @@ const datos = [
           {
             ['Encuentros semanales', 'Jornadas de servicio', 'Retiros de formación', 'Peregrinación mariana'].map(
               (actividad) => (
-                <li class="rounded-full bg-white/10 px-4 py-1.5 font-body text-xs font-bold uppercase tracking-[0.14em] text-marfil ring-1 ring-marfil/25">
+                <li class="rounded-full bg-white/10 px-4 py-1.5 font-body text-xs font-bold uppercase tracking-etiqueta text-marfil ring-1 ring-marfil/25">
                   {actividad}
                 </li>
               )
@@ -46,7 +46,7 @@ const datos = [
 
         <a
           href="/#actividades"
-          class="boton mt-9 inline-block bg-dorado px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-tinta"
+          class="boton boton-dorado mt-9 inline-block"
         >
           Ver próximos encuentros →
         </a>
@@ -59,7 +59,7 @@ const datos = [
             <figure
               class:list={[
                 'marco-foto group overflow-hidden',
-                i % 2 === 1 && 'translate-y-5',
+                i % 2 === 1 && 'sm:translate-y-5',
               ]}
             >
               <Image
@@ -70,6 +70,7 @@ const datos = [
                 quality={75}
                 class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                 loading="lazy"
+                decoding="async"
               />
             </figure>
           ))
@@ -82,7 +83,7 @@ const datos = [
       {
         datos.map((dato) => (
           <div>
-            <dt class="font-body text-[0.68rem] font-bold uppercase tracking-[0.22em] text-celeste">
+            <dt class="font-body text-[0.68rem] font-bold uppercase tracking-chip text-celeste-niebla">
               {dato.etiqueta}
             </dt>
             <dd class="mt-1.5 font-display text-lg font-medium text-marfil">{dato.valor}</dd>
@@ -90,7 +91,7 @@ const datos = [
         ))
       }
       <div class="sm:col-span-2 lg:col-span-1 lg:border-l lg:border-marfil/15 lg:pl-6">
-        <dt class="font-body text-[0.68rem] font-bold uppercase tracking-[0.22em] text-dorado-tinta">
+        <dt class="font-body text-[0.68rem] font-bold uppercase tracking-chip text-dorado-suave">
           Jóvenes en el mundo
         </dt>
         <dd class="mt-1.5 font-display text-2xl font-semibold text-dorado">+30 000</dd>

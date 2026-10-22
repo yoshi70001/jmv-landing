@@ -24,7 +24,6 @@ import galeria04 from '../assets/fotos/galeria-04.jpg';
 import galeria05 from '../assets/fotos/galeria-05.jpg';
 import galeria06 from '../assets/fotos/galeria-06.jpg';
 import galeria07 from '../assets/fotos/galeria-07.jpg';
-import galeria08 from '../assets/fotos/galeria-08.jpg';
 
 export interface Foto {
   src: ImageMetadata;
@@ -90,7 +89,6 @@ export const fotos = {
       { src: galeria02, alt: 'Tres jóvenes sonrientes con marco de cartón' },
       { src: galeria04, alt: 'Selfie grupal con Hijas de la Caridad y un joven con polo de la JMV' },
       { src: galeria06, alt: 'Muchedumbre de jóvenes caminando en la marcha con banderas' },
-      { src: galeria08, alt: 'Grupo caminando por un sendero acompañados de religiosas' },
       { src: peru3, alt: 'Jóvenes posando en la marcha' },
       { src: peru4, alt: 'Jóvenes en la marcha, sonrientes' },
     ] as Foto[],

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { encuentros } from '../../lib/datos/encuentros';
 import { fechaLarga } from '../../lib/utils';
 
@@ -27,7 +28,7 @@ const proximos = encuentros
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
         <p class="chip">Agenda</p>
-        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
           Próximos <span class="text-marino">encuentros</span>
         </h2>
       </div>
@@ -46,13 +47,15 @@ const proximos = encuentros
               data-reveal
             >
               {encuentro.imagen && (
-                <img
+                <Image
                   src={encuentro.imagen.src}
-                  alt={`Imagen de ${encuentro.nombre}`}
+                  alt={encuentro.imagen.alt ?? `Imagen de ${encuentro.nombre}`}
+                  widths={[640, 960]}
+                  sizes="(min-width: 1024px) 30vw, 92vw"
+                  quality={75}
                   class="aspect-[16/9] w-full bg-celeste-niebla object-cover"
                   loading="lazy"
-                  width="800"
-                  height="450"
+                  decoding="async"
                 />
               )}
               <div class="flex grow flex-col p-6">
@@ -97,13 +100,13 @@ const proximos = encuentros
             <div class="mt-6 flex flex-wrap justify-center gap-4">
               <a
                 href="/blog"
-                class="boton bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+                class="boton boton-primario"
               >
                 Ver actividades pasadas
               </a>
               <a
                 href="/#contacto"
-                class="boton bg-dorado px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-tinta"
+                class="boton boton-dorado"
               >
                 Quiero sumarme ✦
               </a>

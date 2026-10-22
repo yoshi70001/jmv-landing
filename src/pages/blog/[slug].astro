@@ -47,8 +47,8 @@ const migas = {
 <Layout title={`${entrada.data.title} | Bitácora JMV`} description={entrada.data.description}>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(blogPosting)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
-  <article class="bg-marfil pt-24 sm:pt-28">
-    <header class="bg-marino py-12 sm:py-16">
+  <article class="bg-marfil">
+    <header class="bg-marino pt-28 pb-12 sm:pt-32 sm:pb-16">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
         <a
           href="/blog"
@@ -73,7 +73,7 @@ const migas = {
           {entrada.data.title}
         </h1>
 
-        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-celeste">
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-celeste-niebla">
           <time datetime={entrada.data.pubDate.toISOString()}>{fechaLarga(entrada.data.pubDate)}</time>
           <span class="mx-2 text-dorado">✦</span>
           {entrada.data.author}
@@ -93,7 +93,7 @@ const migas = {
         </p>
         <a
           href="/#contacto"
-          class="boton mt-5 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+          class="boton boton-primario mt-5 inline-block"
         >
           Únete a JUMAVI →
         </a>

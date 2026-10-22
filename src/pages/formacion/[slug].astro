@@ -57,8 +57,8 @@ const migas = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articulo)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
 
-  <article class="bg-marfil pt-24 sm:pt-28">
-    <header class="bg-marino py-12 sm:py-16">
+  <article class="bg-marfil">
+    <header class="bg-marino pt-28 pb-12 sm:pt-32 sm:pb-16">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
         <a
           href="/formacion"
@@ -69,7 +69,7 @@ const migas = {
 
         <div class="mt-6 flex flex-wrap items-center gap-2">
           <span class:list={[
-            'rounded-full px-3 py-0.5 font-body text-xs font-bold uppercase tracking-[0.18em] ring-1',
+            'rounded-full px-3 py-0.5 font-body text-xs font-bold uppercase tracking-chip ring-1',
             coloresTema[tema.data.tema] === 'bg-dorado' || coloresTema[tema.data.tema] === 'bg-celeste' || coloresTema[tema.data.tema] === 'bg-celeste-niebla'
               ? 'bg-dorado text-tinta ring-dorado'
               : 'bg-marino text-marfil ring-marfil/30',
@@ -84,7 +84,7 @@ const migas = {
           {tema.data.title}
         </h1>
 
-        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-celeste">
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-celeste-niebla">
           <time datetime={tema.data.pubDate.toISOString()}>{fechaLarga(tema.data.pubDate)}</time>
           <span class="mx-2 text-dorado">✦</span>
           {tema.data.autor}
@@ -105,7 +105,7 @@ const migas = {
         </p>
         <a
           href="/#contacto"
-          class="boton mt-5 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+          class="boton boton-primario mt-5 inline-block"
         >
           Únete a JUMAVI →
         </a>

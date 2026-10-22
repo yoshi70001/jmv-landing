@@ -7,7 +7,7 @@ const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 3);
 ---
 
-<section id="bitacora" class="scroll-mt-24 border-y border-tinta/10 bg-marfil-2/50 py-20 sm:py-28">
+<section id="bitacora" class="scroll-mt-24 border-y border-tinta/10 bg-marfil-2/50 py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
@@ -18,7 +18,7 @@ const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
       </div>
       <a
         href="/blog"
-        class="boton bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+        class="boton boton-primario"
       >
         Ver todas →
       </a>
@@ -34,7 +34,7 @@ const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
           >
             <a href={`/blog/${entrada.id}`} class="flex grow flex-col p-6">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-tinta/55">
+                <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-tinta/70">
                   {fechaLarga(entrada.data.pubDate)}
                 </time>
                 {entrada.data.tags[0] && (

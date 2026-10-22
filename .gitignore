@@ -9,6 +9,9 @@ capturas/
 # artifacts de sesión ZCode
 .zcode/
 
+# snapshots del navegador (Playwright MCP)
+.playwright-mcp/
+
 # dependencies
 node_modules/
 

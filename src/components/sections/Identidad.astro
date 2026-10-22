@@ -34,7 +34,7 @@ const notas = [
 ];
 ---
 
-<section id="identidad" class="scroll-mt-24 bg-marfil py-20 sm:py-28">
+<section id="identidad" class="scroll-mt-24 bg-marfil py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
@@ -66,9 +66,10 @@ const notas = [
                 alt={nota.foto.alt}
                 widths={[480, 800, 1100]}
                 sizes="(min-width: 640px) 44vw, 92vw"
-                quality={75}
+                quality={70}
                 class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
+                decoding="async"
               />
               <span class={`absolute inset-x-0 top-0 h-1.5 ${nota.acento}`} aria-hidden="true" />
             </div>

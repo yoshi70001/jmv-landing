@@ -10,7 +10,7 @@ const fotoComunidad = fotos.hero.marco;
     <div class="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
       <div data-reveal>
         <p class="chip">Esto somos</p>
-        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
           ¿Qué es <span class="text-marino">JUMAVI</span>?
         </h2>
         <p class="mt-6 max-w-xl text-lg leading-relaxed text-tinta/85">
@@ -26,13 +26,13 @@ const fotoComunidad = fotos.hero.marco;
         <div class="mt-8 flex flex-wrap gap-4">
           <a
             href="#identidad"
-            class="boton bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+            class="boton boton-primario"
           >
             Conoce nuestra identidad →
           </a>
           <a
             href="/historia"
-            class="inline-flex items-center rounded-full border-2 border-marino/25 px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marino transition-colors hover:border-marino hover:bg-celeste-niebla"
+            class="boton-contorno"
           >
             Nuestra historia
           </a>
@@ -48,8 +48,9 @@ const fotoComunidad = fotos.hero.marco;
           quality={75}
           class="aspect-[4/3] w-full bg-celeste-niebla object-cover"
           loading="lazy"
+          decoding="async"
         />
-        <figcaption class="mt-3 text-center font-display text-sm font-medium italic text-tinta/65">
+        <figcaption class="mt-3 text-center font-display text-sm font-medium italic text-tinta/75">
           Jóvenes de la JMV en la peregrinación mariana
         </figcaption>
       </figure>

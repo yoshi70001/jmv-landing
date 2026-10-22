@@ -35,7 +35,7 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
           <span class="subrayado text-tinta">sin dejar de ser tú</span>
         </h1>
 
-        <p class="mt-5 font-body text-sm font-bold uppercase tracking-[0.3em] text-tinta/60" data-reveal style="--reveal-delay: 0.12s">
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-amplio text-tinta/60" data-reveal style="--reveal-delay: 0.12s">
           JUMAVI · Juventud Mariana Vicentina
         </p>
 
@@ -51,13 +51,13 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
             href={contacto.whatsapp.enlace}
             target="_blank"
             rel="noopener noreferrer"
-            class="boton bg-dorado px-7 py-3.5 font-body text-sm font-bold uppercase tracking-widest text-tinta sm:text-base"
+            class="boton boton-grande boton-dorado"
           >
             Quiero unirme ✦
           </a>
           <a
             href="#somos"
-            class="boton bg-marino px-7 py-3.5 font-body text-sm font-bold uppercase tracking-widest text-marfil sm:text-base"
+            class="boton boton-grande boton-primario"
           >
             Conoce JUMAVI →
           </a>
@@ -73,13 +73,13 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
           <Image
             src={fotos.hero.principal.src}
             alt={fotos.hero.principal.alt}
-            widths={[640, 1024, 1600]}
+            widths={[640, 960]}
             sizes="(min-width: 1024px) 44vw, 92vw"
             class="aspect-[4/3] w-full object-cover"
             loading="eager"
             fetchpriority="high"
           />
-          <figcaption class="absolute bottom-4 right-4 rounded-full bg-marfil/90 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-marino backdrop-blur-sm">
+          <figcaption class="absolute bottom-4 right-4 rounded-full bg-marfil/90 px-4 py-1.5 text-xs font-bold uppercase tracking-chip text-marino backdrop-blur-sm">
             {fotos.hero.principal.caption}
           </figcaption>
         </figure>
@@ -93,6 +93,7 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
             sizes="(min-width: 640px) 176px, 144px"
             class="aspect-[4/3] w-full rounded-xl bg-celeste-niebla object-cover"
             loading="lazy"
+            decoding="async"
           />
           <figcaption class="px-2 py-1.5 text-center font-display text-[0.7rem] font-semibold italic text-tinta/70">
             {fotos.hero.columna.caption}
@@ -107,7 +108,7 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
         stats.map((stat) => (
           <div class="tarjeta px-3 py-6 text-center sm:px-6 sm:py-8">
             <dd class="font-display text-3xl font-semibold text-marino sm:text-5xl lg:text-6xl">{stat.valor}</dd>
-            <dt class="mt-2 block font-body text-[0.65rem] font-bold uppercase tracking-[0.2em] text-tinta/60 sm:text-xs">
+            <dt class="mt-2 block font-body text-[0.65rem] font-bold uppercase tracking-chip text-tinta/70 sm:text-xs">
               {stat.etiqueta}
             </dt>
           </div>
@@ -123,7 +124,7 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
         [0, 1].map(() => (
           <div class="flex shrink-0 items-center">
             {lema.map((palabra) => (
-              <span class="flex items-center font-body text-sm font-bold uppercase tracking-[0.25em] text-marfil sm:text-base">
+              <span class="flex items-center font-body text-sm font-bold uppercase tracking-amplio text-marfil sm:text-base">
                 <span class="px-6">{palabra}</span>
                 <span class="text-dorado">✦</span>
               </span>
