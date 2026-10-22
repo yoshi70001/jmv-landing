@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import { fotos } from '../../lib/fotos';
+
 const datos = [
   { etiqueta: 'Familia espiritual', valor: 'Familia Vicentina' },
   { etiqueta: 'En el Perú desde', valor: '2 de febrero de 1858' },
@@ -8,45 +11,90 @@ const datos = [
 ];
 ---
 
-<section id="peru" class="scroll-mt-24 border-b-4 border-tinta bg-tinta py-20 sm:py-28">
+<section id="peru" class="scroll-mt-24 bg-marino py-20 sm:py-28">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
-    <div class="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+    <div class="grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:items-center">
       <div data-reveal>
-        <p class="inline-block -rotate-1 border-4 border-papel bg-azul px-4 py-1 font-display text-sm uppercase tracking-widest text-papel">
-          🇵🇪 JMV en el Perú
-        </p>
-        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] uppercase text-papel">
+        <p class="chip chip-invertida">🇵🇪 JMV en el Perú</p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-marfil">
           Fe que<br /><span class="text-dorado">sirve</span> aquí
         </h2>
-        <p class="mt-6 max-w-lg text-lg leading-relaxed text-papel/90">
+        <p class="mt-6 max-w-lg text-lg leading-relaxed text-marfil/85">
           JUMAVI forma parte de la Familia Vicentina del Perú desde 1858. En parroquias
           y colegios vicentinos nos reunimos para formarnos, servir y crecer juntos:
           el amor a Dios puesto en obra junto a quienes más lo necesitan.
         </p>
 
-        <div class="rayas mt-10 h-6 w-full border-4 border-papel" aria-hidden="true"></div>
+        <div class="rayas mt-9 h-5 w-full rounded-full" aria-hidden="true"></div>
 
-        <blockquote class="mt-10 border-l-8 border-dorado pl-5 font-body text-xl leading-relaxed font-medium text-papel">
+        <!-- Actividades concretas (verificables en la bitácora) -->
+        <ul class="mt-8 flex flex-wrap gap-2.5">
+          {
+            ['Encuentros semanales', 'Jornadas de servicio', 'Retiros de formación', 'Peregrinación mariana'].map(
+              (actividad) => (
+                <li class="rounded-full bg-white/10 px-4 py-1.5 font-body text-xs font-bold uppercase tracking-[0.14em] text-marfil ring-1 ring-marfil/25">
+                  {actividad}
+                </li>
+              )
+            )
+          }
+        </ul>
+
+        <blockquote class="mt-8 border-l-4 border-dorado pl-5 font-display text-xl font-medium italic leading-relaxed text-marfil">
           «Profundizar el carisma vicentino, el amor a Dios y el servicio a los más pobres.»
         </blockquote>
+
+        <a
+          href="/#actividades"
+          class="boton mt-9 inline-block bg-dorado px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-tinta"
+        >
+          Ver próximos encuentros →
+        </a>
       </div>
 
-      <dl class="border-4 border-papel bg-azul-profundo shadow-[10px_10px_0_0_var(--color-azul-cielo)]" data-reveal style="--reveal-delay: 0.12s">
+      <!-- Mosaico fotográfico -->
+      <div class="grid grid-cols-2 gap-4" data-reveal style="--reveal-delay: 0.12s">
         {
-          datos.map((dato, i) => (
-            <div class:list={['px-5 py-5 sm:px-7', i < datos.length - 1 && 'border-b-2 border-papel/30']}>
-              <dt class="font-body text-[0.65rem] font-bold uppercase tracking-[0.22em] text-azul-cielo">
-                {dato.etiqueta}
-              </dt>
-              <dd class="mt-1 font-display text-lg text-papel sm:text-xl">{dato.valor}</dd>
-            </div>
+          fotos.peru.map((foto, i) => (
+            <figure
+              class:list={[
+                'marco-foto group overflow-hidden',
+                i % 2 === 1 && 'translate-y-5',
+              ]}
+            >
+              <Image
+                src={foto.src}
+                alt={foto.alt}
+                widths={[420, 700]}
+                sizes="(min-width: 1024px) 24vw, 44vw"
+                quality={75}
+                class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
+                loading="lazy"
+              />
+            </figure>
           ))
         }
-        <div class="flex items-center justify-between border-t-4 border-papel bg-dorado px-5 py-5 sm:px-7">
-          <dt class="font-display text-sm uppercase tracking-widest text-tinta">Jóvenes en el mundo</dt>
-          <dd class="font-display text-2xl text-tinta">+30 000</dd>
-        </div>
-      </dl>
+      </div>
     </div>
+
+    <!-- Ficha de datos -->
+    <dl class="mt-16 grid gap-4 rounded-3xl bg-white/8 p-5 backdrop-blur-sm ring-1 ring-marfil/15 sm:grid-cols-2 lg:grid-cols-3 sm:p-7" data-reveal style="--reveal-delay: 0.18s">
+      {
+        datos.map((dato) => (
+          <div>
+            <dt class="font-body text-[0.68rem] font-bold uppercase tracking-[0.22em] text-celeste">
+              {dato.etiqueta}
+            </dt>
+            <dd class="mt-1.5 font-display text-lg font-medium text-marfil">{dato.valor}</dd>
+          </div>
+        ))
+      }
+      <div class="sm:col-span-2 lg:col-span-1 lg:border-l lg:border-marfil/15 lg:pl-6">
+        <dt class="font-body text-[0.68rem] font-bold uppercase tracking-[0.22em] text-dorado-tinta">
+          Jóvenes en el mundo
+        </dt>
+        <dd class="mt-1.5 font-display text-2xl font-semibold text-dorado">+30 000</dd>
+      </div>
+    </dl>
   </div>
 </section>

@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import '@fontsource/archivo-black';
+import '@fontsource-variable/fraunces';
 import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
@@ -90,12 +90,12 @@ const sitioWeb = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imagen} />
     <link rel="canonical" href={url} />
-    <meta name="theme-color" content="#1e2f6b" />
+    <meta name="theme-color" content="#174782" />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizacion)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(sitioWeb)} />
     <ClientRouter />
   </head>
-  <body class="bg-papel font-body text-tinta antialiased">
+  <body class="bg-marfil font-body text-tinta antialiased">
     <Header />
     <main>
       <slot />
@@ -104,6 +104,15 @@ const sitioWeb = {
     <CtaMovil />
 
     <script>
+      let primeraCarga = true;
+
+      // Navegaciones internas: una sola capa de animación (el crossfade de la
+      // view transition); las reveals escalonadas quedan para la carga inicial.
+      document.addEventListener('astro:after-swap', () => {
+        primeraCarga = false;
+        document.documentElement.classList.add('sin-reveal');
+      });
+
       function iniciarReveals() {
         const elementos = document.querySelectorAll('[data-reveal]:not(.revelado)');
         if (elementos.length === 0) return;
@@ -123,7 +132,26 @@ const sitioWeb = {
         elementos.forEach((el) => observer.observe(el));
       }
 
-      document.addEventListener('astro:page-load', iniciarReveals);
+      // Desplazamiento suave solo para anclas de la misma página:
+      // entre páginas lo maneja la view transition (scroll-behavior: auto).
+      function scrollSuaveAnclas() {
+        document.querySelectorAll('a[href*="#"]').forEach((enlace) => {
+          enlace.addEventListener('click', (evento) => {
+            const url = new URL(enlace.href, location.href);
+            if (url.pathname !== location.pathname || url.hash === '') return;
+            const destino = document.querySelector(url.hash);
+            if (!destino) return;
+            evento.preventDefault();
+            destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, '', url.hash);
+          });
+        });
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        iniciarReveals();
+        scrollSuaveAnclas();
+      });
     </script>
   </body>
 </html>

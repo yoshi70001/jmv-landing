@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import { hitosCompletos, presente } from '../lib/datos/hitos';
+---
+
+<Layout
+  title="Nuestra historia | JUMAVI — Juventud Mariana Vicentina"
+  description="De las apariciones de 1830 a la JMV internacional de 1999 y la llegada de la Familia Vicentina al Perú en 1858: la cronología completa de la Juventud Mariana Vicentina."
+>
+  <article class="bg-marfil pt-24 sm:pt-28">
+    <header class="bg-marino py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <p class="chip chip-invertida">Desde 1830</p>
+        <h1 class="mt-6 font-display text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.05] font-semibold tracking-tight text-marfil">
+          Nuestra historia
+        </h1>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-marfil/85">
+          1830 es el origen de la historia; 1999, cuando se formaliza el movimiento
+          internacional. Este es el camino que nos trajo hasta aquí.
+        </p>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
+      <ol class="relative space-y-8 border-l-2 border-tinta/15 pl-6 sm:space-y-10 sm:pl-10">
+        {
+          hitosCompletos.map((hito, i) => (
+            <li class="relative" data-reveal style={`--reveal-delay: ${i * 0.05}s`}>
+              <span
+                class="absolute top-8 -left-[calc(1.5rem+7px)] h-4 w-4 rounded-full bg-dorado ring-4 ring-dorado/25 sm:-left-[calc(2.5rem+7px)]"
+                aria-hidden="true"
+              />
+
+              <article class="tarjeta p-6 sm:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <span class="font-display text-4xl font-semibold italic text-marino sm:text-5xl">
+                    {hito.anio}
+                  </span>
+                  <span class="chip">{hito.tag}</span>
+                </div>
+                <div class="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
+                  <div class="grow">
+                    <h2 class="font-display text-xl font-semibold tracking-tight text-tinta sm:text-2xl">
+                      {hito.titulo}
+                    </h2>
+                    <p class="mt-3 leading-relaxed text-tinta/85">{hito.texto}</p>
+                  </div>
+                  {hito.imagen && (
+                    <figure class="w-40 shrink-0 rotate-1 overflow-hidden rounded-xl border-4 border-white shadow-nube sm:w-44">
+                      <Image
+                        src={hito.imagen.src}
+                        alt={hito.imagen.alt}
+                        widths={[220, 440]}
+                        sizes="176px"
+                        class="filtro-bn"
+                        loading="lazy"
+                      />
+                      <figcaption class="bg-white px-2 py-1.5 text-center font-display text-[0.7rem] font-semibold italic text-tinta/70">
+                        {hito.imagen.caption}
+                      </figcaption>
+                    </figure>
+                  )}
+                </div>
+              </article>
+            </li>
+          ))
+        }
+
+        <li class="relative" data-reveal>
+          <span
+            class="absolute top-8 -left-[calc(1.5rem+7px)] h-4 w-4 rounded-full bg-marino ring-4 ring-marino/20 sm:-left-[calc(2.5rem+7px)]"
+            aria-hidden="true"
+          ></span>
+          <article class="rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-7 shadow-nube ring-1 ring-dorado/40 sm:p-9">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <span class="font-display text-4xl font-semibold italic text-marino sm:text-5xl">Hoy</span>
+              <p class="max-w-md font-body font-bold text-tinta">{presente.texto}</p>
+            </div>
+          </article>
+        </li>
+      </ol>
+
+      <div class="mt-14 rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-7 shadow-nube ring-1 ring-dorado/40 sm:p-9">
+        <p class="font-display text-xl font-semibold tracking-tight text-marino sm:text-2xl">
+          Esta historia también es tuya
+        </p>
+        <p class="mt-2 font-body font-medium text-tinta/85">
+          La cronología sigue escribiéndose en cada encuentro, jornada y retiro.
+        </p>
+        <a
+          href="/#contacto"
+          class="boton mt-5 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+        >
+          Únete a JUMAVI →
+        </a>
+      </div>
+
+      <a
+        href="/#inicio"
+        class="mt-10 inline-block border-b-2 border-dorado pb-0.5 font-body text-sm font-bold uppercase tracking-widest text-marino transition-colors hover:text-marino-noche"
+      >
+        ← Volver al inicio
+      </a>
+    </div>
+  </article>
+</Layout>

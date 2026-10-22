@@ -17,11 +17,11 @@ const { Content } = await render(tema);
 const urlTema = `https://jumavi.org/formacion/${tema.id}/`;
 
 const coloresTema: Record<string, string> = {
-  mariana: 'bg-azul',
-  vicenciana: 'bg-azul-profundo',
-  eclesial: 'bg-azul-cielo',
+  mariana: 'bg-marino',
+  vicenciana: 'bg-marino-noche',
+  eclesial: 'bg-celeste',
   laical: 'bg-dorado',
-  general: 'bg-papel',
+  general: 'bg-celeste-niebla',
 };
 
 const articulo = {
@@ -57,35 +57,34 @@ const migas = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articulo)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
 
-  <article class="bg-papel pt-24 sm:pt-28">
-    <header class="border-b-4 border-tinta bg-azul-profundo py-12 sm:py-16">
+  <article class="bg-marfil pt-24 sm:pt-28">
+    <header class="bg-marino py-12 sm:py-16">
       <div class="mx-auto max-w-3xl px-4 sm:px-6">
         <a
           href="/formacion"
-          class="inline-block border-b-2 border-dorado font-body text-xs font-bold uppercase tracking-widest text-dorado transition-colors hover:text-papel"
+          class="inline-block border-b-2 border-dorado font-body text-xs font-bold uppercase tracking-widest text-dorado transition-colors hover:text-marfil"
         >
           ← Formación
         </a>
 
         <div class="mt-6 flex flex-wrap items-center gap-2">
           <span class:list={[
-            'border-2 border-papel px-3 py-0.5 font-display text-xs uppercase tracking-[0.2em]',
-            coloresTema[tema.data.tema] === 'bg-dorado' || coloresTema[tema.data.tema] === 'bg-azul-cielo'
-              ? 'bg-dorado text-tinta'
-              : 'bg-azul text-papel',
+            'rounded-full px-3 py-0.5 font-body text-xs font-bold uppercase tracking-[0.18em] ring-1',
+            coloresTema[tema.data.tema] === 'bg-dorado' || coloresTema[tema.data.tema] === 'bg-celeste' || coloresTema[tema.data.tema] === 'bg-celeste-niebla'
+              ? 'bg-dorado text-tinta ring-dorado'
+              : 'bg-marino text-marfil ring-marfil/30',
           ]}>
             {tema.data.tema}
           </span>
         </div>
 
         <h1
-          class="mt-5 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.05] uppercase text-papel"
-          transition:name={`formacion-${tema.id}`}
+          class="mt-5 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.08] font-semibold tracking-tight text-marfil"
         >
           {tema.data.title}
         </h1>
 
-        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-azul-cielo">
+        <p class="mt-5 font-body text-sm font-bold uppercase tracking-widest text-celeste">
           <time datetime={tema.data.pubDate.toISOString()}>{fechaLarga(tema.data.pubDate)}</time>
           <span class="mx-2 text-dorado">✦</span>
           {tema.data.autor}
@@ -94,19 +93,19 @@ const migas = {
     </header>
 
     <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-      <div class="prose-brutal">
+      <div class="prose-edit">
         <Content />
       </div>
 
-      <div class="mt-14 border-4 border-tinta bg-dorado p-6 shadow-dura sm:p-8">
-        <p class="font-display text-xl uppercase text-tinta sm:text-2xl">¿Quieres aprender con nosotros?</p>
-        <p class="mt-2 font-body font-medium text-tinta/90">
+      <div class="mt-14 rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-7 shadow-nube ring-1 ring-dorado/40 sm:p-9">
+        <p class="font-display text-xl font-semibold tracking-tight text-marino sm:text-2xl">¿Quieres aprender con nosotros?</p>
+        <p class="mt-2 font-body font-medium text-tinta/85">
           Estos temas se viven en los encuentros semanales de la JMV — la formación
           se disfruta mejor en comunidad.
         </p>
         <a
           href="/#contacto"
-          class="boton-brutal mt-5 inline-block border-4 border-tinta bg-azul px-6 py-3 font-display text-sm uppercase text-papel shadow-dura"
+          class="boton mt-5 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
         >
           Únete a JUMAVI →
         </a>
@@ -114,7 +113,7 @@ const migas = {
 
       <a
         href="/formacion"
-        class="mt-10 inline-block border-b-2 border-azul font-body text-sm font-bold uppercase tracking-widest text-azul transition-colors hover:text-tinta"
+        class="mt-10 inline-block border-b-2 border-dorado pb-0.5 font-body text-sm font-bold uppercase tracking-widest text-marino transition-colors hover:text-marino-noche"
       >
         ← Todos los temas
       </a>

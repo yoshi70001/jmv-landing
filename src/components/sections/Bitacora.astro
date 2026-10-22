@@ -7,20 +7,18 @@ const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 3);
 ---
 
-<section id="bitacora" class="scroll-mt-24 border-b-4 border-tinta bg-papel-sombra/60 py-20 sm:py-28">
+<section id="bitacora" class="scroll-mt-24 border-y border-tinta/10 bg-marfil-2/50 py-20 sm:py-28">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
-        <p class="inline-block rotate-1 border-4 border-tinta bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta shadow-dura-sm">
-          Crónicas de actividad
-        </p>
-        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
-          Bitá<span class="texto-contorno">cora</span>
+        <p class="chip">Crónicas de actividad</p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Bitá<span class="text-marino">cora</span>
         </h2>
       </div>
       <a
         href="/blog"
-        class="boton-brutal border-4 border-tinta bg-azul px-6 py-3.5 font-display text-sm uppercase text-papel shadow-dura sm:text-base"
+        class="boton bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
       >
         Ver todas →
       </a>
@@ -30,24 +28,28 @@ const ultimas = (await getCollection('blog', ({ data }) => !data.draft))
       {
         ultimas.map((entrada, i) => (
           <article
-            class="card-brutal flex flex-col border-4 border-tinta bg-papel shadow-dura"
+            class="tarjeta flex flex-col overflow-hidden"
             style={`--reveal-delay: ${i * 0.08}s`}
             data-reveal
           >
-            <a href={`/blog/${entrada.id}`} class="flex grow flex-col">
-              <div class="flex items-center justify-between gap-3 border-b-4 border-tinta bg-azul px-5 py-3">
-                <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-papel">
+            <a href={`/blog/${entrada.id}`} class="flex grow flex-col p-6">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-tinta/55">
                   {fechaLarga(entrada.data.pubDate)}
                 </time>
-                <span class="font-display text-xl text-dorado" aria-hidden="true">✦</span>
+                {entrada.data.tags[0] && (
+                  <span class="rounded-full bg-dorado-suave px-2.5 py-0.5 font-body text-[0.62rem] font-bold uppercase tracking-widest text-tinta/80">
+                    {entrada.data.tags[0]}
+                  </span>
+                )}
               </div>
-              <div class="flex grow flex-col p-5 sm:p-6">
-                <h3 class="font-display text-xl leading-tight uppercase">{entrada.data.title}</h3>
-                <p class="mt-3 grow text-sm leading-relaxed text-tinta/90">{entrada.data.description}</p>
-                <span class="mt-5 border-b-2 border-azul self-start font-body text-xs font-bold uppercase tracking-widest text-azul">
-                  Leer crónica →
-                </span>
-              </div>
+              <h3 class="mt-2 font-display text-xl font-semibold leading-snug tracking-tight text-tinta sm:text-2xl">
+                {entrada.data.title}
+              </h3>
+              <p class="mt-3 grow text-sm leading-relaxed text-tinta/80">{entrada.data.description}</p>
+              <span class="mt-5 self-start border-b-2 border-dorado pb-0.5 font-body text-xs font-bold uppercase tracking-widest text-marino transition-colors hover:text-marino-noche">
+                Leer crónica →
+              </span>
             </a>
           </article>
         ))

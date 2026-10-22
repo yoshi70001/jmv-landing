@@ -4,41 +4,33 @@ const voces = [
     quote: 'Llegué por una amiga y me quedé por la gente. Aquí encontré amigos que me empujan a ser mejor.',
     nombre: '[Nombre]',
     detalle: '17 años · [Parroquia]',
-    fondo: 'bg-azul',
-    texto: 'text-papel',
-    autor: 'text-dorado',
+    destacada: false,
   },
   {
     quote: 'Pensaba que la fe era aburrida. Después serví en una obra vicenciana y cambió todo.',
     nombre: '[Nombre]',
     detalle: '21 años · [Colegio vicentino]',
-    fondo: 'bg-dorado',
-    texto: 'text-tinta',
-    autor: 'text-azul',
+    destacada: true,
   },
   {
     quote: 'Ser JUMAVI es tener una segunda familia que celebra contigo y te acompaña cuando cuesta.',
     nombre: '[Nombre]',
     detalle: '24 años · [Ciudad]',
-    fondo: 'bg-papel',
-    texto: 'text-tinta',
-    autor: 'text-azul',
+    destacada: false,
   },
 ];
 ---
 
-<section id="voces" class="scroll-mt-24 border-b-4 border-tinta bg-papel py-20 sm:py-28">
+<section id="voces" class="scroll-mt-24 bg-marfil py-20 sm:py-28">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
-        <p class="inline-block -rotate-1 border-4 border-tinta bg-azul px-4 py-1 font-display text-sm uppercase tracking-widest text-papel shadow-dura-sm">
-          En sus propias palabras
-        </p>
-        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
-          Voces <span class="text-azul">JUMAVI</span>
+        <p class="chip">En sus propias palabras</p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Voces <span class="text-marino">JUMAVI</span>
         </h2>
       </div>
-      <p class="max-w-sm text-lg leading-relaxed font-medium">
+      <p class="max-w-sm text-lg leading-relaxed text-tinta/75">
         Jóvenes reales, historias reales. La nuestra empieza igual: alguien te invita.
       </p>
     </div>
@@ -48,23 +40,37 @@ const voces = [
         voces.map((voz, i) => (
           <figure
             class:list={[
-              'card-brutal flex flex-col justify-between gap-8 border-4 border-tinta p-6 shadow-dura sm:p-7',
-              voz.fondo,
-              voz.texto,
-              i === 1 && 'md:-translate-y-4',
+              'flex flex-col justify-between gap-8 rounded-3xl p-7 sm:p-8',
+              voz.destacada
+                ? 'bg-marino text-marfil shadow-nube-lg md:-translate-y-3'
+                : 'tarjeta',
             ]}
             style={`--reveal-delay: ${0.1 + i * 0.08}s`}
             data-reveal
           >
             <blockquote>
-              <span class:list={['block font-display text-5xl leading-none', voz.autor]} aria-hidden="true">
+              <span class:list={[
+                'block font-display text-5xl leading-none font-semibold',
+                voz.destacada ? 'text-dorado' : 'text-dorado',
+              ]} aria-hidden="true">
                 «
               </span>
-              <p class="mt-2 text-lg leading-relaxed font-medium">{voz.quote}</p>
+              <p class:list={[
+                'mt-2 font-display text-xl font-medium italic leading-relaxed',
+                voz.destacada ? 'text-marfil' : 'text-tinta',
+              ]}>
+                {voz.quote}
+              </p>
             </blockquote>
-            <figcaption class:list={['border-t-2 pt-4 font-body text-sm font-bold uppercase tracking-widest', voz.texto === 'text-papel' ? 'border-papel/30' : 'border-tinta/20']}>
+            <figcaption class:list={[
+              'border-t pt-4 font-body text-sm font-bold uppercase tracking-widest',
+              voz.destacada ? 'border-marfil/25 text-marfil' : 'border-tinta/15 text-tinta',
+            ]}>
               {voz.nombre}
-              <span class:list={['mt-0.5 block text-xs font-medium normal-case tracking-normal', voz.texto === 'text-papel' ? 'text-papel/80' : 'text-tinta/70']}>
+              <span class:list={[
+                'mt-0.5 block text-xs font-medium normal-case tracking-normal',
+                voz.destacada ? 'text-marfil/75' : 'text-tinta/65',
+              ]}>
                 {voz.detalle}
               </span>
             </figcaption>

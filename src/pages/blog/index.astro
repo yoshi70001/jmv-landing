@@ -30,30 +30,28 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
       datePublished: entrada.data.pubDate.toISOString(),
     })),
   })} />
-  <section class="border-b-4 border-tinta bg-azul-profundo pt-28 pb-14 sm:pt-32 sm:pb-20">
+  <section class="bg-marino pt-28 pb-14 sm:pt-32 sm:pb-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-      <p class="inline-block -rotate-1 border-4 border-papel bg-dorado px-4 py-1 font-display text-sm uppercase tracking-widest text-tinta">
-        Crónicas de actividad
-      </p>
-      <h1 class="mt-6 font-display text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] uppercase text-papel">
+      <p class="chip chip-invertida">Crónicas de actividad</p>
+      <h1 class="mt-6 font-display text-[clamp(2.8rem,8vw,6.5rem)] leading-[1.02] font-semibold tracking-tight text-marfil">
         Bitá<span class="text-dorado">cora</span>
       </h1>
-      <p class="mt-4 max-w-xl text-lg leading-relaxed font-medium text-papel/90">
+      <p class="mt-4 max-w-xl text-lg leading-relaxed text-marfil/85">
         Lo que hicimos, lo que aprendimos y lo que se viene. Una crónica por cada
         semana o mes de actividad.
       </p>
     </div>
   </section>
 
-  <section class="bg-papel py-14 sm:py-20">
+  <section class="bg-marfil py-14 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <!-- Filtro de tags -->
-      <div class="mb-10 flex flex-wrap gap-3" role="group" aria-label="Filtrar por etiqueta">
+      <div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtrar por etiqueta">
         <button
           type="button"
           data-filtro-tag="todas"
           aria-pressed="true"
-          class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+          class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
         >
           Todas
         </button>
@@ -63,7 +61,7 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
               type="button"
               data-filtro-tag={tag}
               aria-pressed="false"
-              class="border-2 border-tinta px-3 py-1.5 font-body text-xs font-bold uppercase tracking-widest transition-colors aria-pressed:bg-tinta aria-pressed:text-papel"
+              class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
             >
               {tag}
             </button>
@@ -76,32 +74,32 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
           entradas.map((entrada, i) => (
             <article
               data-post-tags={entrada.data.tags.join(',')}
-              class="card-brutal flex flex-col border-4 border-tinta bg-papel shadow-dura"
+              class="tarjeta flex flex-col overflow-hidden"
               style={`--reveal-delay: ${(i % 3) * 0.06}s`}
               data-reveal
             >
               <a href={`/blog/${entrada.id}`} class="flex grow flex-col">
-                <div class="flex items-center justify-between gap-3 border-b-4 border-tinta bg-azul px-5 py-3">
-                  <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-papel">
+                <div class="flex items-center justify-between gap-3 bg-celeste-niebla px-5 py-3">
+                  <time datetime={entrada.data.pubDate.toISOString()} class="font-body text-xs font-bold uppercase tracking-widest text-marino">
                     {fechaLarga(entrada.data.pubDate)}
                   </time>
-                  <span class="font-display text-xl text-dorado" aria-hidden="true">✦</span>
+                  <span class="text-dorado" aria-hidden="true">✦</span>
                 </div>
-                <div class="flex grow flex-col p-5 sm:p-6">
-                  <h2 class="font-display text-xl leading-tight uppercase sm:text-2xl">
+                <div class="flex grow flex-col p-6">
+                  <h2 class="font-display text-xl font-semibold leading-snug tracking-tight text-tinta sm:text-2xl">
                     {entrada.data.title}
                   </h2>
-                  <p class="mt-3 grow text-sm leading-relaxed text-tinta/90">
+                  <p class="mt-3 grow text-sm leading-relaxed text-tinta/80">
                     {entrada.data.description}
                   </p>
                   <div class="mt-5 flex flex-wrap items-center gap-2">
                     {entrada.data.tags.map((tag) => (
-                      <span class="border-2 border-tinta bg-dorado px-2 py-0.5 font-body text-[0.65rem] font-bold uppercase tracking-widest text-tinta">
+                      <span class="rounded-full bg-dorado-suave px-2.5 py-0.5 font-body text-[0.65rem] font-bold uppercase tracking-widest text-tinta/85">
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <span class="mt-4 border-b-2 border-azul font-body text-xs font-bold uppercase tracking-widest text-azul">
+                  <span class="mt-4 border-b-2 border-dorado pb-0.5 self-start font-body text-xs font-bold uppercase tracking-widest text-marino">
                     Leer crónica →
                   </span>
                 </div>
@@ -111,7 +109,7 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
         }
       </div>
 
-      <p id="blog-vacio" hidden class="border-4 border-dashed border-tinta/40 p-10 text-center font-body font-bold uppercase tracking-widest text-tinta/60">
+      <p id="blog-vacio" hidden class="rounded-2xl border-2 border-dashed border-tinta/30 p-10 text-center font-body font-bold uppercase tracking-widest text-tinta/55">
         No hay crónicas con esa etiqueta (todavía).
       </p>
     </div>

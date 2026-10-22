@@ -1,139 +1,63 @@
 ---
-import { Image } from 'astro:assets';
-import aparicionCatalina from '../../assets/aparicion-catalina.jpg';
-import sanVicente from '../../assets/san-vicente.jpg';
-
-const hitos = [
-  {
-    anio: '1830',
-    titulo: 'Las apariciones',
-    fondo: 'bg-azul',
-    textoAño: 'text-papel',
-    tagClaro: false,
-    texto: 'Todo empezó en París: la Virgen María se aparece a Santa Catalina Labouré, una joven como tú, y le pide fundar una asociación de jóvenes bajo su protección. El 27 de noviembre le entrega la Medalla Milagrosa.',
-    tag: 'Origen histórico',
-    imagen: {
-      src: aparicionCatalina,
-      alt: 'Pintura de la aparición de la Virgen María a Santa Catalina Labouré arrodillada, por José María Romero López, 1854',
-      caption: 'La aparición ✦ 1854',
-    },
-  },
-  {
-    anio: '1847',
-    titulo: 'Aprobación de la Iglesia',
-    fondo: 'bg-dorado',
-    textoAño: 'text-tinta',
-    tagClaro: true,
-    texto: 'La Iglesia aprueba la asociación de Hijos e Hijas de María. Se consolidan los dos pilares que aún nos mueven: María como modelo de vida y San Vicente de Paúl como maestro de servicio.',
-    tag: 'Rescriptos 1847 / 1850',
-    imagen: {
-      src: sanVicente,
-      alt: 'Retrato clásico de San Vicente de Paúl con bonete negro y cuello blanco, pintura del Musée Carnavalet',
-      caption: 'San Vicente de Paúl',
-    },
-  },
-  {
-    anio: '1858',
-    titulo: 'La Familia Vicentina llega al Perú',
-    fondo: 'bg-azul-cielo',
-    textoAño: 'text-tinta',
-    tagClaro: true,
-    texto: 'Las Hijas de la Caridad y los Padres Vicentinos desembarcan en el Perú un 2 de febrero. Nace la raíz vicentina que, con los años, nos incluiría a nosotros.',
-    tag: '2 de febrero',
-  },
-  {
-    anio: '1999',
-    titulo: 'Nace la JMV internacional',
-    fondo: 'bg-tinta',
-    textoAño: 'text-papel',
-    tagClaro: false,
-    texto: 'La Santa Sede aprueba los Estatutos Internacionales y el nombre oficial: Juventud Mariana Vicentina. Lo que empezó como un llamado a una joven, hoy es un movimiento mundial.',
-    tag: 'Formalización internacional',
-  },
-];
+import { hitosResumen, presente } from '../../lib/datos/hitos';
 ---
 
-<section id="historia" class="scroll-mt-24 border-b-4 border-tinta bg-papel-sombra/60 py-20 sm:py-28">
+<section id="historia" class="scroll-mt-24 bg-marfil py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
-      <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
-        Nuestra<br /><span class="text-azul">historia</span>
-      </h2>
-      <p class="max-w-sm border-4 border-tinta bg-papel px-5 py-4 text-sm leading-relaxed font-medium shadow-dura">
-        <strong class="font-display uppercase">1830 → 1999.</strong>
-        1830 es el origen de la historia; 1999, cuando se formaliza el movimiento internacional.
-      </p>
+      <div>
+        <p class="chip">Desde 1830</p>
+        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Nuestra <span class="text-marino">historia</span>
+        </h2>
+      </div>
+      <a
+        href="/historia"
+        class="boton bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+      >
+        Descubre nuestra historia →
+      </a>
     </div>
 
-    <ol class="relative mt-16 space-y-10 border-l-4 border-tinta pl-6 sm:pl-10 lg:space-y-14">
-      {
-        hitos.map((hito, i) => (
-          <li class="relative" data-reveal style={`--reveal-delay: ${i * 0.06}s`}>
-            <span class:list={[
-              'absolute top-6 -left-[calc(1.5rem+11px)] h-5 w-5 border-4 border-tinta sm:-left-[calc(2.5rem+11px)]',
-              hito.fondo,
-            ]} aria-hidden="true" />
+    <p class="mt-8 max-w-2xl text-lg leading-relaxed text-tinta/85" data-reveal style="--reveal-delay: 0.06s">
+      Lo que empezó en París con una joven y una apari­ción, hoy es un movimiento
+      mundial que también camina en el Perú. Estos son los hitos que nos trajeron hasta aquí.
+    </p>
 
-            <article class="card-brutal border-4 border-tinta bg-papel shadow-dura">
-              <div class:list={[
-                'flex flex-wrap items-center justify-between gap-3 border-b-4 border-tinta px-5 py-3 sm:px-7',
-                hito.fondo,
-              ]}>
-                <span class:list={['font-display text-4xl sm:text-5xl', hito.textoAño]}>
-                  {hito.anio}
-                </span>
-                <span class:list={[
-                  '-rotate-1 border-2 px-3 py-1 font-body text-[0.65rem] font-bold uppercase tracking-[0.18em]',
-                  hito.tagClaro
-                    ? 'border-tinta bg-papel text-tinta'
-                    : 'border-papel bg-transparent text-papel',
-                ]}>
-                  {hito.tag}
-                </span>
-              </div>
-              <div class="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-start sm:gap-6 sm:px-7">
-                <div class="grow">
-                  <h3 class="font-display text-xl uppercase sm:text-2xl">{hito.titulo}</h3>
-                  <p class="mt-3 max-w-3xl leading-relaxed text-tinta/90">{hito.texto}</p>
-                </div>
-                {
-                  hito.imagen && (
-                    <figure class:list={[
-                      'w-40 shrink-0 border-4 border-tinta shadow-dura-sm sm:w-44',
-                      hito.tagClaro ? 'rotate-1' : '-rotate-1',
-                    ]}>
-                      <Image
-                        src={hito.imagen.src}
-                        alt={hito.imagen.alt}
-                        widths={[220, 440]}
-                        sizes="176px"
-                        class="filtro-bn"
-                        loading="lazy"
-                      />
-                      <figcaption class="border-t-2 border-tinta bg-papel px-2 py-1 text-center font-display text-[0.6rem] uppercase tracking-widest text-tinta">
-                        {hito.imagen.caption}
-                      </figcaption>
-                    </figure>
-                  )
-                }
-              </div>
-            </article>
+    <ol class="mt-12 grid gap-6 md:grid-cols-3" data-reveal style="--reveal-delay: 0.1s">
+      {
+        hitosResumen.map((hito, i) => (
+          <li
+            class="tarjeta relative flex flex-col p-6 sm:p-7"
+            style={`--reveal-delay: ${0.1 + i * 0.06}s`}
+            data-reveal
+          >
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="font-display text-4xl font-semibold italic text-marino">{hito.anio}</span>
+              <span class="chip">{hito.tag}</span>
+            </div>
+            <h3 class="mt-3 font-display text-xl font-semibold tracking-tight text-tinta">{hito.titulo}</h3>
+            <p class="mt-2.5 grow text-sm leading-relaxed text-tinta/80">{hito.texto}</p>
           </li>
         ))
       }
-
-      <li class="relative" data-reveal>
-        <span class="absolute top-6 -left-[calc(1.5rem+11px)] h-5 w-5 border-4 border-tinta bg-dorado-oscuro sm:-left-[calc(2.5rem+11px)]" aria-hidden="true"></span>
-        <article class="rayas-azules border-4 border-tinta p-1 shadow-dura">
-          <div class="flex flex-wrap items-center justify-between gap-4 border-4 border-tinta bg-dorado px-5 py-6 sm:px-7">
-            <span class="font-display text-4xl uppercase text-tinta sm:text-5xl">Hoy</span>
-            <p class="max-w-md font-body font-bold text-tinta">
-              Presentes en <span class="font-display text-2xl">78 países</span> con más de <span class="font-display text-2xl">+30 000 jóvenes</span> que viven el carisma
-              mariano y vicenciano.
-            </p>
-          </div>
-        </article>
-      </li>
     </ol>
+
+    <div
+      class="mt-8 flex flex-col items-start justify-between gap-5 rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-7 shadow-nube ring-1 ring-dorado/40 sm:flex-row sm:items-center sm:p-8"
+      data-reveal
+      style="--reveal-delay: 0.2s"
+    >
+      <p class="max-w-xl font-body font-bold text-tinta">
+        <span class="mr-2 font-display text-2xl font-semibold text-marino">Hoy.</span>
+        {presente.texto}
+      </p>
+      <a
+        href="/historia"
+        class="shrink-0 rounded-full border-2 border-marino/25 px-5 py-2.5 font-body text-xs font-bold uppercase tracking-widest text-marino transition-colors hover:border-marino hover:bg-celeste-niebla"
+      >
+        Ver cronología completa →
+      </a>
+    </div>
   </div>
 </section>

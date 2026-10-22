@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { fotos } from '../../lib/fotos';
+
+/**
+ * Mosaico editorial: composición 4×3 con una foto protagonista 2×2.
+ * Fotos exclusivas de la galería (sin repetir hero, pilares ni Perú).
+ * Spans: 4+1+1+2+2+1+1 = 12 celdas = 3 filas exactas sin huecos.
+ */
+const composicion = [
+  { foto: fotos.galeria.filaA[0], spans: 'col-span-2 row-span-2' }, // galeria-01
+  { foto: fotos.galeria.filaA[1], spans: '' }, // galeria-03
+  { foto: fotos.galeria.filaA[2], spans: '' }, // galeria-05
+  { foto: fotos.galeria.filaA[3], spans: 'col-span-2' }, // galeria-07
+  { foto: fotos.galeria.filaB[0], spans: 'col-span-2' }, // galeria-02
+  { foto: fotos.galeria.filaB[1], spans: '' }, // galeria-04
+  { foto: fotos.galeria.filaB[2], spans: '' }, // galeria-06
+];
+---
+
+<section id="galeria" class="scroll-mt-24 border-y border-tinta/10 bg-marfil-2/50 py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <p class="chip">Diez años de historia en fotos</p>
+        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Vive <span class="text-marino">JUMAVI</span>
+        </h2>
+      </div>
+      <p class="max-w-sm text-lg leading-relaxed text-tinta/75">
+        Encuentros, peregrinaciones, misas y jornadas de servicio:
+        así se ve la alegría de caminar juntos.
+      </p>
+    </div>
+
+    <div
+      class="mt-14 grid grid-cols-2 auto-rows-[150px] gap-3 sm:auto-rows-[190px] sm:gap-4 md:grid-cols-4 md:auto-rows-[200px]"
+      data-reveal
+      style="--reveal-delay: 0.1s"
+    >
+      {
+        composicion.map(({ foto, spans }) => (
+          <figure class:list={['marco-foto group h-full w-full overflow-hidden bg-celeste-niebla', spans]}>
+            <Image
+              src={foto.src}
+              alt={foto.alt}
+              widths={[400, 700, 1100]}
+              sizes="(min-width: 768px) 40vw, 50vw"
+              quality={75}
+              class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
+              loading="lazy"
+            />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

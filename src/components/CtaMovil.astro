@@ -1,12 +1,13 @@
 ---
-const whatsapp = 'https://wa.me/51999999999';
+import { contacto } from '../lib/datos/contacto';
 ---
 
 <a
-  href={whatsapp}
+  href={contacto.whatsapp.enlace}
   target="_blank"
   rel="noopener noreferrer"
-  class="fixed inset-x-0 bottom-0 z-30 flex min-h-[56px] items-center justify-center gap-3 border-t-4 border-tinta bg-dorado px-4 font-display text-base uppercase text-tinta shadow-[0_-4px_0_0_var(--color-tinta)] lg:hidden"
+  transition:persist
+  class="fixed inset-x-0 bottom-0 z-30 flex min-h-[54px] items-center justify-center gap-2.5 bg-dorado px-4 font-body text-sm font-bold uppercase tracking-widest text-tinta shadow-[0_-8px_24px_rgb(36_50_70/0.18)] lg:hidden"
 >
   Únete por WhatsApp
   <span aria-hidden="true">✦</span>

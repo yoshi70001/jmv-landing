@@ -1,81 +1,88 @@
 ---
+import { Image } from 'astro:assets';
+import { fotos } from '../../lib/fotos';
+
 const notas = [
   {
     num: '01',
     nombre: 'Eclesial',
     descripcion: 'Caminas en comunión con la Iglesia: oración, sacramentos y comunidad.',
-    fondo: 'bg-azul',
-    texto: 'text-papel',
+    foto: fotos.pilares.eclesial,
+    acento: 'bg-marino',
   },
   {
     num: '02',
     nombre: 'Laical',
     descripcion: 'Eres laico: vives tu fe en lo cotidiano — el estudio, el trabajo, tu barrio.',
-    fondo: 'bg-papel',
-    texto: 'text-tinta',
+    foto: fotos.pilares.laical,
+    acento: 'bg-celeste',
   },
   {
     num: '03',
     nombre: 'Mariana',
     descripcion: 'María es tu modelo. De ella aprendes a decir «sí» y a servir con alegría.',
-    fondo: 'bg-dorado',
-    texto: 'text-tinta',
+    foto: fotos.pilares.mariana,
+    acento: 'bg-dorado',
   },
   {
     num: '04',
     nombre: 'Vicenciana',
     descripcion: 'Sigues a San Vicente de Paúl: encontrar a Cristo en quien más lo necesita.',
-    fondo: 'bg-azul-profundo',
-    texto: 'text-papel',
+    foto: fotos.pilares.vicenciana,
+    acento: 'bg-tinta',
   },
 ];
 ---
 
-<section id="identidad" class="scroll-mt-24 border-b-4 border-tinta bg-papel py-20 sm:py-28">
+<section id="identidad" class="scroll-mt-24 bg-marfil py-20 sm:py-28">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
-        <p class="inline-block rotate-1 border-4 border-tinta bg-tinta px-4 py-1 font-display text-sm uppercase tracking-widest text-papel shadow-dura-sm">
-          4 cosas que nos hacen JUMAVI
-        </p>
-        <h2 class="mt-6 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-none uppercase">
-          Nuestra <span class="texto-contorno">identidad</span>
+        <p class="chip">4 cosas que nos hacen JUMAVI</p>
+        <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Nuestra <span class="text-marino">identidad</span>
         </h2>
       </div>
-      <p class="max-w-sm text-lg leading-relaxed font-medium">
+      <p class="max-w-sm text-lg leading-relaxed text-tinta/75">
         No es un grupo más de la parroquia: estos cuatro rasgos definen a la JMV
         en los 78 países donde está presente.
       </p>
     </div>
 
-    <div class="mt-14 grid gap-6 sm:grid-cols-2" data-reveal style="--reveal-delay: 0.1s">
+    <div class="mt-14 grid gap-7 sm:grid-cols-2" data-reveal style="--reveal-delay: 0.1s">
       {
         notas.map((nota, i) => (
           <article
             class:list={[
-              'card-brutal border-4 border-tinta p-6 shadow-dura sm:p-8',
-              nota.fondo,
-              nota.texto,
-              i % 2 === 1 && 'sm:translate-y-6',
+              'tarjeta group overflow-hidden',
+              i % 2 === 1 && 'sm:translate-y-5',
             ]}
             style={`--reveal-delay: ${0.1 + i * 0.06}s`}
             data-reveal
           >
-            <span class:list={[
-              'font-display text-6xl leading-none sm:text-7xl',
-              nota.texto === 'text-papel' ? 'text-dorado' : 'text-azul',
-            ]}>
-              {nota.num}
-            </span>
-            <h3 class="mt-4 font-display text-2xl uppercase tracking-wide sm:text-3xl">
-              {nota.nombre}
-            </h3>
-            <p class:list={[
-              'mt-3 max-w-md leading-relaxed',
-              nota.texto === 'text-papel' ? 'text-papel/90' : 'text-tinta/90',
-            ]}>
-              {nota.descripcion}
-            </p>
+            <div class="relative bg-celeste-niebla">
+              <Image
+                src={nota.foto.src}
+                alt={nota.foto.alt}
+                widths={[480, 800, 1100]}
+                sizes="(min-width: 640px) 44vw, 92vw"
+                quality={75}
+                class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <span class={`absolute inset-x-0 top-0 h-1.5 ${nota.acento}`} aria-hidden="true" />
+            </div>
+            <div class="p-6 sm:p-8">
+              <span class="font-display text-lg font-semibold italic text-dorado-tinta">
+                {nota.num}.
+              </span>
+              <h3 class="mt-1 font-display text-2xl font-semibold tracking-tight text-marino sm:text-3xl">
+                {nota.nombre}
+              </h3>
+              <p class="mt-3 max-w-md leading-relaxed text-tinta/80">
+                {nota.descripcion}
+              </p>
+            </div>
           </article>
         ))
       }

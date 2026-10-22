@@ -3,6 +3,12 @@ dist/
 # generated types
 .astro/
 
+# capturas de auditoría visual (Playwright, regenerables)
+capturas/
+
+# artifacts de sesión ZCode
+.zcode/
+
 # dependencies
 node_modules/
 

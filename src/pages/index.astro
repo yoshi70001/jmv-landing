@@ -1,20 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/sections/Hero.astro';
-import Historia from '../components/sections/Historia.astro';
+import QueEs from '../components/sections/QueEs.astro';
 import Identidad from '../components/sections/Identidad.astro';
 import Peru from '../components/sections/Peru.astro';
-import Testimonios from '../components/sections/Testimonios.astro';
+import Encuentros from '../components/sections/Encuentros.astro';
+import Galeria from '../components/sections/Galeria.astro';
+import Voces from '../components/sections/Voces.astro';
 import Bitacora from '../components/sections/Bitacora.astro';
+import Historia from '../components/sections/Historia.astro';
 import Contacto from '../components/sections/Contacto.astro';
 ---
 
+<!--
+  Recorrido narrativo:
+  Esto somos → Así vivimos nuestra fe → Estas son nuestras actividades
+  → Tú también puedes formar parte.
+-->
 <Layout>
   <Hero />
-  <Historia />
+  <QueEs />
   <Identidad />
   <Peru />
-  <Testimonios />
+  <Encuentros />
+  <Galeria />
+  <Voces />
   <Bitacora />
+  <Historia />
   <Contacto />
 </Layout>

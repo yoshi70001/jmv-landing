@@ -1,42 +1,64 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  /* Editorial fotográfico juvenil: serif elegante + sans moderna */
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-body: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
 
-  /* Paleta mariana — brutalismo */
-  --color-papel: oklch(96.3% 0.017 85);
-  --color-papel-sombra: oklch(88% 0.03 85);
-  --color-tinta: oklch(23% 0.045 265);
-  --color-azul: oklch(45% 0.17 265);
-  --color-azul-profundo: oklch(29% 0.11 265);
-  --color-azul-cielo: oklch(76% 0.085 265);
-  --color-dorado: oklch(80% 0.155 85);
-  --color-dorado-oscuro: oklch(64% 0.15 78);
+  /* Paleta JMV — mariano, celeste, marfil, dorado, tinta */
+  --color-marfil: #f8f5ef;
+  --color-marfil-2: #efe9dd;
+  --color-marino: #174782;
+  --color-marino-noche: #0e315e;
+  --color-celeste: #76b6dd;
+  --color-celeste-niebla: #ddebf5;
+  --color-dorado: #e5b75b;
+  --color-dorado-suave: #f4e3bd;
+  /* Dorado oscurecido para TEXTO sobre fondos claros (contraste WCAG) */
+  --color-dorado-tinta: #a97e1f;
+  --color-tinta: #243246;
 
-  /* Sombras duras, sin blur */
-  --shadow-dura-sm: 3px 3px 0 0 var(--color-tinta);
-  --shadow-dura: 6px 6px 0 0 var(--color-tinta);
-  --shadow-dura-lg: 10px 10px 0 0 var(--color-tinta);
-  --shadow-dura-dorada: 6px 6px 0 0 var(--color-dorado-oscuro);
+  /* Sombras suaves (moderno cálido) */
+  --shadow-nube-sm: 0 1px 2px rgb(36 50 70 / 0.05), 0 2px 10px rgb(36 50 70 / 0.07);
+  --shadow-nube: 0 2px 6px rgb(36 50 70 / 0.06), 0 10px 28px rgb(36 50 70 / 0.1);
+  --shadow-nube-lg: 0 4px 10px rgb(36 50 70 / 0.07), 0 20px 48px rgb(36 50 70 / 0.14);
+  /* Guiño brutalista: sombra dura tinta — contrasta con cualquier color de botón */
+  --shadow-toque: 3px 3px 0 0 var(--color-tinta);
 
-  --animate-marquee: marquee 26s linear infinite;
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-inverso: marquee-inverso 48s linear infinite;
+  --animate-flotar: flotar 3.5s ease-in-out infinite;
 
   @keyframes marquee {
     to {
       transform: translateX(-50%);
     }
   }
-}
 
-html {
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  @keyframes marquee-inverso {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
+
+  @keyframes flotar {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+}
+
+/* El desplazamiento suave solo aplica a anclas de la misma página (vía JS);
+   'auto' evita saltos visibles con las view transitions entre páginas */
+html {
+  scroll-behavior: auto;
 }
 
 ::selection {
@@ -44,26 +66,63 @@ html {
   color: var(--color-tinta);
 }
 
-/* Cinta de peligro — franjas diagonales */
+/* ── Utilidades editoriales ─────────────────────────────────── */
+
+/* Subrayado dorado tipo marcador editorial */
+.subrayado {
+  background-image: linear-gradient(var(--color-dorado), var(--color-dorado));
+  background-size: 100% 0.32em;
+  background-position: 0 92%;
+  background-repeat: no-repeat;
+}
+
+/* Chip / etiqueta de sección */
+.chip {
+  display: inline-block;
+  border-radius: 9999px;
+  border: 1.5px solid rgb(36 50 70 / 0.14);
+  background: #fff;
+  padding: 0.4rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-marino);
+  box-shadow: var(--shadow-nube-sm);
+}
+
+.chip-invertida {
+  border-color: rgb(248 245 239 / 0.25);
+  background: rgb(255 255 255 / 0.08);
+  color: var(--color-marfil);
+  box-shadow: none;
+}
+
+/* Marco editorial para fotografías */
+.marco-foto {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-nube-lg);
+}
+
+/* Franja decorativa refinada (uso puntual, herencia brutalista) */
 .rayas {
   background-image: repeating-linear-gradient(
     -45deg,
-    var(--color-tinta) 0 14px,
-    var(--color-dorado) 14px 28px
+    var(--color-marino) 0 7px,
+    transparent 7px 14px
   );
+  opacity: 0.35;
 }
 
-.rayas-azules {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--color-azul) 0 14px,
-    var(--color-papel) 14px 28px
-  );
-}
-
-/* Texto con contorno (sin relleno) */
+/* Texto con contorno */
 .texto-contorno {
-  -webkit-text-stroke: 2px var(--color-tinta);
+  -webkit-text-stroke: 1.5px var(--color-tinta);
+  color: transparent;
+}
+
+.texto-contorno-marfil {
+  -webkit-text-stroke: 1.5px rgb(248 245 239 / 0.55);
   color: transparent;
 }
 
@@ -72,15 +131,11 @@ html {
   filter: grayscale(100%) contrast(1.08);
 }
 
-.texto-contorno-papel {
-  -webkit-text-stroke: 2px var(--color-papel);
-  color: transparent;
-}
+/* ── Reveals al hacer scroll ────────────────────────────────── */
 
-/* Reveals al hacer scroll */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(24px);
   transition:
     opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -92,6 +147,15 @@ html {
   transform: none;
 }
 
+/* Navegaciones internas: una sola capa de animación (el crossfade
+   de la view transition); las reveals escalonadas quedan solo para
+   la carga inicial del sitio */
+html.sin-reveal [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1;
@@ -99,126 +163,187 @@ html {
     transition: none;
   }
 
-  .animate-marquee {
+  .animate-marquee,
+  .animate-marquee-inverso,
+  .animate-flotar {
     animation: none !important;
   }
 }
 
-/* Botones y cards brutalistas: la sombra se "aplasta" al presionar */
-.boton-brutal {
+/* ── Botones y tarjetas ─────────────────────────────────────── */
+
+.boton {
+  display: inline-block;
+  border-radius: 9999px;
+  font-weight: 700;
+  box-shadow: var(--shadow-toque);
   transition:
     transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.15s ease;
 }
 
-.boton-brutal:hover {
-  transform: translate(3px, 3px);
+.boton:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 var(--color-tinta);
+}
+
+.boton:active {
+  transform: translate(3px, 3px) scale(0.98);
   box-shadow: 0 0 0 0 var(--color-tinta);
 }
 
-.boton-brutal:focus-visible {
-  outline: 4px solid var(--color-dorado-oscuro);
+.boton:focus-visible {
+  outline: 3px solid var(--color-dorado);
   outline-offset: 3px;
 }
 
-.card-brutal {
+/* Foco visible para enlaces de navegación */
+.enlace-nav:focus-visible {
+  outline: 2.5px solid var(--color-dorado);
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+
+.tarjeta {
+  border-radius: 1.5rem;
+  background: #fff;
+  box-shadow: var(--shadow-nube);
   transition:
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.card-brutal:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 10px 10px 0 0 var(--color-tinta);
+.tarjeta:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-nube-lg);
 }
 
-/* Contenido Markdown de la bitácora */
-.prose-brutal {
+/* ── Transiciones de vista (ClientRouter) ─────────────────────
+   Crossfade puro (sin desplazamientos): salida rápida, entrada
+   que asienta suavemente. El header persiste (transition:persist). */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: 140ms cubic-bezier(0.25, 1, 0.5, 1) both vt-salida;
+  }
+
+  ::view-transition-new(root) {
+    animation: 240ms cubic-bezier(0.22, 1, 0.36, 1) both vt-entrada;
+  }
+}
+
+@keyframes vt-salida {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-entrada {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Marquees de la galería: pausa al pasar el cursor */
+.marquee-zona:hover .animate-marquee,
+.marquee-zona:hover .animate-marquee-inverso {
+  animation-play-state: paused;
+}
+
+/* ── Contenido Markdown del blog y la formación ─────────────── */
+
+.prose-edit {
   font-size: 1.05rem;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
-.prose-brutal > * + * {
+.prose-edit > * + * {
   margin-top: 1.25em;
 }
 
-.prose-brutal h2 {
+.prose-edit h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.5vw, 2rem);
-  text-transform: uppercase;
-  line-height: 1.15;
-  border-bottom: 4px solid var(--color-tinta);
-  padding-bottom: 0.35em;
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-marino);
   margin-top: 2em;
 }
 
-.prose-brutal h3 {
+.prose-edit h3 {
   font-family: var(--font-display);
-  font-size: 1.2rem;
-  text-transform: uppercase;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-tinta);
   margin-top: 1.75em;
 }
 
-.prose-brutal a {
-  color: var(--color-azul);
+.prose-edit a {
+  color: var(--color-marino);
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--color-dorado);
+  text-decoration-thickness: 2.5px;
+  text-underline-offset: 4px;
 }
 
-.prose-brutal a:hover {
-  background: var(--color-dorado);
-  color: var(--color-tinta);
+.prose-edit a:hover {
+  background: var(--color-dorado-suave);
 }
 
-.prose-brutal strong {
-  color: var(--color-azul);
+.prose-edit strong {
+  color: var(--color-marino);
 }
 
-.prose-brutal blockquote {
-  border-left: 10px solid var(--color-dorado);
-  background: color-mix(in oklch, var(--color-papel-sombra) 55%, transparent);
-  padding: 1em 1.25em;
-  font-weight: 500;
-  font-size: 1.15em;
+.prose-edit blockquote {
+  border-left: 5px solid var(--color-dorado);
+  background: var(--color-celeste-niebla);
+  border-radius: 0 1rem 1rem 0;
+  padding: 1em 1.4em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.12em;
+  color: var(--color-marino-noche);
 }
 
-.prose-brutal ul,
-.prose-brutal ol {
+.prose-edit ul,
+.prose-edit ol {
   padding-left: 1.5em;
 }
 
-.prose-brutal ul li {
+.prose-edit ul li {
   list-style: none;
   position: relative;
 }
 
-.prose-brutal ul li::before {
+.prose-edit ul li::before {
   content: '✦';
   position: absolute;
   left: -1.5em;
-  color: var(--color-dorado-oscuro);
+  color: var(--color-dorado);
   font-weight: 700;
 }
 
-.prose-brutal ol li::marker {
+.prose-edit ol li::marker {
   font-family: var(--font-display);
-  color: var(--color-azul);
+  font-weight: 600;
+  color: var(--color-marino);
 }
 
-.prose-brutal em {
-  color: color-mix(in oklch, var(--color-tinta) 75%, transparent);
+.prose-edit em {
+  color: rgb(36 50 70 / 0.75);
   font-style: italic;
 }
 
-.prose-brutal hr {
+.prose-edit hr {
   border: none;
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--color-tinta) 0 10px,
-    var(--color-dorado) 10px 20px
-  );
-  margin: 2em 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-dorado), var(--color-celeste), transparent);
+  margin: 2.5em 0;
+}
+
+.prose-edit img {
+  border-radius: 1rem;
+  box-shadow: var(--shadow-nube);
 }

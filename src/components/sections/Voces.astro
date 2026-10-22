@@ -1,0 +1,90 @@
+---
+import { vocesAutorizadas } from '../../lib/datos/voces';
+
+const autorizadas = vocesAutorizadas.slice(0, 3);
+const [destacada, ...resto] = autorizadas;
+---
+
+<section id="voces" class="scroll-mt-24 bg-marfil py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <p class="chip">En sus propias palabras</p>
+        <h2 class="mt-6 font-display text-[clamp(2.2rem,5.5vw,4.2rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+          Voces <span class="text-marino">JUMAVI</span>
+        </h2>
+      </div>
+      <p class="max-w-sm text-lg leading-relaxed text-tinta/75">
+        Jóvenes reales, historias reales. La nuestra empieza igual: alguien te invita.
+      </p>
+    </div>
+
+    {
+      autorizadas.length > 0 ? (
+        <div class="mt-14 grid gap-6 md:grid-cols-2">
+          <figure
+            class="flex flex-col justify-between gap-8 rounded-3xl bg-marino p-8 text-marfil shadow-nube-lg md:col-span-2 sm:p-10"
+            data-reveal
+          >
+            <blockquote>
+              <span class="block font-display text-6xl leading-none font-semibold text-dorado" aria-hidden="true">
+                «
+              </span>
+              <p class="mt-2 max-w-3xl font-display text-2xl font-medium italic leading-relaxed sm:text-3xl">
+                {destacada.quote}
+              </p>
+            </blockquote>
+            <figcaption class="border-t border-marfil/25 pt-4 font-body text-sm font-bold uppercase tracking-widest">
+              {destacada.nombre}
+              <span class="mt-0.5 block text-xs font-medium normal-case tracking-normal text-marfil/75">
+                {destacada.detalle}
+              </span>
+            </figcaption>
+          </figure>
+
+          {resto.map((voz, i) => (
+            <figure
+              class="tarjeta flex flex-col justify-between gap-8 p-7 sm:p-8"
+              style={`--reveal-delay: ${0.1 + i * 0.08}s`}
+              data-reveal
+            >
+              <blockquote>
+                <span class="block font-display text-5xl leading-none font-semibold text-dorado-tinta" aria-hidden="true">
+                  «
+                </span>
+                <p class="mt-2 font-display text-xl font-medium italic leading-relaxed text-tinta">
+                  {voz.quote}
+                </p>
+              </blockquote>
+              <figcaption class="border-t border-tinta/15 pt-4 font-body text-sm font-bold uppercase tracking-widest text-tinta">
+                {voz.nombre}
+                <span class="mt-0.5 block text-xs font-medium normal-case tracking-normal text-tinta/65">
+                  {voz.detalle}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="mt-14" data-reveal style="--reveal-delay: 0.1s">
+          <div class="mx-auto max-w-3xl rounded-3xl border-2 border-dashed border-marino/25 p-9 text-center">
+            <span class="animate-flotar inline-block font-display text-5xl font-semibold text-dorado-tinta" aria-hidden="true">«</span>
+            <p class="mx-auto mt-4 max-w-md font-display text-xl font-medium italic leading-relaxed text-tinta/85">
+              Aquí pronto compartiremos las historias de jóvenes que caminan con nosotros.
+            </p>
+            <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-tinta/65">
+              ¿Vives la fe en la JMV y quieres contar lo que encontraste aquí?
+              Cuéntanos tu historia y —con tu permiso— la publicaremos.
+            </p>
+            <a
+              href="/#contacto"
+              class="boton mt-6 inline-block bg-marino px-6 py-3 font-body text-sm font-bold uppercase tracking-widest text-marfil"
+            >
+              Compartir mi historia ✦
+            </a>
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

@@ -1,51 +1,56 @@
 ---
+import { contacto } from '../../lib/datos/contacto';
+
 const canales = [
   {
     nombre: 'WhatsApp',
-    detalle: '+51 999 999 999',
+    detalle: contacto.whatsapp.numero,
     accion: 'Chatea ahora',
-    href: 'https://wa.me/51999999999',
-    fondo: 'bg-azul',
-    texto: 'text-papel',
+    href: contacto.whatsapp.enlace,
+    destacado: true,
+    icono: '💬',
   },
   {
     nombre: 'Correo',
-    detalle: 'contacto@jumavi.org',
+    detalle: contacto.correo.direccion,
     accion: 'Respuesta en 24–48 h',
-    href: 'mailto:contacto@jumavi.org',
-    fondo: 'bg-dorado',
-    texto: 'text-tinta',
+    href: contacto.correo.enlace,
+    destacado: false,
+    icono: '✉️',
   },
   {
     nombre: 'Instagram',
-    detalle: '@jmv_peru',
+    detalle: contacto.instagram.usuario,
     accion: 'Síguenos',
-    href: 'https://instagram.com/jmv_peru',
-    fondo: 'bg-papel',
-    texto: 'text-tinta',
+    href: contacto.instagram.enlace,
+    destacado: false,
+    icono: '📸',
   },
   {
     nombre: 'Facebook',
-    detalle: 'Juventud Mariana Vicentina',
+    detalle: contacto.facebook.nombre,
     accion: 'Únete al grupo',
-    href: 'https://facebook.com/jmv',
-    fondo: 'bg-papel',
-    texto: 'text-tinta',
+    href: contacto.facebook.enlace,
+    destacado: false,
+    icono: '👥',
   },
 ];
 ---
 
-<section id="contacto" class="scroll-mt-24 bg-papel-sombra/60 py-20 sm:py-28">
+<section id="contacto" class="scroll-mt-24 bg-marfil py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
       <div data-reveal>
-        <h2 class="font-display text-[clamp(2.6rem,8vw,6rem)] leading-[0.95] uppercase">
-          ¿Te<br /><span class="text-azul">sumas</span><span class="texto-contorno">?</span>
+        <h2 class="font-display text-[clamp(2.6rem,7.5vw,5.5rem)] leading-[1.02] font-semibold tracking-tight text-tinta">
+          ¿Te <span class="subrayado text-marino">sumas</span>?
         </h2>
-        <p class="mt-6 max-w-md text-lg leading-relaxed font-medium">
-          No necesitas ser perfecto ni saberlo todo — solo ganas de caminar.
-          Elige tu canal favorito y <strong class="text-azul">te respondemos rapidito</strong>.
+        <p class="mt-6 max-w-md text-lg leading-relaxed text-tinta/80">
+          No necesitas ser perfecto ni saberlo todo — solo ganas de caminar.{" "}
+          <strong class="font-bold text-marino">El siguiente paso es sencillo:</strong>{" "}
+          escríbenos, conoce un grupo cerca de ti o acompañanos en un encuentro.
+          Te respondemos rapidito.
         </p>
+        <div class="rayas mt-8 hidden h-4 w-40 rounded-full lg:block" aria-hidden="true"></div>
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2" style="--reveal-delay: 0.1s" data-reveal>
@@ -56,17 +61,28 @@ const canales = [
               target={canal.href.startsWith('http') ? '_blank' : undefined}
               rel={canal.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               class:list={[
-                'card-brutal group flex flex-col justify-between gap-8 border-4 border-tinta p-5 shadow-dura',
-                canal.fondo,
-                canal.texto,
+                'group flex flex-col justify-between gap-8 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1',
+                canal.destacado
+                  ? 'bg-marino text-marfil shadow-nube-lg'
+                  : 'tarjeta',
               ]}
             >
-              <span class="font-display text-xl uppercase sm:text-2xl">{canal.nombre}</span>
+              <span class="flex items-center justify-between">
+                <span class:list={[
+                  'font-display text-xl font-semibold tracking-tight sm:text-2xl',
+                  canal.destacado && 'text-marfil',
+                ]}>
+                  {canal.nombre}
+                </span>
+                <span class="text-2xl" aria-hidden="true">{canal.icono}</span>
+              </span>
               <span>
                 <span class="block font-body font-bold">{canal.detalle}</span>
                 <span class:list={[
-                  'mt-1 inline-block border-b-2 font-body text-xs font-bold uppercase tracking-widest transition-colors',
-                  canal.texto === 'text-papel' ? 'border-dorado group-hover:text-dorado' : 'border-azul group-hover:text-azul',
+                  'mt-1 inline-block border-b-2 pb-0.5 font-body text-xs font-bold uppercase tracking-widest transition-colors',
+                  canal.destacado
+                    ? 'border-dorado text-dorado'
+                    : 'border-dorado text-marino group-hover:text-marino-noche',
                 ]}>
                   {canal.accion} →
                 </span>
