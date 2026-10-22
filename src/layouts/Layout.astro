@@ -1,7 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/space-grotesk';
+// Fuentes variables self-hosted, subset latino (es-PE no necesita más).
+// ?url nos da la ruta hasheada para declarar el @font-face y precalentar
+// con preload los dos archivos que pinta el primer pantalla.
+import fuenteFraunces from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import fuenteFrauncesItalica from '@fontsource-variable/fraunces/files/fraunces-latin-wght-italic.woff2?url';
+import fuenteSpaceGrotesk from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -57,6 +61,32 @@ const sitioWeb = {
   inLanguage: 'es-PE',
   publisher: { '@id': 'https://jumavi.org/#organizacion' },
 };
+
+/* Misma declaración que fontsource (eje wght), solo subset latino.
+   set:html porque <style> no interpola expresiones del frontmatter. */
+const cssFuentes = `
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('${fuenteFraunces}') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('${fuenteFrauncesItalica}') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Space Grotesk Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('${fuenteSpaceGrotesk}') format('woff2-variations');
+}
+`;
 ---
 
 <!doctype html>
@@ -91,25 +121,31 @@ const sitioWeb = {
     <meta name="twitter:image" content={imagen} />
     <link rel="canonical" href={url} />
     <meta name="theme-color" content="#174782" />
+    <link rel="preload" href={fuenteFraunces} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fuenteSpaceGrotesk} as="font" type="font/woff2" crossorigin />
+    <style is:global set:html={cssFuentes} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizacion)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(sitioWeb)} />
     <ClientRouter />
   </head>
   <body class="bg-marfil font-body text-tinta antialiased">
+    <a
+      href="#contenido"
+      class="fixed top-3 left-3 z-[70] -translate-y-24 rounded-full bg-marino px-5 py-3 font-body text-sm font-bold text-marfil shadow-nube-lg transition-transform focus:translate-y-0"
+    >
+      Saltar al contenido
+    </a>
     <Header />
-    <main>
+    <main id="contenido">
       <slot />
     </main>
     <Footer />
     <CtaMovil />
 
     <script>
-      let primeraCarga = true;
-
       // Navegaciones internas: una sola capa de animación (el crossfade de la
       // view transition); las reveals escalonadas quedan para la carga inicial.
       document.addEventListener('astro:after-swap', () => {
-        primeraCarga = false;
         document.documentElement.classList.add('sin-reveal');
       });
 
@@ -135,7 +171,8 @@ const sitioWeb = {
       // Desplazamiento suave solo para anclas de la misma página:
       // entre páginas lo maneja la view transition (scroll-behavior: auto).
       function scrollSuaveAnclas() {
-        document.querySelectorAll('a[href*="#"]').forEach((enlace) => {
+        document.querySelectorAll('a[href*="#"]').forEach((nodo) => {
+          const enlace = nodo as HTMLAnchorElement;
           enlace.addEventListener('click', (evento) => {
             const url = new URL(enlace.href, location.href);
             if (url.pathname !== location.pathname || url.hash === '') return;
