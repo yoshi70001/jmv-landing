@@ -35,12 +35,12 @@ export const fotos = {
   hero: {
     principal: {
       src: heroPrincipal,
-      alt: 'Actividad masiva de jóvenes de la JMV reunidos en un patio durante un encuentro comunitario',
+      alt: 'Jóvenes de la JMV llenando la avenida en la peregrinación mariana',
       caption: 'Comunidad JUMAVI',
     } as Foto,
     columna: {
       src: heroColumna,
-      alt: 'Columna de jóvenes caminando juntos en la peregrinación',
+      alt: 'Jóvenes de la JMV compartiendo juegos con globos en un encuentro al aire libre',
       caption: 'Nadie camina solo',
     } as Foto,
     marco: {
@@ -53,11 +53,11 @@ export const fotos = {
   pilares: {
     eclesial: {
       src: pilarEclesial,
-      alt: 'Sacerdotes concelebrando la misa en el altar de una iglesia con retablo de mosaicos',
+      alt: 'Lector proclamando la Palabra en el ambón junto al retablo de mosaicos',
     } as Foto,
     laical: {
       src: pilarLaical,
-      alt: 'Jóvenes de la JMV compartiendo un momento cotidiano',
+      alt: 'Jóvenes de la JMV conversando sentadas bajo un árbol en el patio',
     } as Foto,
     mariana: {
       src: pilarMariana,
@@ -65,32 +65,32 @@ export const fotos = {
     } as Foto,
     vicenciana: {
       src: pilarVicenciana,
-      alt: 'Voluntarios de la JMV con polos blancos «Sirviendo con amor» en una jornada de servicio',
+      alt: 'Servidor de la JMV con su chaleco entre los jóvenes en una jornada',
     } as Foto,
   },
 
   peru: [
-    { src: peru1, alt: 'Multitud de escolares marchando con uniformes rojos y azules' },
-    { src: peru2, alt: 'Jóvenes avanzando juntos por la avenida durante la peregrinación' },
-    { src: peru3, alt: 'Tres jóvenes posando con un marco de cartón en la marcha' },
-    { src: peru4, alt: 'Grupo de jóvenes en la marcha, sonrientes en primer plano' },
+    { src: peru1, alt: 'Jóvenes marchando por la avenida con banderas blancas' },
+    { src: peru2, alt: 'Grupo de jóvenes caminando juntos por un sendero durante una caminata' },
+    { src: peru3, alt: 'Encuentro masivo de jóvenes de la JMV en un salón' },
+    { src: peru4, alt: 'Procesión de la Virgen con guirnaldas y globos avanzando por la calle' },
   ] as Foto[],
 
   galeria: {
     filaA: [
-      { src: galeria01, alt: 'Grupo de jóvenes con estandarte y guirnaldas de globos frente a un arco' },
-      { src: galeria03, alt: 'Fieles decorando con flores la estatua de la Virgen en una carroza procesional' },
-      { src: galeria05, alt: 'Religiosa sosteniendo un marco de papel de la peregrinación' },
-      { src: galeria07, alt: 'Predicador en el ambón durante una celebración con jóvenes' },
-      { src: peru1, alt: 'Escolares en la marcha por la avenida' },
+      { src: galeria01, alt: 'Jóvenes celebrando y saltando con pancartas al aire libre' },
+      { src: galeria03, alt: 'Jóvenes alzando el arco floral de la Virgen en la procesión' },
+      { src: galeria05, alt: 'Hijas de la Caridad y voluntarios de la JMV preparando ayuda' },
+      { src: galeria07, alt: 'Grupo de jóvenes reunidos en el templo' },
+      { src: peru1, alt: 'Jóvenes marchando por la avenida' },
       { src: heroMarco, alt: 'Jóvenes con marco de cartón en la marcha' },
     ] as Foto[],
     filaB: [
-      { src: galeria02, alt: 'Tres jóvenes sonrientes con marco de cartón' },
-      { src: galeria04, alt: 'Selfie grupal con Hijas de la Caridad y un joven con polo de la JMV' },
-      { src: galeria06, alt: 'Muchedumbre de jóvenes caminando en la marcha con banderas' },
-      { src: peru3, alt: 'Jóvenes posando en la marcha' },
-      { src: peru4, alt: 'Jóvenes en la marcha, sonrientes' },
+      { src: galeria02, alt: 'Sacerdote celebrando la eucaristía en el altar' },
+      { src: galeria04, alt: 'Jóvenes abrazados durante una misión vicenciana' },
+      { src: galeria06, alt: 'Procesión de la Virgen avanzando por la avenida entre la multitud' },
+      { src: peru3, alt: 'Encuentro masivo de jóvenes en un salón' },
+      { src: peru4, alt: 'Procesión de la Virgen con guirnaldas por la calle' },
     ] as Foto[],
   },
 };
