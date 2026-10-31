@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { urlAbsoluta } from '../lib/sitio';
 // Fuentes variables self-hosted, subset latino (es-PE no necesita más).
 // ?url nos da la ruta hasheada para declarar el @font-face y precalentar
 // con preload los dos archivos que pinta el primer pantalla.
@@ -14,25 +15,28 @@ import CtaMovil from '../components/CtaMovil.astro';
 interface Props {
   title?: string;
   description?: string;
+  /** Páginas que no deben indexarse (404, agradecimientos…). */
+  noindex?: boolean;
 }
 
 const {
   title = 'JUMAVI — Juventud Mariana Vicentina (JMV) | Jóvenes católicos en Perú',
   description =
     '¿Entre 15 y 35 años? Vive tu fe sin dejar de ser tú con la JMV (JUMAVI), Juventud Mariana Vicentina: comunidad, formación y servicio. Desde 1830, en 78 países.',
+  noindex = false,
 } = Astro.props;
 
-const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
-const imagen = Astro.site ? new URL('/og.png', Astro.site).href : '/og.png';
+const url = urlAbsoluta(Astro.url.pathname);
+const imagen = urlAbsoluta('/og.png');
 
 const organizacion = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': 'https://jumavi.org/#organizacion',
+  '@type': 'ReligiousOrganization',
+  '@id': urlAbsoluta('/#organizacion'),
   name: 'Juventud Mariana Vicentina',
   alternateName: ['JMV', 'JUMAVI'],
-  url: 'https://jumavi.org/',
-  logo: 'https://jumavi.org/apple-touch-icon.png',
+  url: urlAbsoluta('/'),
+  logo: urlAbsoluta('/apple-touch-icon.png'),
   image: imagen,
   description:
     'Asociación católica internacional juvenil y laical vinculada a la Familia Vicentina. La JMV vive la fe, se forma, evangeliza y sirve a los más necesitados siguiendo a María y el carisma de San Vicente de Paúl.',
@@ -47,19 +51,18 @@ const organizacion = {
     '@type': 'Organization',
     name: 'Familia Vicentina',
   },
-  symbol: 'Medalla Milagrosa',
-  sameAs: ['https://instagram.com/jmv_peru', 'https://facebook.com/jmv'],
+  sameAs: ['https://instagram.com/jmv_peru', 'https://facebook.com/jumavi'],
 };
 
 const sitioWeb = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  '@id': 'https://jumavi.org/#sitio',
-  url: 'https://jumavi.org/',
+  '@id': urlAbsoluta('/#sitio'),
+  url: urlAbsoluta('/'),
   name: 'JUMAVI — Juventud Mariana Vicentina',
   alternateName: 'JMV',
   inLanguage: 'es-PE',
-  publisher: { '@id': 'https://jumavi.org/#organizacion' },
+  publisher: { '@id': urlAbsoluta('/#organizacion') },
 };
 
 /* Misma declaración que fontsource (eje wght), solo subset latino.
@@ -100,7 +103,10 @@ const cssFuentes = `
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}
+    />
     <link rel="alternate" type="application/rss+xml" title="Bitácora JUMAVI" href="/rss.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -136,7 +142,7 @@ const cssFuentes = `
       Saltar al contenido
     </a>
     <Header />
-    <main id="contenido">
+    <main id="contenido" tabindex="-1">
       <slot />
     </main>
     <Footer />
@@ -170,24 +176,34 @@ const cssFuentes = `
 
       // Desplazamiento suave solo para anclas de la misma página:
       // entre páginas lo maneja la view transition (scroll-behavior: auto).
-      function scrollSuaveAnclas() {
-        document.querySelectorAll('a[href*="#"]').forEach((nodo) => {
-          const enlace = nodo as HTMLAnchorElement;
-          enlace.addEventListener('click', (evento) => {
-            const url = new URL(enlace.href, location.href);
-            if (url.pathname !== location.pathname || url.hash === '') return;
-            const destino = document.querySelector(url.hash);
-            if (!destino) return;
-            evento.preventDefault();
-            destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.pushState(null, '', url.hash);
-          });
+      // Delegación en `document`: el header es transition:persist, así que
+      // sus nodos sobreviven a la navegación y registrar listeners por nodo
+      // acumularía duplicados en cada astro:page-load.
+      const movimientoRespetado = () =>
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.addEventListener('click', (evento) => {
+        const enlace = (evento.target as Element | null)?.closest?.<HTMLAnchorElement>('a[href*="#"]');
+        if (!enlace) return;
+
+        const url = new URL(enlace.href, location.href);
+        if (url.pathname !== location.pathname || url.hash === '') return;
+
+        const destino = document.querySelector(url.hash);
+        if (!destino) return;
+
+        evento.preventDefault();
+        destino.scrollIntoView({
+          behavior: movimientoRespetado() ? 'smooth' : 'auto',
+          block: 'start',
         });
-      }
+        history.pushState(null, '', url.hash);
+        // Mover el foco al destino para teclado/lector de pantalla.
+        (destino as HTMLElement).focus?.({ preventScroll: true });
+      });
 
       document.addEventListener('astro:page-load', () => {
         iniciarReveals();
-        scrollSuaveAnclas();
       });
     </script>
   </body>

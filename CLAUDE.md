@@ -1,22 +1,27 @@
-## Development
+# Desarrollo
 
-When starting the dev server, use background mode:
+Documentación del proyecto: ver [README.md](./README.md).
+
+## Servidor de desarrollo
+
+Al iniciar el dev server, usar modo background:
 
 ```
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Administrar el servidor en background con `astro dev stop`, `astro dev status` y
+`astro dev logs`.
 
-## Documentation
+## Documentación de Astro
 
-Full documentation: https://docs.astro.build
+https://docs.astro.build
 
-Consult these guides before working on related tasks:
+Consultar estas guías antes de trabajar en tareas relacionadas:
 
 - [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
 - [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
 - [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- [Supporting multiple languages](https://docs.astro.build/en/guides/i18n/)

@@ -16,9 +16,12 @@ export async function GET(context: APIContext) {
       title: entrada.data.title,
       description: entrada.data.description,
       pubDate: entrada.data.pubDate,
-      link: `/blog/${entrada.id}/`,
+      link: `/blog/${entrada.id}`,
       categories: entrada.data.tags,
+      author: entrada.data.author,
+      customData: `<content:encoded><![CDATA[${entrada.body ?? ''}]]></content:encoded>`,
     })),
-    customData: '<language>es-pe</language>',
+    customData: '<language>es-PE</language>',
+    xmlns: { content: 'http://purl.org/rss/1.0/modules/content/' },
   });
 }

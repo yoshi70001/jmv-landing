@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { fechaLarga } from '../../lib/utils';
+import { urlAbsoluta } from '../../lib/sitio';
+import ChipFiltro from '../../components/ChipFiltro.astro';
 
 const entradas = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -17,16 +19,16 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
   <script is:inline type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    '@id': 'https://jumavi.org/blog/#blog',
+    '@id': urlAbsoluta('/blog/#blog'),
     name: 'Bitácora JUMAVI',
-    url: 'https://jumavi.org/blog/',
+    url: urlAbsoluta('/blog/'),
     inLanguage: 'es-PE',
     description: 'Crónicas de actividades de la Juventud Mariana Vicentina (JMV).',
-    publisher: { '@id': 'https://jumavi.org/#organizacion' },
+    publisher: { '@id': urlAbsoluta('/#organizacion') },
     blogPost: entradas.map((entrada) => ({
       '@type': 'BlogPosting',
       headline: entrada.data.title,
-      url: `https://jumavi.org/blog/${entrada.id}/`,
+      url: urlAbsoluta(`/blog/${entrada.id}`),
       datePublished: entrada.data.pubDate.toISOString(),
     })),
   })} />
@@ -47,33 +49,15 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <!-- Filtro de tags -->
       <div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtrar por etiqueta">
-        <button
-          type="button"
-          data-filtro-tag="todas"
-          aria-pressed="true"
-          class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
-        >
-          Todas
-        </button>
-        {
-          todasLasTags.map((tag) => (
-            <button
-              type="button"
-              data-filtro-tag={tag}
-              aria-pressed="false"
-              class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
-            >
-              {tag}
-            </button>
-          ))
-        }
+        <ChipFiltro valor="" etiqueta="Todas" activo />
+        {todasLasTags.map((tag) => <ChipFiltro valor={tag} etiqueta={tag} />)}
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
           entradas.map((entrada, i) => (
             <article
-              data-post-tags={entrada.data.tags.join(',')}
+              data-filtro-valor={entrada.data.tags.join(',')}
               class="tarjeta flex flex-col overflow-hidden"
               style={`--reveal-delay: ${(i % 3) * 0.06}s`}
               data-reveal
@@ -117,29 +101,7 @@ const todasLasTags = [...new Set(entradas.flatMap((e) => e.data.tags))].sort();
 </Layout>
 
 <script>
-  function conectarFiltro() {
-    const botones = document.querySelectorAll('[data-filtro-tag]');
-    const tarjetas = document.querySelectorAll('[data-post-tags]');
-    const vacio = document.getElementById('blog-vacio');
-    if (botones.length === 0) return;
+  import { conectarFiltro } from '../../lib/filtros';
 
-    botones.forEach((boton) => {
-      boton.addEventListener('click', () => {
-        const tag = boton.getAttribute('data-filtro-tag');
-        botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
-
-        let visibles = 0;
-        tarjetas.forEach((tarjeta) => {
-          const tags = (tarjeta.getAttribute('data-post-tags') || '').split(',');
-          const mostrar = !tag || tag === 'todas' || tags.includes(tag);
-          tarjeta.toggleAttribute('hidden', !mostrar);
-          if (mostrar) visibles++;
-        });
-
-        vacio?.toggleAttribute('hidden', visibles > 0);
-      });
-    });
-  }
-
-  document.addEventListener('astro:page-load', conectarFiltro);
+  document.addEventListener('astro:page-load', () => conectarFiltro('blog-vacio'));
 </script>

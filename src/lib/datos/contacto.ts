@@ -1,34 +1,42 @@
 /**
- * Datos de contacto oficiales de JMV Perú.
+ * Datos de contacto oficiales del Centro Nacional JMV Perú.
  *
- * ⚠️ PENDIENTE DE CONFIRMACIÓN INSTITUCIONAL antes de publicar:
- *  - `whatsapp` es un número provisional (+51 999 999 999).
- *  - Verificar que `contacto@jumavi.org` esté operativo.
- *  - Verificar los identificadores de Instagram y Facebook.
- *
- * Al confirmar, actualizar solo este archivo: todas las secciones
+ * Confirmados institucionalmente (WhatsApp, correo y redes del centro general).
+ * Si algo cambia, actualizar solo este archivo: todas las secciones
  * (Hero, Contacto, Header, CtaMovil) leen de aquí.
  */
 
 export const contacto = {
   whatsapp: {
-    numero: '+51 999 999 999',
-    enlace: 'https://wa.me/51999999999',
-    verificado: false,
+    numero: '+51 995 918 780',
+    enlace: 'https://wa.me/51995918780',
+    verificado: true,
   },
   correo: {
-    direccion: 'contacto@jumavi.org',
-    enlace: 'mailto:contacto@jumavi.org',
-    verificado: false,
+    direccion: 'jmv.cnperu@gmail.com',
+    enlace: 'mailto:jmv.cnperu@gmail.com',
+    verificado: true,
   },
   instagram: {
     usuario: '@jmv_peru',
-    enlace: 'https://instagram.com/jmv_peru',
-    verificado: false,
+    enlace: 'https://www.instagram.com/jmv_peru/',
+    verificado: true,
   },
   facebook: {
     nombre: 'Juventud Mariana Vicentina',
-    enlace: 'https://facebook.com/jmv',
-    verificado: false,
+    enlace: 'https://www.facebook.com/jumavi.peru/',
+    verificado: true,
   },
 };
+
+/** Canales sin confirmar institucionalmente: el build de producción falla si queda alguno. */
+const sinConfirmar = Object.entries(contacto)
+  .filter(([, canal]) => !canal.verificado)
+  .map(([nombre]) => nombre);
+
+if (sinConfirmar.length > 0 && import.meta.env.PROD) {
+  throw new Error(
+    `contacto.ts: canales sin confirmar → ${sinConfirmar.join(', ')}. ` +
+      'Verifica los datos con el centro antes de publicar.'
+  );
+}

@@ -12,7 +12,7 @@ const stats = [
 const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
 ---
 
-<section id="inicio" class="relative overflow-hidden pt-28 sm:pt-36">
+<section id="inicio" class="relative scroll-mt-24 overflow-hidden pt-28 sm:pt-36">
   <!-- Fondo degradado suave -->
   <div class="absolute inset-x-0 top-0 h-[560px] bg-gradient-to-b from-celeste-niebla via-marfil to-marfil" aria-hidden="true"></div>
   <!-- Acento brutalista puntual: franja dorada -->
@@ -107,10 +107,10 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
       {
         stats.map((stat) => (
           <div class="tarjeta px-3 py-6 text-center sm:px-6 sm:py-8">
-            <dd class="font-display text-3xl font-semibold text-marino sm:text-5xl lg:text-6xl">{stat.valor}</dd>
             <dt class="mt-2 block font-body text-[0.65rem] font-bold uppercase tracking-chip text-tinta/70 sm:text-xs">
               {stat.etiqueta}
             </dt>
+            <dd class="font-display text-3xl font-semibold text-marino sm:text-5xl lg:text-6xl">{stat.valor}</dd>
           </div>
         ))
       }

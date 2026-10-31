@@ -12,9 +12,13 @@ const enlaces = navegacionPrincipal;
       class="flex items-center gap-2.5"
       aria-label="JUMAVI — ir al inicio"
     >
-      <span class="rounded-xl bg-marino px-2.5 py-1 font-display text-lg font-semibold tracking-wide text-dorado shadow-nube-sm sm:text-xl">
-        JMV
-      </span>
+      <img
+        src="/logo-jmv.svg"
+        alt=""
+        width="44"
+        height="44"
+        class="size-10 shrink-0 sm:size-11"
+      />
       <span class="font-body text-sm font-bold uppercase tracking-amplio text-tinta">
         Jumavi
       </span>
@@ -104,12 +108,28 @@ const enlaces = navegacionPrincipal;
 <script>
   let tecladoConectado = false;
 
+  /** Elementos del layout que quedan fuera del panel y deben inhabilitarse. */
+  function bloquesExteriores() {
+    return [document.getElementById('contenido'), document.querySelector('footer')].filter(
+      (el): el is HTMLElement => el !== null
+    );
+  }
+
   function alternarMenu(boton: Element, panel: Element, abierto: boolean) {
     boton.setAttribute('aria-expanded', String(abierto));
     boton.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
     panel.toggleAttribute('hidden', !abierto);
     document.body.classList.toggle('overflow-hidden', abierto);
     boton.querySelector('.barra-menu')?.classList.toggle('menu-abierto', abierto);
+
+    // Fuera del panel: nada debe recibir foco de Tab ni leerse en el flujo.
+    bloquesExteriores().forEach((el) => el.toggleAttribute('inert', abierto));
+
+    if (abierto) {
+      panel.querySelector<HTMLElement>('a')?.focus();
+    } else {
+      (boton as HTMLElement).focus();
+    }
   }
 
   function conectarMenu() {
@@ -125,16 +145,37 @@ const enlaces = navegacionPrincipal;
       enlace.addEventListener('click', () => alternarMenu(boton, panel, false));
     });
 
-    if (!tecladoConectado) {
-      tecladoConectado = true;
-      document.addEventListener('keydown', (evento) => {
-        const b = document.getElementById('boton-menu');
-        const p = document.getElementById('panel-menu');
-        if (evento.key === 'Escape' && b && p && b.getAttribute('aria-expanded') === 'true') {
-          alternarMenu(b, p, false);
-        }
-      });
-    }
+    if (tecladoConectado) return;
+    tecladoConectado = true;
+
+    document.addEventListener('keydown', (evento) => {
+      const b = document.getElementById('boton-menu');
+      const p = document.getElementById('panel-menu');
+      if (!b || !p || b.getAttribute('aria-expanded') !== 'true') return;
+
+      if (evento.key === 'Escape') {
+        alternarMenu(b, p, false);
+        return;
+      }
+
+      // Focus trap: el panel es un overlay modal de facto.
+      if (evento.key !== 'Tab') return;
+      const foco = [
+        b,
+        ...p.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ];
+      const primero = foco[0];
+      const ultimo = foco[foco.length - 1];
+      const actual = document.activeElement;
+
+      if (evento.shiftKey && (actual === primero || !foco.includes(actual as HTMLElement))) {
+        evento.preventDefault();
+        ultimo.focus();
+      } else if (!evento.shiftKey && actual === ultimo) {
+        evento.preventDefault();
+        primero.focus();
+      }
+    });
   }
 
   document.addEventListener('astro:page-load', conectarMenu);

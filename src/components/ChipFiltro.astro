@@ -1,0 +1,24 @@
+---
+/**
+ * Chip de filtro reutilizable para /blog y /formación.
+ * El estado activo se refleja en `aria-pressed` y el CSS lo pinta
+ * con la variante `aria-pressed:` de Tailwind.
+ */
+interface Props {
+  /** Valor que filtra; cadena vacía = "todo". */
+  valor: string;
+  etiqueta: string;
+  activo?: boolean;
+}
+
+const { valor, etiqueta, activo = false } = Astro.props;
+---
+
+<button
+  type="button"
+  data-filtro={valor}
+  aria-pressed={activo}
+  class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-etiqueta text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
+>
+  {etiqueta}
+</button>

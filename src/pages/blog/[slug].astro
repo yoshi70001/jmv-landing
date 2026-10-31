@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 import { fechaLarga } from '../../lib/utils';
+import { urlAbsoluta } from '../../lib/sitio';
 
 export async function getStaticPaths() {
   const entradas = await getCollection('blog', ({ data }) => !data.draft);
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 const { entrada } = Astro.props;
 const { Content } = await render(entrada);
 
-const urlPost = `https://jumavi.org/blog/${entrada.id}/`;
+const urlPost = urlAbsoluta(`/blog/${entrada.id}`);
 
 const blogPosting = {
   '@context': 'https://schema.org',
@@ -22,14 +23,14 @@ const blogPosting = {
   '@id': `${urlPost}#post`,
   headline: entrada.data.title,
   description: entrada.data.description,
-  image: 'https://jumavi.org/og.png',
+  image: urlAbsoluta('/og.png'),
   url: urlPost,
   mainEntityOfPage: urlPost,
   inLanguage: 'es-PE',
   datePublished: entrada.data.pubDate.toISOString(),
   author: { '@type': 'Person', name: entrada.data.author },
-  publisher: { '@id': 'https://jumavi.org/#organizacion' },
-  isPartOf: { '@id': 'https://jumavi.org/blog/#blog' },
+  publisher: { '@id': urlAbsoluta('/#organizacion') },
+  isPartOf: { '@id': urlAbsoluta('/blog/#blog') },
   keywords: entrada.data.tags.join(', '),
 };
 
@@ -37,9 +38,9 @@ const migas = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://jumavi.org/' },
-    { '@type': 'ListItem', position: 2, name: 'Bitácora', item: 'https://jumavi.org/blog/' },
-    { '@type': 'ListItem', position: 3, name: entrada.data.title },
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: urlAbsoluta('/') },
+    { '@type': 'ListItem', position: 2, name: 'Bitácora', item: urlAbsoluta('/blog/') },
+    { '@type': 'ListItem', position: 3, name: entrada.data.title, item: urlPost },
   ],
 };
 ---

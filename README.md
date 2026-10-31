@@ -1,43 +1,66 @@
-# Astro Starter Kit: Minimal
+# JUMAVI — Juventud Mariana Vicentina (JMV) Perú
+
+Landing institucional de JMV Perú: sitio **estático** hecho con Astro 7 + Tailwind v4.
+Sin framework cliente ni CMS: el contenido es Markdown y los datos, módulos TypeScript.
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev        # servidor de desarrollo en localhost:4321
+pnpm build      # build de producción en ./dist
+pnpm preview    # sirve ./dist localmente
+pnpm check      # astro check (tipos + diagnósticos de Astro)
+pnpm build:og   # regenera public/og.png y public/apple-touch-icon.png
+pnpm build:todo # og + build completo
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  assets/            fotos reales y de dominio público (optimizadas por astro:assets)
+  components/
+    Header.astro     cabecera fija + menú móvil (persistente entre páginas)
+    Footer.astro     pie
+    CtaMovil.astro   barra fija inferior de WhatsApp (móvil)
+    sections/        secciones de la home, en orden narrativo
+  content/
+    blog/            crónicas (content collection "blog")
+    formacion/       temas de formación (collection "formacion"; _*.md excluidos)
+  layouts/Layout.astro   <head>, fuentes, JSON-LD, reveals, view transitions
+  lib/
+    datos/           fuente única de contacto, encuentros, hitos, navegación y voces
+    fotos.ts         registro central de todas las fotos con alt descriptivo
+    sitio.ts         URL base canónica del sitio (urlAbsoluta)
+    utils.ts         helpers (fechas en español)
+  pages/             /, /historia, /blog, /formacion, /rss.xml, 404
+  styles/global.css  tokens de @theme (paleta, tipografía, sombras) + utilidades
+scripts/
+  og-image.mjs       genera og.png e icono con la paleta del sitio (sharp)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Convenciones
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Datos, no JSX disperso**: contactos, eventos, hitos y voces viven en `src/lib/datos/*`.
+  Cambiar un dato ahí lo cambia en todo el sitio.
+- **Fotos**: registrar en `src/lib/fotos.ts` con alt descriptivo; reutilizar ahí en vez
+  de importar assets sueltos en los componentes.
+- **Contenido nuevo**: agregar un `.md` en `src/content/blog/` o `src/content/formacion/`
+  con el frontmatter del schema (`src/content.config.ts`). `draft: true` lo excluye.
+- **URLs canónicas**: siempre vía `urlAbsoluta()` de `src/lib/sitio.ts`, sin barra final.
+  El dominio está hardcodeado en `astro.config.mjs` (`site`) y en `src/lib/sitio.ts`.
+- **Accesibilidad**: foco visible con `:focus-visible`, `prefers-reduced-motion` respetado,
+  menú móvil con focus trap e `inert` en el contenido de atrás.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Despliegue
 
-## 🧞 Commands
+El sitio se publica en un **VPS propio** desde `./dist`:
 
-All commands are run from the root of the project, from a terminal:
+1. `pnpm build:todo` (regenera OG + build completo).
+2. Sincronizar `dist/` con el directorio web del VPS:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+   ```sh
+   rsync -avz --delete dist/ usuario@vps:/var/www/jumavi.org/
+   ```
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+3. La sección de encuentros filtra eventos vencidos **al compilar**, así que conviene
+   reconstruir periódicamente (cron semanal ejecutando `pnpm build:todo` + rsync).

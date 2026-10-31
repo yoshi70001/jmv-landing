@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { fechaLarga } from '../../lib/utils';
+import { urlAbsoluta } from '../../lib/sitio';
+import ChipFiltro from '../../components/ChipFiltro.astro';
 
 const temas = (await getCollection('formacion', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -25,18 +27,18 @@ const estilosTema: Record<string, { fondo: string; texto: string }> = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    '@id': 'https://jumavi.org/formacion/#formacion',
+    '@id': urlAbsoluta('/formacion/#formacion'),
     name: 'Formación JMV',
-    url: 'https://jumavi.org/formacion/',
+    url: urlAbsoluta('/formacion/'),
     inLanguage: 'es-PE',
     description: 'Temas de formación de la Juventud Mariana Vicentina (JMV): mariana, vicenciana, eclesial y laical.',
-    isPartOf: { '@id': 'https://jumavi.org/#sitio' },
+    isPartOf: { '@id': urlAbsoluta('/#sitio') },
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: temas.map((t, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://jumavi.org/formacion/${t.id}/`,
+        url: urlAbsoluta(`/formacion/${t.id}`),
         name: t.data.title,
       })),
     },
@@ -59,26 +61,8 @@ const estilosTema: Record<string, { fondo: string; texto: string }> = {
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <!-- Filtro por tema -->
       <div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtrar por tema">
-        <button
-          type="button"
-          data-filtro-tema="todos"
-          aria-pressed="true"
-          class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
-        >
-          Todos
-        </button>
-        {
-          todosLosTemas.map((tema) => (
-            <button
-              type="button"
-              data-filtro-tema={tema}
-              aria-pressed="false"
-              class="rounded-full border border-tinta/25 bg-white px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-tinta transition-colors hover:border-marino aria-pressed:border-marino aria-pressed:bg-marino aria-pressed:text-marfil"
-            >
-              {tema}
-            </button>
-          ))
-        }
+        <ChipFiltro valor="" etiqueta="Todos" activo />
+        {todosLosTemas.map((tema) => <ChipFiltro valor={tema} etiqueta={tema} />)}
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -87,7 +71,7 @@ const estilosTema: Record<string, { fondo: string; texto: string }> = {
             const estilo = estilosTema[tema.data.tema] ?? estilosTema.general;
             return (
               <article
-                data-post-tema={tema.data.tema}
+                data-filtro-valor={tema.data.tema}
                 class="tarjeta flex flex-col overflow-hidden"
                 style={`--reveal-delay: ${(i % 3) * 0.06}s`}
                 data-reveal
@@ -131,28 +115,7 @@ const estilosTema: Record<string, { fondo: string; texto: string }> = {
 </Layout>
 
 <script>
-  function conectarFiltroTema() {
-    const botones = document.querySelectorAll('[data-filtro-tema]');
-    const tarjetas = document.querySelectorAll('[data-post-tema]');
-    const vacio = document.getElementById('formacion-vacio');
-    if (botones.length === 0) return;
+  import { conectarFiltro } from '../../lib/filtros';
 
-    botones.forEach((boton) => {
-      boton.addEventListener('click', () => {
-        const tema = boton.getAttribute('data-filtro-tema');
-        botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
-
-        let visibles = 0;
-        tarjetas.forEach((tarjeta) => {
-          const mostrar = !tema || tema === 'todos' || tarjeta.getAttribute('data-post-tema') === tema;
-          tarjeta.toggleAttribute('hidden', !mostrar);
-          if (mostrar) visibles++;
-        });
-
-        vacio?.toggleAttribute('hidden', visibles > 0);
-      });
-    });
-  }
-
-  document.addEventListener('astro:page-load', conectarFiltroTema);
+  document.addEventListener('astro:page-load', () => conectarFiltro('formacion-vacio'));
 </script>
