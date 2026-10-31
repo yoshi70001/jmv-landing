@@ -1,0 +1,230 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { contacto } from '../../lib/datos/contacto';
+import {
+  centros,
+  obtenerRegion,
+  enlaceMapa,
+} from '../../lib/datos/centros';
+import { urlAbsoluta } from '../../lib/sitio';
+
+export function getStaticPaths() {
+  return centros.map((centro) => ({
+    params: { slug: centro.slug },
+    props: { centro },
+  }));
+}
+
+const { centro } = Astro.props;
+const region = obtenerRegion(centro.regionId);
+const mapa = enlaceMapa(centro);
+
+const coloresRegion: Record<string, string> = {
+  lima: 'bg-marino text-marfil ring-marfil/30',
+  jauja: 'bg-dorado text-tinta ring-dorado',
+  chiclayo: 'bg-celeste text-tinta ring-celeste',
+};
+
+const ficha = [
+  centro.encuentro && { etiqueta: 'Encuentro semanal', valor: centro.encuentro, icono: '⏰' },
+  centro.direccion && { etiqueta: 'Dirección', valor: centro.direccion, icono: '📍' },
+].filter(Boolean) as { etiqueta: string; valor: string; icono: string }[];
+
+const migas = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: urlAbsoluta('/') },
+    { '@type': 'ListItem', position: 2, name: 'Centros', item: urlAbsoluta('/centros/') },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: `JMV ${centro.nombre}`,
+      item: urlAbsoluta(`/centros/${centro.slug}`),
+    },
+  ],
+};
+---
+
+<Layout
+  title={`JMV ${centro.nombre} — ${centro.zona} | Centros JMV`}
+  description={`${centro.descripcion} Contacto del centro JMV ${centro.nombre} en ${centro.zona}${region ? `, región ${region.nombre}` : ''}.`}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(migas)} />
+
+  <article class="bg-marfil">
+    <header class="bg-marino pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6">
+        <a
+          href="/centros"
+          class="inline-block border-b-2 border-dorado font-body text-xs font-bold uppercase tracking-widest text-dorado transition-colors hover:text-marfil"
+        >
+          ← Centros
+        </a>
+
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          <span class:list={[
+            'rounded-full px-3 py-0.5 font-body text-xs font-bold uppercase tracking-chip ring-1',
+            region && coloresRegion[region.id] ? coloresRegion[region.id] : 'bg-marino-noche text-marfil ring-marfil/30',
+          ]}>
+            {region?.nombre ?? 'JMV Perú'}
+          </span>
+          <span class="rounded-full bg-white/10 px-3 py-0.5 font-body text-xs font-bold uppercase tracking-chip text-marfil ring-1 ring-marfil/25">
+            {centro.zona}
+          </span>
+        </div>
+
+        <h1 class="mt-5 font-display text-[clamp(2.2rem,6vw,4.5rem)] leading-[1.05] font-semibold tracking-tight text-marfil">
+          JMV <span class="text-dorado">{centro.nombre}</span>
+        </h1>
+
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-marfil/85">{centro.descripcion}</p>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+      <div class="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+        <!-- Contacto -->
+        <section aria-label="Contacto del centro" data-reveal>
+          <h2 class="font-display text-2xl font-semibold tracking-tight text-tinta sm:text-3xl">
+            Contacto del centro
+          </h2>
+
+          {
+            centro.canales.length > 0 ? (
+              <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+                {centro.canales.map((canal, i) => (
+                  <li>
+                    <a
+                      href={canal.enlace}
+                      target={canal.enlace.startsWith('http') ? '_blank' : undefined}
+                      rel={canal.enlace.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      class:list={[
+                        'group flex flex-col justify-between gap-6 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1',
+                        i === 0 ? 'bg-marino text-marfil shadow-nube-lg' : 'tarjeta',
+                      ]}
+                      style={`--reveal-delay: ${i * 0.06}s`}
+                      data-reveal
+                    >
+                      <span class="flex items-center justify-between gap-3">
+                        <span class:list={[
+                          'font-display text-lg font-semibold tracking-tight sm:text-xl',
+                          i === 0 && 'text-marfil',
+                        ]}>
+                          {canal.etiqueta}
+                        </span>
+                        <span class="text-xl" aria-hidden="true">
+                          {canal.etiqueta === 'WhatsApp' ? '💬' : canal.etiqueta === 'Instagram' ? '📸' : canal.etiqueta === 'Facebook' ? '👥' : canal.etiqueta === 'Correo' ? '✉️' : '✦'}
+                        </span>
+                      </span>
+                      <span>
+                        <span class="block font-body font-bold">{canal.valor}</span>
+                        <span class:list={[
+                          'mt-1 inline-block border-b-2 pb-0.5 font-body text-xs font-bold uppercase tracking-widest transition-colors',
+                          i === 0 ? 'border-dorado text-dorado' : 'border-dorado text-marino group-hover:text-marino-noche',
+                        ]}>
+                          Escribir →
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div class="mt-6 rounded-2xl border-2 border-dashed border-tinta/30 bg-white/60 p-6">
+                <p class="font-body font-medium text-tinta/85">
+                  Este centro todavía no publica su contacto directo. Escríbenos
+                  por el WhatsApp nacional y te conectamos con el responsable.
+                </p>
+                <a
+                  href={contacto.whatsapp.enlace}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="boton boton-dorado mt-4 inline-block"
+                >
+                  Escribir al WhatsApp nacional ✦
+                </a>
+              </div>
+            )
+          }
+
+          <!-- Ficha del centro -->
+          {
+            ficha.length > 0 && (
+              <dl class="mt-8 grid gap-4 rounded-2xl bg-white p-6 shadow-nube ring-1 ring-tinta/10">
+                {ficha.map((fila) => (
+                  <div class="flex items-start gap-3">
+                    <span class="text-lg" aria-hidden="true">{fila.icono}</span>
+                    <div>
+                      <dt class="font-body text-[0.68rem] font-bold uppercase tracking-chip text-tinta/60">
+                        {fila.etiqueta}
+                      </dt>
+                      <dd class="mt-0.5 font-body font-bold text-tinta">{fila.valor}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            )
+          }
+
+          <a
+            href={mapa}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-6 inline-flex items-center gap-2 border-b-2 border-dorado pb-0.5 font-body text-sm font-bold uppercase tracking-widest text-marino transition-colors hover:text-marino-noche"
+          >
+            <span aria-hidden="true">🗺️</span> Cómo llegar a {centro.nombre}
+          </a>
+        </section>
+
+        <!-- Fotos del centro -->
+        <section aria-label="Fotos del centro" data-reveal style="--reveal-delay: 0.1s">
+          {
+            centro.fotos.length > 0 ? (
+              <div class="grid grid-cols-2 gap-4">
+                {centro.fotos.map((foto) => (
+                  <figure class="marco-foto group overflow-hidden">
+                    <Image
+                      src={foto.src}
+                      alt={foto.alt}
+                      widths={[340, 560]}
+                      sizes="(min-width: 1024px) 22vw, 44vw"
+                      quality={75}
+                      class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                ))}
+              </div>
+            ) : (
+              <div class="flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-3xl bg-gradient-to-br from-celeste-niebla via-marfil-2 to-dorado-suave ring-1 ring-tinta/10">
+                <span class="font-display text-8xl font-semibold text-marino/20" aria-hidden="true">
+                  {centro.nombre.charAt(0)}
+                </span>
+                <p class="px-8 text-center font-body text-xs font-bold uppercase tracking-widest text-tinta/50">
+                  Fotos de este centro, próximamente
+                </p>
+              </div>
+            )
+          }
+        </section>
+      </div>
+
+      <!-- CTA de cierre -->
+      <div class="mt-14 rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-7 shadow-nube ring-1 ring-dorado/40 sm:p-9" data-reveal>
+        <p class="font-display text-xl font-semibold tracking-tight text-marino sm:text-2xl">
+          ¿Quieres visitar la JMV {centro.nombre}?
+        </p>
+        <p class="mt-2 font-body font-medium text-tinta/85">
+          Llega sin compromiso a un encuentro: la comunidad te recibe tal cual
+          eres. Si tienes dudas, escríbenos primero y te acompañamos.
+        </p>
+        <a href="/centros" class="boton boton-primario mt-5 inline-block">
+          Ver todos los centros →
+        </a>
+      </div>
+    </div>
+  </article>
+</Layout>

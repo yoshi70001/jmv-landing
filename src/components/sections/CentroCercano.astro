@@ -1,0 +1,332 @@
+---
+/**
+ * "Tu centro más cercano": personalización de la home según la zona del
+ * visitante. El sitio es estático, así que la detección es del lado del
+ * navegador (geolocalización por IP, sin permisos ni cookies) y todas las
+ * tarjetas se pre-renderizan ocultas: el script solo decide cuál se ve.
+ *
+ * Estados:
+ * 1. Centro cercano detectado (o elegido antes, guardado en localStorage).
+ * 2. Región cercana sin centros todavía ("próximamente").
+ * 3. Elección manual: el visitante elige su región (estado por defecto,
+ *    también visible sin JavaScript).
+ */
+import { Image } from 'astro:assets';
+import { contacto } from '../../lib/datos/contacto';
+import {
+  centros,
+  centrosDeRegion,
+  obtenerRegion,
+  regiones,
+} from '../../lib/datos/centros';
+
+const regionesPorAbrir = regiones.filter(
+  (region) => centrosDeRegion(region.id).length === 0
+);
+---
+
+<section id="centro-cercano" class="scroll-mt-24 bg-marfil py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6" data-reveal>
+    <p class="chip">Tu centro más cercano</p>
+    <h2 class="mt-6 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
+      Hay un centro <span class="subrayado text-marino">cerca de ti</span>
+    </h2>
+    <p class="mt-4 max-w-xl text-lg leading-relaxed text-tinta/80">
+      Detectamos tu zona para presentarte la comunidad JMV más cercana.
+      Escríbele directo y llega sin compromiso a un encuentro.
+    </p>
+
+    <div class="mt-9 max-w-3xl">
+      <!-- Estado por defecto: elección de región (también sin JavaScript) -->
+      <div
+        data-eleccion
+        role="group"
+        aria-label="Elige tu región"
+        class="rounded-3xl bg-white p-6 shadow-nube ring-1 ring-tinta/10 sm:p-8"
+      >
+        <p class="font-display text-xl font-semibold tracking-tight text-marino sm:text-2xl">
+          ¿De dónde nos visitas?
+        </p>
+        <p class="mt-1.5 text-sm leading-relaxed text-tinta/75">
+          Elige tu región y te mostramos el centro de ahí.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2.5">
+          {
+            regiones.map((region) => {
+              const tieneCentros = centrosDeRegion(region.id).length > 0;
+              const clase =
+                'rounded-full px-4 py-1.5 font-body text-xs font-bold uppercase tracking-etiqueta transition-colors';
+              return tieneCentros ? (
+                <button
+                  type="button"
+                  data-elegir-region={region.id}
+                  class={`${clase} border border-tinta/25 bg-white text-tinta hover:border-marino hover:bg-marino hover:text-marfil`}
+                >
+                  {region.nombre}
+                </button>
+              ) : (
+                <a
+                  href="/centros"
+                  class={`${clase} border border-dashed border-tinta/30 bg-white text-tinta/70 hover:border-marino hover:text-marino`}
+                >
+                  {region.nombre} <span class="opacity-60">· próximamente</span>
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+
+      <!-- Tarjeta por centro (se muestra la del visitante) -->
+      {
+        centros.map((centro) => {
+          const region = obtenerRegion(centro.regionId);
+          const canal = centro.canales[0];
+          const foto = centro.fotos[0];
+          return (
+            <div
+              data-tarjeta-centro={centro.slug}
+              hidden
+              class="overflow-hidden rounded-3xl bg-marino text-marfil shadow-nube-lg"
+            >
+              <div class="grid gap-6 p-6 sm:p-8 md:grid-cols-[240px_1fr] md:items-center">
+                {foto ? (
+                  <figure class="marco-foto overflow-hidden">
+                    <Image
+                      src={foto.src}
+                      alt={foto.alt}
+                      widths={[340, 480]}
+                      sizes="(min-width: 768px) 240px, 90vw"
+                      quality={75}
+                      class="aspect-[4/3] w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                ) : (
+                  <div class="flex aspect-[4/3] items-center justify-center rounded-2xl bg-white/8 ring-1 ring-marfil/15 md:aspect-auto md:h-full">
+                    <span class="font-display text-7xl font-semibold text-marfil/25" aria-hidden="true">
+                      {centro.nombre.charAt(0)}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <p class="flex flex-wrap items-center gap-x-2 font-body text-xs font-bold uppercase tracking-chip text-celeste-niebla">
+                    <span>{region?.nombre}</span>
+                    <span class="text-dorado" aria-hidden="true">✦</span>
+                    <span>{centro.zona}</span>
+                  </p>
+                  <h3 class="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                    JMV {centro.nombre}
+                  </h3>
+                  <p class="mt-2 max-w-lg text-sm leading-relaxed text-marfil/85">
+                    {centro.descripcion}
+                  </p>
+                  <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <a
+                      href={canal?.enlace ?? contacto.whatsapp.enlace}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="boton boton-dorado"
+                    >
+                      {canal ? `Escribir por ${canal.etiqueta}` : 'Escríbenos y te conectamos ✦'}
+                    </a>
+                    <a
+                      href={`/centros/${centro.slug}`}
+                      class="border-b-2 border-dorado pb-0.5 font-body text-xs font-bold uppercase tracking-widest text-marfil transition-colors hover:text-dorado"
+                    >
+                      Ver el centro →
+                    </a>
+                  </div>
+                  <button
+                    type="button"
+                    data-cambiar
+                    class="mt-4 font-body text-xs font-bold uppercase tracking-chip text-marfil/60 underline decoration-marfil/30 underline-offset-4 transition-colors hover:text-marfil"
+                  >
+                    No es tu zona · cambiar región
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+
+      <!-- Tarjeta por región sin centros ("próximamente") -->
+      {
+        regionesPorAbrir.map((region) => (
+          <div
+            data-tarjeta-region={region.id}
+            hidden
+            class="rounded-3xl bg-celeste-niebla p-6 ring-1 ring-tinta/10 sm:p-8"
+          >
+            <p class="chip">Próximamente</p>
+            <h3 class="mt-4 font-display text-2xl font-semibold tracking-tight text-marino sm:text-3xl">
+              Estamos llegando a {region.nombre}
+            </h3>
+            <p class="mt-2 max-w-lg text-sm leading-relaxed text-tinta/80">
+              Todavía no tenemos centro en {region.nombre} ({region.ambito}),
+              pero queremos estar allá. Escríbenos y te acompañamos para
+              empezarlo.
+            </p>
+            <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a
+                href={contacto.whatsapp.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="boton boton-primario"
+              >
+                Quiero un centro en mi zona →
+              </a>
+              <a
+                href="/centros"
+                class="border-b-2 border-dorado pb-0.5 font-body text-xs font-bold uppercase tracking-widest text-marino transition-colors hover:text-marino-noche"
+              >
+                Ver todos los centros →
+              </a>
+            </div>
+            <button
+              type="button"
+              data-cambiar
+              class="mt-4 font-body text-xs font-bold uppercase tracking-chip text-tinta/60 underline decoration-tinta/30 underline-offset-4 transition-colors hover:text-tinta"
+            >
+              No es tu zona · cambiar región
+            </button>
+          </div>
+        ))
+      }
+    </div>
+
+    <p data-nota hidden class="mt-4 text-xs leading-relaxed text-tinta/60">
+      Zona detectada por tu ubicación aproximada (IP). No guardamos tu ubicación;
+      puedes corregirla con «cambiar región».
+    </p>
+  </div>
+</section>
+
+<script>
+  import {
+    centros,
+    centrosDeRegion,
+    centroMasCercano,
+    regionMasCercana,
+  } from '../../lib/datos/centros';
+
+  const CLAVE_CENTRO = 'jmv-centro';
+  const PAIS_ESPERADO = 'PE';
+
+  function alternarTarjeta(raiz: HTMLElement, visible: Element | null, detectado: boolean) {
+    raiz
+      .querySelectorAll('[data-tarjeta-centro], [data-tarjeta-region], [data-eleccion]')
+      .forEach((el) => el.toggleAttribute('hidden', el !== visible));
+
+    const nota = raiz.querySelector<HTMLElement>('[data-nota]');
+    nota?.toggleAttribute('hidden', !detectado);
+  }
+
+  function mostrarCentro(slug: string, detectado = false) {
+    const raiz = document.getElementById('centro-cercano');
+    const tarjeta = raiz?.querySelector<HTMLElement>(`[data-tarjeta-centro="${slug}"]`);
+    if (!raiz || !tarjeta) return;
+    alternarTarjeta(raiz, tarjeta, detectado);
+  }
+
+  function mostrarRegion(id: string, detectado = false) {
+    const raiz = document.getElementById('centro-cercano');
+    const tarjeta = raiz?.querySelector<HTMLElement>(`[data-tarjeta-region="${id}"]`);
+    if (!raiz) return;
+    if (!tarjeta) {
+      mostrarEleccion();
+      return;
+    }
+    alternarTarjeta(raiz, tarjeta, detectado);
+  }
+
+  function mostrarEleccion() {
+    const raiz = document.getElementById('centro-cercano');
+    if (!raiz) return;
+    alternarTarjeta(raiz, raiz.querySelector('[data-eleccion]'), false);
+  }
+
+  /** Ubicación aproximada por IP: primer proveedor que responda. */
+  async function ubicacionAproximada(): Promise<{ lat: number; lng: number; pais: string } | null> {
+    const proveedores = [
+      async () => {
+        const r = await fetch('https://get.geojs.io/v1/ip/geo.json', { signal: AbortSignal.timeout(4000) });
+        const d = await r.json();
+        return { lat: Number.parseFloat(d.latitude), lng: Number.parseFloat(d.longitude), pais: d.country_code };
+      },
+      async () => {
+        const r = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
+        const d = await r.json();
+        return { lat: Number(d.latitude), lng: Number(d.longitude), pais: d.country_code };
+      },
+    ];
+
+    for (const pedir of proveedores) {
+      try {
+        const u = await pedir();
+        if (Number.isFinite(u.lat) && Number.isFinite(u.lng)) return u;
+      } catch {
+        /* sin respuesta: probamos el siguiente proveedor */
+      }
+    }
+    return null;
+  }
+
+  async function iniciar() {
+    const raiz = document.getElementById('centro-cercano');
+    if (!raiz) return;
+
+    raiz.addEventListener('click', (evento) => {
+      const destino = evento.target as Element | null;
+      const elegir = destino?.closest<HTMLElement>('[data-elegir-region]');
+      if (elegir) {
+        const slug = centrosDeRegion(elegir.dataset.elegirRegion ?? '')[0]?.slug;
+        if (slug) {
+          try {
+            localStorage.setItem(CLAVE_CENTRO, slug);
+          } catch {
+            /* almacenamiento no disponible: mostramos sin guardar */
+          }
+          mostrarCentro(slug);
+        }
+        return;
+      }
+      if (destino?.closest('[data-cambiar]')) {
+        try {
+          localStorage.removeItem(CLAVE_CENTRO);
+        } catch {
+          /* ídem */
+        }
+        mostrarEleccion();
+      }
+    });
+
+    const guardado = localStorage.getItem(CLAVE_CENTRO);
+    if (guardado && centros.some((centro) => centro.slug === guardado)) {
+      mostrarCentro(guardado);
+      return;
+    }
+
+    const ubicacion = await ubicacionAproximada();
+    if (!raiz.isConnected) return; // el visitante navegó mientras consultábamos
+
+    if (!ubicacion || ubicacion.pais !== PAIS_ESPERADO) {
+      mostrarEleccion();
+      return;
+    }
+
+    const centro = centroMasCercano(ubicacion.lat, ubicacion.lng);
+    if (centro) {
+      mostrarCentro(centro.centro.slug, true);
+      return;
+    }
+
+    const region = regionMasCercana(ubicacion.lat, ubicacion.lng);
+    if (region) mostrarRegion(region.region.id, true);
+    else mostrarEleccion();
+  }
+
+  document.addEventListener('astro:page-load', iniciar);
+</script>

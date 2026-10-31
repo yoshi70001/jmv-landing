@@ -16,6 +16,7 @@ export const navegacionCompleta: EnlaceNav[] = [
   { href: '/#identidad', texto: 'Identidad' },
   { href: '/#actividades', texto: 'Actividades' },
   { href: '/formacion', texto: 'Formación' },
+  { href: '/centros', texto: 'Centros' },
   { href: '/blog', texto: 'Bitácora' },
   { href: '/#contacto', texto: 'Contacto' },
 ];

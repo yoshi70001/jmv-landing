@@ -1,0 +1,168 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import ChipFiltro from '../../components/ChipFiltro.astro';
+import { contacto } from '../../lib/datos/contacto';
+import { regiones, centrosDeRegion } from '../../lib/datos/centros';
+import { urlAbsoluta } from '../../lib/sitio';
+
+const conCentros = regiones.filter((r) => centrosDeRegion(r.id).length > 0);
+const porAbrir = regiones.filter((r) => centrosDeRegion(r.id).length === 0);
+const todosLosCentros = regiones.flatMap((r) => centrosDeRegion(r.id));
+
+/** Mismo contrato de colores que los temas de formación. */
+const estilosRegion: Record<string, { fondo: string; texto: string }> = {
+  lima: { fondo: 'bg-marino', texto: 'text-marfil' },
+  jauja: { fondo: 'bg-celeste', texto: 'text-tinta' },
+  chiclayo: { fondo: 'bg-dorado', texto: 'text-tinta' },
+};
+const estiloGeneral = { fondo: 'bg-celeste-niebla', texto: 'text-tinta' };
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': urlAbsoluta('/centros/#centros'),
+  name: 'Centros locales JMV',
+  url: urlAbsoluta('/centros/'),
+  inLanguage: 'es-PE',
+  description:
+    'Centros locales de la Juventud Mariana Vicentina (JMV) en el Perú, por región: Lima, Jauja y Chiclayo.',
+  isPartOf: { '@id': urlAbsoluta('/#sitio') },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: todosLosCentros.map((centro, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: urlAbsoluta(`/centros/${centro.slug}`),
+      name: `JMV ${centro.nombre} — ${centro.zona}`,
+    })),
+  },
+};
+---
+
+<Layout
+  title="Centros JMV | Encuentra tu grupo JUMAVI más cercano — Juventud Mariana Vicentina"
+  description="Centros locales de la JMV (JUMAVI) en el Perú: Lima (San Juan de Miraflores, Villa María del Triunfo), Jauja y Chiclayo. Contacto directo de cada grupo cerca de ti."
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="bg-marino pt-28 pb-14 sm:pt-32 sm:pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <p class="chip chip-invertida">Encuentra tu comunidad</p>
+      <h1 class="mt-6 font-display text-[clamp(2.8rem,8vw,6.5rem)] leading-[1.02] font-semibold tracking-tight text-marfil">
+        Dónde <span class="text-dorado">estamos</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-lg leading-relaxed text-marfil/85">
+        La JMV no es un solo grupo: son comunidades que se reúnen en parroquias
+        y barrios de todo el país. Busca tu centro, escríbele directo y llega
+        sin compromiso a un encuentro.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-marfil py-14 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <!-- Filtro por región -->
+      <div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtrar por región">
+        <ChipFiltro valor="" etiqueta="Todas" activo />
+        {
+          conCentros.map((region) => (
+            <ChipFiltro valor={region.id} etiqueta={region.nombre} />
+          ))
+        }
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          todosLosCentros.map((centro, i) => {
+            const region = regiones.find((r) => r.id === centro.regionId);
+            const estilo = estilosRegion[centro.regionId] ?? estiloGeneral;
+            const foto = centro.fotos[0];
+            return (
+              <article
+                data-filtro-valor={centro.regionId}
+                class="tarjeta flex flex-col overflow-hidden"
+                style={`--reveal-delay: ${(i % 3) * 0.06}s`}
+                data-reveal
+              >
+                <a href={`/centros/${centro.slug}`} class="flex grow flex-col">
+                  {foto ? (
+                    <figure class="marco-foto group overflow-hidden">
+                      <Image
+                        src={foto.src}
+                        alt={foto.alt}
+                        widths={[420, 700]}
+                        sizes="(min-width: 1024px) 24vw, 44vw"
+                        quality={75}
+                        class="aspect-[16/9] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  ) : (
+                    <div class="flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-celeste-niebla via-marfil-2 to-dorado-suave">
+                      <span class="font-display text-7xl font-semibold text-marino/20" aria-hidden="true">
+                        {centro.nombre.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                  <div class:list={['flex items-center justify-between gap-3 px-5 py-3', estilo.fondo, estilo.texto]}>
+                    <span class="font-body text-xs font-bold uppercase tracking-chip">{region?.nombre}</span>
+                    <span class="font-body text-xs font-bold opacity-80">{centro.zona}</span>
+                  </div>
+                  <div class="flex grow flex-col p-6">
+                    <h2 class="font-display text-xl font-semibold leading-snug tracking-tight text-tinta sm:text-2xl">
+                      JMV {centro.nombre}
+                    </h2>
+                    <p class="mt-3 grow text-sm leading-relaxed text-tinta/80">{centro.descripcion}</p>
+                    <span class="mt-5 border-b-2 border-dorado pb-0.5 self-start font-body text-xs font-bold uppercase tracking-widest text-marino">
+                      Ver contacto →
+                    </span>
+                  </div>
+                </a>
+              </article>
+            );
+          })
+        }
+      </div>
+
+      <p id="centros-vacio" hidden class="rounded-2xl border-2 border-dashed border-tinta/30 p-10 text-center font-body font-bold uppercase tracking-widest text-tinta/70">
+        No hay centros en esa región (todavía).
+      </p>
+
+      {
+        porAbrir.length > 0 && (
+          <div class="mt-14 rounded-3xl bg-white p-7 shadow-nube ring-1 ring-tinta/10 sm:p-9" data-reveal>
+            <p class="font-body text-xs font-bold uppercase tracking-chip text-tinta/60">Próximamente</p>
+            <ul class="mt-3 flex flex-wrap gap-2.5">
+              {porAbrir.map((region) => (
+                <li class="rounded-full bg-celeste-niebla px-4 py-1.5 font-body text-xs font-bold uppercase tracking-etiqueta text-marino">
+                  {region.nombre}
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 max-w-xl font-body font-medium text-tinta/85">
+              Estamos llegando a más zonas. ¿Vives en alguna de estas regiones y
+              quieres ser parte de un centro nuevo? Escríbenos y te acompañamos
+              para empezarlo.
+            </p>
+            <a
+              href={contacto.whatsapp.enlace}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="boton boton-primario mt-5 inline-block"
+            >
+              Quiero un centro en mi zona →
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { conectarFiltro } from '../../lib/filtros';
+
+  document.addEventListener('astro:page-load', () => conectarFiltro('centros-vacio'));
+</script>
