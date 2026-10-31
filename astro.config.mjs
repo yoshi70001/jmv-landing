@@ -25,6 +25,20 @@ export default defineConfig({
       },
     }),
   ],
+  // Compresión de imágenes (servicio Sharp): calidades por defecto afinadas
+  // por formato (AVIF ~55 equivale visualmente a WebP ~72). Los `quality`
+  // por componente tienen prioridad sobre esto, así que no se usan: cada
+  // formato toma aquí su valor óptimo (ver <Picture formats> en componentes).
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        avif: { quality: 55, effort: 4 },
+        webp: { quality: 72, effort: 5 },
+        jpeg: { quality: 74, mozjpeg: true },
+      },
+    },
+  },
   build: {
     inlineStylesheets: 'auto',
   },

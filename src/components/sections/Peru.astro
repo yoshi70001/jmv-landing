@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { fotos } from '../../lib/fotos';
 
 const datos = [
@@ -62,12 +62,13 @@ const datos = [
                 i % 2 === 1 && 'sm:translate-y-5',
               ]}
             >
-              <Image
+              <Picture
                 src={foto.src}
                 alt={foto.alt}
                 widths={[420, 700]}
                 sizes="(min-width: 1024px) 24vw, 44vw"
-                quality={75}
+                formats={['avif']}
+                fallbackFormat="webp"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                 loading="lazy"
                 decoding="async"

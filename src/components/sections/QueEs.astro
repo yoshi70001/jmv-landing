@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { fotos } from '../../lib/fotos';
 
 const fotoComunidad = fotos.hero.marco;
@@ -40,12 +40,13 @@ const fotoComunidad = fotos.hero.marco;
       </div>
 
       <figure class="marco-foto" data-reveal style="--reveal-delay: 0.12s">
-        <Image
+        <Picture
           src={fotoComunidad.src}
           alt={fotoComunidad.alt}
           widths={[560, 900, 1300]}
           sizes="(min-width: 1024px) 42vw, 92vw"
-          quality={75}
+          formats={['avif']}
+          fallbackFormat="webp"
           class="aspect-[4/3] w-full bg-celeste-niebla object-cover"
           loading="lazy"
           decoding="async"

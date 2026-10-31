@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { fotos } from '../../lib/fotos';
 import { contacto } from '../../lib/datos/contacto';
 
@@ -70,11 +70,13 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
         <div class="absolute -top-4 -right-4 h-full w-full rounded-[2rem] bg-dorado/60" aria-hidden="true"></div>
 
         <figure class="marco-foto relative">
-          <Image
+          <Picture
             src={fotos.hero.principal.src}
             alt={fotos.hero.principal.alt}
             widths={[640, 960, 1280, 1920]}
             sizes="(min-width: 1024px) 44vw, 92vw"
+            formats={['avif']}
+            fallbackFormat="webp"
             class="aspect-[4/3] w-full object-cover"
             loading="eager"
             fetchpriority="high"
@@ -86,11 +88,13 @@ const lema = ['Eclesial', 'Laical', 'Mariana', 'Vicenciana'];
 
         <!-- Foto secundaria superpuesta, estilo polaroid editorial -->
         <figure class="absolute -bottom-12 -left-2 w-36 rotate-[-4deg] rounded-2xl border-[6px] border-white bg-white shadow-nube-lg sm:-left-6 sm:w-44">
-          <Image
+          <Picture
             src={fotos.hero.columna.src}
             alt={fotos.hero.columna.alt}
             widths={[220, 440]}
             sizes="(min-width: 640px) 176px, 144px"
+            formats={['avif']}
+            fallbackFormat="webp"
             class="aspect-[4/3] w-full rounded-xl bg-celeste-niebla object-cover"
             loading="lazy"
             decoding="async"

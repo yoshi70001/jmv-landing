@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import ChipFiltro from '../../components/ChipFiltro.astro';
 import { contacto } from '../../lib/datos/contacto';
 import { regiones, centrosDeRegion } from '../../lib/datos/centros';
@@ -88,12 +88,13 @@ const jsonLd = {
                 <a href={`/centros/${centro.slug}`} class="flex grow flex-col">
                   {foto ? (
                     <figure class="marco-foto group overflow-hidden">
-                      <Image
+                      <Picture
                         src={foto.src}
                         alt={foto.alt}
                         widths={[420, 700]}
                         sizes="(min-width: 1024px) 24vw, 44vw"
-                        quality={75}
+                        formats={['avif']}
+                        fallbackFormat="webp"
                         class="aspect-[16/9] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                         loading="lazy"
                         decoding="async"

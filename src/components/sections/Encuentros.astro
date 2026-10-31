@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { encuentros } from '../../lib/datos/encuentros';
 import { fechaLarga } from '../../lib/utils';
 
@@ -47,12 +47,13 @@ const proximos = encuentros
               data-reveal
             >
               {encuentro.imagen && (
-                <Image
+                <Picture
                   src={encuentro.imagen.src}
                   alt={encuentro.imagen.alt ?? `Imagen de ${encuentro.nombre}`}
                   widths={[640, 960]}
                   sizes="(min-width: 1024px) 30vw, 92vw"
-                  quality={75}
+                  formats={['avif']}
+                  fallbackFormat="webp"
                   class="aspect-[16/9] w-full bg-celeste-niebla object-cover"
                   loading="lazy"
                   decoding="async"

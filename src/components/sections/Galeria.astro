@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { fotos } from '../../lib/fotos';
 
 /**
@@ -41,12 +41,13 @@ const composicion = [
       {
         composicion.map(({ foto, spans }) => (
           <figure class:list={['marco-foto group h-full w-full overflow-hidden bg-celeste-niebla', spans]}>
-            <Image
+            <Picture
               src={foto.src}
               alt={foto.alt}
               widths={[400, 700, 1100]}
               sizes="(min-width: 768px) 40vw, 50vw"
-              quality={70}
+              formats={['avif']}
+              fallbackFormat="webp"
               class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
               loading="lazy"
               decoding="async"

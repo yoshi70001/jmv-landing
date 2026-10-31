@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import { hitosCompletos, presente } from '../lib/datos/hitos';
 ---
@@ -48,11 +48,13 @@ import { hitosCompletos, presente } from '../lib/datos/hitos';
                   </div>
                   {hito.imagen && (
                     <figure class="w-40 shrink-0 rotate-1 overflow-hidden rounded-xl border-4 border-white shadow-nube sm:w-44">
-                      <Image
+                      <Picture
                         src={hito.imagen.src}
                         alt={hito.imagen.alt}
                         widths={[220, 440]}
                         sizes="176px"
+                        formats={['avif']}
+                        fallbackFormat="webp"
                         class="filtro-bn"
                         loading="lazy"
                         decoding="async"

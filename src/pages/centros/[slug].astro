@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { contacto } from '../../lib/datos/contacto';
 import {
   centros,
@@ -185,12 +185,13 @@ const migas = {
               <div class="grid grid-cols-2 gap-4">
                 {centro.fotos.map((foto) => (
                   <figure class="marco-foto group overflow-hidden">
-                    <Image
+                    <Picture
                       src={foto.src}
                       alt={foto.alt}
                       widths={[340, 560]}
                       sizes="(min-width: 1024px) 22vw, 44vw"
-                      quality={75}
+                      formats={['avif']}
+                      fallbackFormat="webp"
                       class="aspect-[4/3] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                       loading="lazy"
                       decoding="async"

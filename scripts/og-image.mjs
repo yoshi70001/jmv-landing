@@ -67,14 +67,17 @@ const svg = `
 const logoJmv = await readFile(path.join(raiz, 'public', 'logo-jmv.svg'));
 
 await mkdir(path.join(raiz, 'public'), { recursive: true });
+// JPG en vez de PNG: la imagen es opaca y los rastreadores sociales lo
+// aceptan igual; baja de ~940 KB a ~150 KB.
 await sharp(Buffer.from(svg))
-  .png({ compressionLevel: 9 })
-  .toFile(path.join(raiz, 'public', 'og.png'));
+  .flatten({ background: colores.marfil })
+  .jpeg({ quality: 82, mozjpeg: true })
+  .toFile(path.join(raiz, 'public', 'og.jpg'));
 
 await sharp(logoJmv)
   .resize(180, 180, { fit: 'contain', background: '#ffffff' })
   .png({ compressionLevel: 9 })
   .toFile(path.join(raiz, 'public', 'apple-touch-icon.png'));
 
-console.log('✓ public/og.png generado (1200×630)');
+console.log('✓ public/og.jpg generado (1200×630)');
 console.log('✓ public/apple-touch-icon.png generado (180×180)');

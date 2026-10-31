@@ -11,7 +11,7 @@
  * 3. Elección manual: el visitante elige su región (estado por defecto,
  *    también visible sin JavaScript).
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { contacto } from '../../lib/datos/contacto';
 import {
   centros,
@@ -92,12 +92,13 @@ const regionesPorAbrir = regiones.filter(
               <div class="grid gap-6 p-6 sm:p-8 md:grid-cols-[240px_1fr] md:items-center">
                 {foto ? (
                   <figure class="marco-foto overflow-hidden">
-                    <Image
+                    <Picture
                       src={foto.src}
                       alt={foto.alt}
                       widths={[340, 480]}
                       sizes="(min-width: 768px) 240px, 90vw"
-                      quality={75}
+                      formats={['avif']}
+                      fallbackFormat="webp"
                       class="aspect-[4/3] w-full object-cover"
                       loading="lazy"
                       decoding="async"

@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { fotos } from '../../lib/fotos';
 
 const notas = [
@@ -61,12 +61,13 @@ const notas = [
             data-reveal
           >
             <div class="relative bg-celeste-niebla">
-              <Image
+              <Picture
                 src={nota.foto.src}
                 alt={nota.foto.alt}
                 widths={[480, 800, 1100]}
                 sizes="(min-width: 640px) 44vw, 92vw"
-                quality={70}
+                formats={['avif']}
+                fallbackFormat="webp"
                 class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
                 decoding="async"
