@@ -1,0 +1,41 @@
+name: Deploy a GitHub Pages
+
+on:
+  # Se ejecuta en cada push a master (rama principal de este repo)
+  push:
+    branches: [master]
+  # Permite lanzarlo manualmente desde la pestaña Actions de GitHub
+  workflow_dispatch:
+
+# Permisos para clonar el repo y crear el despliegue de Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita despliegues en paralelo: cancela el anterior si llega uno nuevo
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v7
+      # Detecta pnpm por el lockfile e instala dependencias,
+      # ejecuta `pnpm run build` y sube dist/ como artefacto de Pages.
+      - name: Instalar, compilar y subir el sitio
+        uses: withastro/action@v6
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
