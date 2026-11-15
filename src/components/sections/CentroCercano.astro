@@ -6,10 +6,11 @@
  * tarjetas se pre-renderizan ocultas: el script solo decide cuál se ve.
  *
  * Estados:
- * 1. Centro cercano detectado (o elegido antes, guardado en localStorage).
+ * 1. Centro cercano detectado por IP (se reutiliza media jornada en
+ *    localStorage) o elegido antes por el visitante.
  * 2. Región cercana sin centros todavía ("próximamente").
  * 3. Elección manual: el visitante elige su región (estado por defecto,
- *    también visible sin JavaScript).
+ *    también visible sin JavaScript) o rechaza la detección explícitamente.
  */
 import { Picture } from 'astro:assets';
 import { contacto } from '../../lib/datos/contacto';
@@ -36,7 +37,7 @@ const regionesPorAbrir = regiones.filter(
       Escríbele directo y llega sin compromiso a un encuentro.
     </p>
 
-    <div class="mt-9 max-w-3xl">
+    <div class="mt-9 max-w-4xl">
       <!-- Estado por defecto: elección de región (también sin JavaScript) -->
       <div
         data-eleccion
@@ -75,6 +76,17 @@ const regionesPorAbrir = regiones.filter(
             })
           }
         </div>
+        <p data-detectando hidden class="mt-4 flex items-center gap-2.5 text-sm font-medium text-tinta/75">
+          <span class="size-2 animate-pulse rounded-full bg-dorado-tinta motion-reduce:animate-none" aria-hidden="true"></span>
+          Detectando tu zona…
+        </p>
+        <button
+          type="button"
+          data-sin-zona
+          class="mt-3 font-body text-xs font-bold uppercase tracking-chip text-tinta/75 underline decoration-tinta/30 underline-offset-4 transition-colors hover:text-tinta"
+        >
+          Prefiero no compartir mi ubicación
+        </button>
       </div>
 
       <!-- Tarjeta por centro (se muestra la del visitante) -->
@@ -130,7 +142,7 @@ const regionesPorAbrir = regiones.filter(
                       rel="noopener noreferrer"
                       class="boton boton-dorado"
                     >
-                      {canal ? `Escribir por ${canal.etiqueta}` : 'Escríbenos y te conectamos ✦'}
+                      {canal ? `Escribir por ${canal.etiqueta}` : 'Escríbenos y te conectamos\u00A0✦'}
                     </a>
                     <a
                       href={`/centros/${centro.slug}`}
@@ -198,9 +210,10 @@ const regionesPorAbrir = regiones.filter(
       }
     </div>
 
-    <p data-nota hidden class="mt-4 text-xs leading-relaxed text-tinta/60">
-      Zona detectada por tu ubicación aproximada (IP). No guardamos tu ubicación;
-      puedes corregirla con «cambiar región».
+    <p data-nota hidden class="mt-4 text-xs leading-relaxed text-tinta/75">
+      Zona detectada por tu ubicación aproximada (IP). Solo guardamos en tu
+      navegador el centro o región resultante — nunca coordenadas —; puedes
+      corregirla con «cambiar región».
     </p>
   </div>
 </section>
@@ -214,7 +227,39 @@ const regionesPorAbrir = regiones.filter(
   } from '../../lib/datos/centros';
 
   const CLAVE_CENTRO = 'jmv-centro';
+  const CLAVE_ZONA = 'jmv-zona';
   const PAIS_ESPERADO = 'PE';
+  /** La zona detectada se reutiliza media jornada; luego se vuelve a consultar. */
+  const TTL_ZONA_MS = 12 * 60 * 60 * 1000;
+
+  type ZonaGuardada =
+    | { tipo: 'centro'; id: string; ts: number }
+    | { tipo: 'region'; id: string; ts: number }
+    | { tipo: 'rechazo'; ts: number };
+
+  /** Zona conocida (o rechazo explícito) guardada en este navegador, si sigue vigente. */
+  function leerZona(): ZonaGuardada | null {
+    try {
+      const bruta = localStorage.getItem(CLAVE_ZONA);
+      if (!bruta) return null;
+      const zona = JSON.parse(bruta) as ZonaGuardada;
+      if (typeof zona?.ts !== 'number' || Date.now() - zona.ts > TTL_ZONA_MS) {
+        localStorage.removeItem(CLAVE_ZONA);
+        return null;
+      }
+      return zona;
+    } catch {
+      return null;
+    }
+  }
+
+  function guardarZona(zona: ZonaGuardada) {
+    try {
+      localStorage.setItem(CLAVE_ZONA, JSON.stringify(zona));
+    } catch {
+      /* almacenamiento no disponible: se consulta en cada visita */
+    }
+  }
 
   function alternarTarjeta(raiz: HTMLElement, visible: Element | null, detectado: boolean) {
     raiz
@@ -294,9 +339,15 @@ const regionesPorAbrir = regiones.filter(
         }
         return;
       }
+      if (destino?.closest('[data-sin-zona]')) {
+        guardarZona({ tipo: 'rechazo', ts: Date.now() });
+        mostrarEleccion();
+        return;
+      }
       if (destino?.closest('[data-cambiar]')) {
         try {
           localStorage.removeItem(CLAVE_CENTRO);
+          localStorage.removeItem(CLAVE_ZONA);
         } catch {
           /* ídem */
         }
@@ -310,9 +361,40 @@ const regionesPorAbrir = regiones.filter(
       return;
     }
 
+    // Zona detectada hace poco (o rechazo explícito): sin nueva consulta.
+    const zona = leerZona();
+    if (zona) {
+      aplicarZona(zona);
+      return;
+    }
+
+    // Primera visita o caché vencida: detectamos con indicación visible.
+    detectar(raiz);
+  }
+
+  /** Aplica una zona ya guardada en este navegador (sin consultar la IP de nuevo). */
+  function aplicarZona(zona: ZonaGuardada) {
+    if (zona.tipo === 'centro' && centros.some((centro) => centro.slug === zona.id)) {
+      mostrarCentro(zona.id, true);
+      return;
+    }
+    if (zona.tipo === 'region') {
+      mostrarRegion(zona.id, true);
+      return;
+    }
+    mostrarEleccion();
+  }
+
+  async function detectar(raiz: HTMLElement) {
+    const pista = raiz.querySelector<HTMLElement>('[data-detectando]');
+    pista?.removeAttribute('hidden');
+
     const ubicacion = await ubicacionAproximada();
+
+    pista?.setAttribute('hidden', '');
     if (!raiz.isConnected) return; // el visitante navegó mientras consultábamos
 
+    // Sin datos o fuera del Perú: elección manual, sin guardar nada.
     if (!ubicacion || ubicacion.pais !== PAIS_ESPERADO) {
       mostrarEleccion();
       return;
@@ -320,13 +402,19 @@ const regionesPorAbrir = regiones.filter(
 
     const centro = centroMasCercano(ubicacion.lat, ubicacion.lng);
     if (centro) {
+      guardarZona({ tipo: 'centro', id: centro.centro.slug, ts: Date.now() });
       mostrarCentro(centro.centro.slug, true);
       return;
     }
 
     const region = regionMasCercana(ubicacion.lat, ubicacion.lng);
-    if (region) mostrarRegion(region.region.id, true);
-    else mostrarEleccion();
+    if (region) {
+      guardarZona({ tipo: 'region', id: region.region.id, ts: Date.now() });
+      mostrarRegion(region.region.id, true);
+      return;
+    }
+
+    mostrarEleccion();
   }
 
   document.addEventListener('astro:page-load', iniciar);

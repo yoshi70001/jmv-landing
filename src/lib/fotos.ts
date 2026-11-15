@@ -53,7 +53,7 @@ export const fotos = {
   pilares: {
     eclesial: {
       src: pilarEclesial,
-      alt: 'Lector proclamando la Palabra en el ambón junto al retablo de mosaicos',
+      alt: 'Jóvenes de la JMV animando el canto con guitarra y tambor en la celebración',
     } as Foto,
     laical: {
       src: pilarLaical,
@@ -72,24 +72,24 @@ export const fotos = {
   peru: [
     { src: peru1, alt: 'Jóvenes marchando por la avenida con banderas blancas' },
     { src: peru2, alt: 'Grupo de jóvenes caminando juntos por un sendero durante una caminata' },
-    { src: peru3, alt: 'Encuentro masivo de jóvenes de la JMV en un salón' },
+    { src: peru3, alt: 'Encuentro de jóvenes de la JMV en el salón parroquial' },
     { src: peru4, alt: 'Procesión de la Virgen con guirnaldas y globos avanzando por la calle' },
   ] as Foto[],
 
   galeria: {
     filaA: [
-      { src: galeria01, alt: 'Jóvenes celebrando y saltando con pancartas al aire libre' },
+      { src: galeria01, alt: 'Jóvenes de la JMV celebrando con los brazos arriba en la caminata' },
       { src: galeria03, alt: 'Jóvenes alzando el arco floral de la Virgen en la procesión' },
       { src: galeria05, alt: 'Hijas de la Caridad y voluntarios de la JMV preparando ayuda' },
-      { src: galeria07, alt: 'Grupo de jóvenes reunidos en el templo' },
+      { src: galeria07, alt: 'Comunidad de la JMV reunida con su asesor en el encuentro' },
       { src: peru1, alt: 'Jóvenes marchando por la avenida' },
       { src: heroMarco, alt: 'Jóvenes con marco de cartón en la marcha' },
     ] as Foto[],
     filaB: [
-      { src: galeria02, alt: 'Sacerdote celebrando la eucaristía en el altar' },
+      { src: galeria02, alt: 'Iglesia llena durante la eucaristía del encuentro de la JMV' },
       { src: galeria04, alt: 'Jóvenes abrazados durante una misión vicenciana' },
       { src: galeria06, alt: 'Procesión de la Virgen avanzando por la avenida entre la multitud' },
-      { src: peru3, alt: 'Encuentro masivo de jóvenes en un salón' },
+      { src: peru3, alt: 'Encuentro de jóvenes de la JMV en el salón parroquial' },
       { src: peru4, alt: 'Procesión de la Virgen con guirnaldas por la calle' },
     ] as Foto[],
   },

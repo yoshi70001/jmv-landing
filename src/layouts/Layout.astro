@@ -130,6 +130,16 @@ const cssFuentes = `
     <link rel="preload" href={fuenteFraunces} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fuenteSpaceGrotesk} as="font" type="font/woff2" crossorigin />
     <style is:global set:html={cssFuentes} />
+    <!-- Sin JS no hay observer de reveals: la página debe verse completa -->
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      </style>
+    </noscript>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organizacion)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(sitioWeb)} />
     <ClientRouter />

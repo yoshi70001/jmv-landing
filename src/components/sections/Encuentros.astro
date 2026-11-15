@@ -21,6 +21,8 @@ const proximos = encuentros
   })
   .sort((a, b) => `${a.fecha}T${a.hora ?? '23:59'}`.localeCompare(`${b.fecha}T${b.hora ?? '23:59'}`))
   .slice(0, 3);
+
+const vacio = proximos.length === 0;
 ---
 
 <section id="actividades" class="scroll-mt-24 border-y border-tinta/10 bg-marfil-2/50 py-20 sm:py-24">
@@ -29,11 +31,17 @@ const proximos = encuentros
       <div>
         <p class="chip">Agenda</p>
         <h2 class="mt-6 font-display text-[clamp(2.4rem,6.5vw,5rem)] leading-[1.05] font-semibold tracking-tight text-tinta">
-          Próximos <span class="text-marino">encuentros</span>
+          {vacio ? (
+            <>La agenda <span class="text-marino">se está preparando</span></>
+          ) : (
+            <>Próximos <span class="text-marino">encuentros</span></>
+          )}
         </h2>
       </div>
       <p class="max-w-sm text-lg leading-relaxed text-tinta/75">
-        Lo que se viene: encuentros, jornadas y celebraciones donde puedes sumarte.
+        {vacio
+          ? 'Cada centro se reúne todas las semanas. Mientras confirmamos fechas, lo mejor es llegar directo al más cercano.'
+          : 'Lo que se viene: encuentros, jornadas y celebraciones donde puedes sumarte.'}
       </p>
     </div>
 
@@ -92,24 +100,24 @@ const proximos = encuentros
           <div class="mx-auto max-w-3xl rounded-3xl bg-gradient-to-br from-dorado-suave to-white p-8 text-center shadow-nube ring-1 ring-dorado/40 sm:p-10">
             <span class="animate-flotar inline-block font-display text-4xl font-semibold text-dorado-tinta" aria-hidden="true">✦</span>
             <p class="mt-3 font-display text-2xl font-semibold tracking-tight text-marino">
-              La agenda se está preparando
+              Los centros ya se reúnen cada semana
             </p>
             <p class="mx-auto mt-3 max-w-md leading-relaxed text-tinta/80">
-              Muy pronto publicaremos los próximos encuentros. Mientras tanto,
-              conoce lo que ya vivimos y escríbenos para sumarte a un grupo cerca de ti.
+              Los grupos de Lima, Jauja y Chiclayo siguen en marcha. Llega sin
+              compromiso al más cercano y vive en persona lo que aquí contamos.
             </p>
             <div class="mt-6 flex flex-wrap justify-center gap-4">
+              <a
+                href="/#centro-cercano"
+                class="boton boton-dorado"
+              >
+                Encuentra tu centro ✦
+              </a>
               <a
                 href="/blog"
                 class="boton boton-primario"
               >
                 Ver actividades pasadas
-              </a>
-              <a
-                href="/#contacto"
-                class="boton boton-dorado"
-              >
-                Quiero sumarme ✦
               </a>
             </div>
           </div>

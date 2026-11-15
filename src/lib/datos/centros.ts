@@ -18,6 +18,26 @@
 
 import type { Foto } from '../fotos';
 
+import corpus1 from '../../assets/fotos/centros/corpus-christi/1.jpg';
+import corpus2 from '../../assets/fotos/centros/corpus-christi/2.jpg';
+import corpus3 from '../../assets/fotos/centros/corpus-christi/3.jpg';
+import corpus4 from '../../assets/fotos/centros/corpus-christi/4.jpg';
+import corpus5 from '../../assets/fotos/centros/corpus-christi/5.jpg';
+import corpus6 from '../../assets/fotos/centros/corpus-christi/6.jpg';
+import corpus7 from '../../assets/fotos/centros/corpus-christi/7.jpg';
+import corpus8 from '../../assets/fotos/centros/corpus-christi/8.jpg';
+
+const fotosCorpusChristi: Foto[] = [
+  { src: corpus1, alt: 'Jóvenes y niños del centro Corpus Christi con su párroco en la fiesta patronal' },
+  { src: corpus2, alt: 'Grupo del centro Corpus Christi con las letras JMV en el encuentro' },
+  { src: corpus3, alt: 'Joven del centro con las cajas de la campaña navideña de servicio' },
+  { src: corpus4, alt: 'Eucaristía en el altar de la parroquia Corpus Christi' },
+  { src: corpus5, alt: 'Incienso en la procesión del Corpus Christi' },
+  { src: corpus6, alt: 'Procesión nocturna de la Virgen con la comunidad del centro' },
+  { src: corpus7, alt: 'Anda de la Virgen al atardecer con los jóvenes del centro' },
+  { src: corpus8, alt: 'Un abrazo de gracias en la jornada del centro' },
+];
+
 export interface Coordenadas {
   lat: number;
   lng: number;
@@ -90,7 +110,7 @@ export const centros: CentroLocal[] = [
     // encuentro: 'Sábados de 4:00 a 5:30 p. m.',
     // direccion: 'Av. Los Héroes 000, San Juan de Miraflores',
     canales: [],
-    fotos: [],
+    fotos: fotosCorpusChristi,
     coords: { lat: -12.163, lng: -76.968 },
   },
   {
